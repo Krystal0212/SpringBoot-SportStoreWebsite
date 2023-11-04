@@ -1,0 +1,35 @@
+rs-slides {
+    overflow: hidden;
+    position: absolute;
+    visibility: visible;
+    max-height: none;
+    height: 100%;
+    width: 100%;
+}
+rs-slide{
+    position: absolute;
+    display: none;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+    opacity: 1;
+    visibility: inherit;
+}
+rs-sgb-wrap{
+    transform: translate(0px, 225.005px);
+    backface-visibility: hidden;
+    left: 0px;
+    top: 0px;
+    position: absolute;
+}
+.canvas{
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    opacity: 1;
+    filter: none;
+    transform: translate(0px, 0px);"
+    width="1287"
+    height="680"
+}

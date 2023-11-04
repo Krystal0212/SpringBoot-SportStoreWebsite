@@ -29,6 +29,13 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	implementation( "com.google.firebase:firebase-admin:9.2.0")
+	implementation ("org.springframework.boot:spring-boot-starter-security")
+
+	implementation ("org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE")
+	implementation ("org.springframework.security:spring-security-test")
+
 }
 
 tasks.withType<Test> {
