@@ -59,6 +59,17 @@
                 </div>
             </div>
         </div>
+        <div id="customerName"></div>
+        <script>
+            const userJSON = localStorage.getItem('user');
+
+            if (userJSON) {
+                const userObject = JSON.parse(userJSON);
+
+                const welcomeMessage = `Welcome, ${userObject.userName}`;
+                document.getElementById('customerName').textContent = welcomeMessage;
+            }
+        </script>
     </nav>
     <!-- END nav -->
     <section>
@@ -80,7 +91,7 @@
         <img id="banner-image" src="../images/banner_slider_1.png" alt="Slider1">
     </div>
     <div>
-        <img src="/images/transparent.png"
+        <img src="/images/banner_transparent.png"
              class="transparent_slide">
     </div>
     <div class="rs-layer">

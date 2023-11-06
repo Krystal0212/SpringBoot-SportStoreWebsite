@@ -6,11 +6,33 @@ const findMatchingCustomer = (snapshot, username, password) => {
         const customerData = snapshot.val()[snap];
         if (customerData.username === username && customerData.password === password) {
             console.log("Authentication successful!");
-            // You can add code to redirect the user to a protected page here.
+            redirectToIndexPage(customerData,customerId);
             return;
         }
     }
     console.log("Invalid username or password");
+};
+
+const redirectToIndexPage = (customerData,customerId) => {
+    // Create a User object with the user's data
+    const user = {
+        userId: customerId,
+        userName: customerData.username,
+        userPassword: customerData.password,
+        email: customerData.email,
+        gender: customerData.gender,
+        phoneNumber: customerData.phone_number,
+        fullName: customerData.name
+    };
+
+    // Convert user data to a JSON string
+    const userJSON = JSON.stringify(user);
+
+    // Store the user data in localStorage for use in the protected index page
+    localStorage.setItem("user", userJSON);
+
+    // Redirect to the protected index page
+    window.location.href = "/home"; // Update the URL as needed
 };
 
 window.checkCredentials = function() {
