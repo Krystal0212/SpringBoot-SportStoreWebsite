@@ -16,7 +16,8 @@
                                   placeholder="Password" required autocomplete="current-password"> </label></div>
     <div><input type="submit" value="Sign In" id="signInButton"/></div>
     <div> New ?</div>
-    <div><input type="submit" value="Register" id="registerButton"/></div>
+    <a href="/register" th:href="@{/register}" class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i class="sr-only">Register</i></span></a>
+
 </form>
 <script type="module">
     document.querySelector('#signInButton').addEventListener('click', function(event) {
@@ -25,11 +26,6 @@
     });
 </script>
 
-<script type="module">
-    document.querySelector('#registerButton').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent form submission
-
-    });
 </script>
 
 </body>

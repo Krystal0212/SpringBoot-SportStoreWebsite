@@ -6,7 +6,7 @@ const findMatchingCustomer = (snapshot, username, password) => {
         const customerData = snapshot.val()[snap];
         if (customerData.username === username && customerData.password === password) {
             console.log("Authentication successful!");
-            redirectToIndexPage(customerData,customerId);
+            redirectToIndexPage(customerData,snap);
             return;
         }
     }
@@ -56,3 +56,4 @@ window.checkCredentials = function() {
             console.error("Error message:", error.message);
         });
 };
+

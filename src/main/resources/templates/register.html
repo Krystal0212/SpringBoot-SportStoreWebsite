@@ -1,11 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <title>Register</title>
+  <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
+  <script rel="stylesheet" type="module" src="/js/register.js" th:src="@{/js/register.js}"></script>
 </head>
+
 <body>
 <h1>Registration Page</h1>
-<!-- Add registration form here -->
+
+<form>
+  <div><label> Email: <input type="email" name="email" id="email" placeholder="Email" required
+                             autocomplete="email"/> </label></div>
+
+  <div><label> Gender: <input type="text" name="gender" id="gender" placeholder="Gender" required
+                              autocomplete="gender"/> </label></div>
+
+  <div><label> Name: <input type="text" name="name" id="name" placeholder="Name" required
+                            autocomplete="name"/> </label></div>
+
+  <div><label> User Name: <input type="text" name="username" id="username" placeholder="Username" required
+                                 autocomplete="username"/> </label></div>
+
+  <div><label> Phone number: <input type="text" name="phoneNumber" id="phoneNumber" placeholder="Phone" required
+                                    autocomplete="phoneNumber"/> </label></div>
+
+  <div><label> Password: <input type="password" id="password" name="password" class="form-control"
+                                placeholder="Password" required autocomplete="current-password"> </label></div>
+
+
+  <div>
+    <div><input type="submit" value="Register" id="registerButton"/></div>
+    </button>
+  </div>
+  <script type="module">
+    document.querySelector('#registerButton').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent form submission
+        ClickRegister();
+    });
+</script>
+</form>
+
 </body>
 </html>
