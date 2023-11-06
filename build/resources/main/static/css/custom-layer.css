@@ -1,8 +1,0 @@
-.rs-layer.custom-layout {
-    z-index: 5; // z-index de chinh thu tu nam truoc sau cua 1 layer, cai nao nang hon thi nam phia sau
-    color: rgb(255, 255, 255);
-    width: 1440px;
-    height: 585px;
-    transform: translate(0px, 465px);
-    visibility: visible;
-}

@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.thymeleaf.org
 https://www.thymeleaf.org ">
@@ -14,6 +16,8 @@ https://www.thymeleaf.org ">
     <div><label> Password: <input type="password" id="password" name="password" class="form-control"
                                   placeholder="Password" required autocomplete="current-password"> </label></div>
     <div><input type="submit" value="Sign In" id="signInButton"/></div>
+    <div> New ?</div>
+    <div><input type="submit" value="Register" id="registerButton"/></div>
 </form>
 <script type="module">
     document.querySelector('#signInButton').addEventListener('click', function(event) {
@@ -21,5 +25,13 @@ https://www.thymeleaf.org ">
         checkCredentials();
     });
 </script>
+
+<script type="module">
+    document.querySelector('#registerButton').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent form submission
+
+    });
+</script>
+
 </body>
 </html>
