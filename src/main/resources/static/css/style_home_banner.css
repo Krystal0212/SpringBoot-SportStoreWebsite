@@ -2,6 +2,10 @@ body {
     margin: 0 !important;
 }
 
+html, body {
+  overflow: hidden;
+}
+
 .nav_bar_menu {
     position: relative;
     z-index: 1; /* Increase the z-index value */

@@ -64,10 +64,33 @@
             const userJSON = localStorage.getItem('user');
 
             if (userJSON) {
-                const userObject = JSON.parse(userJSON);
+                try {
+                    const userObject = JSON.parse(userJSON);
 
-                const welcomeMessage = `Welcome, ${userObject.userName}`;
-                document.getElementById('customerName').textContent = welcomeMessage;
+                    if (userObject && userObject.userName) {
+                        const customerName = document.getElementById('customerName');
+
+                        // Create a "Welcome" element and a line break element
+                        const welcomeElement = document.createElement('div');
+                        welcomeElement.textContent = 'Welcome';
+                        const lineBreakElement = document.createElement('br');
+
+                        // Create a username element
+                        const usernameElement = document.createElement('div');
+                        usernameElement.textContent = userObject.userName;
+
+                        // Append the elements to the customerName element
+                        customerName.appendChild(welcomeElement);
+                        customerName.appendChild(lineBreakElement);
+                        customerName.appendChild(usernameElement);
+                    } else {
+                        console.log("Invalid user data or missing 'userName' property.");
+                    }
+                } catch (error) {
+                    console.error("Error parsing JSON data from local storage:", error);
+                }
+            } else {
+                console.log("No user data found in local storage.");
             }
         </script>
     </nav>
