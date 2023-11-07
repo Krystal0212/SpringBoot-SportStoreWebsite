@@ -38,7 +38,7 @@ const WriteDataToFirebase = function WriteDataToFirebase(username, password, ema
           };
 
           // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới
-          return database.set(database.ref(customersRef, newID), newUser);
+          return database.set(database.ref(dbRef, 'Customer/' + newID), newUser);
         })
         .catch((error) => {
           console.error("Error code:", error.code);
