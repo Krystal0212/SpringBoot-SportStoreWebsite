@@ -14,8 +14,11 @@
   <div><label> Email: <input type="email" name="email" id="email" placeholder="Email" required
                              autocomplete="email"/> </label></div>
 
-  <div><label> Gender: <input type="text" name="gender" id="gender" placeholder="Gender" required
-                              autocomplete="gender"/> </label></div>
+  <label for="gender">Gender:</label>
+  <select id="gender" name="gender">
+    <option value="Male">Nam</option>
+    <option value="Female">Nữ</option>
+  </select>
 
   <div><label> Name: <input type="text" name="name" id="name" placeholder="Name" required
                             autocomplete="name"/> </label></div>
@@ -23,7 +26,7 @@
   <div><label> User Name: <input type="text" name="username" id="username" placeholder="Username" required
                                  autocomplete="username"/> </label></div>
 
-  <div><label> Phone number: <input type="text" name="phoneNumber" id="phoneNumber" placeholder="Phone" required
+  <div><label> Phone number: <input type="number" name="phoneNumber" id="phoneNumber" placeholder="Phone" required
                                     autocomplete="phoneNumber"/> </label></div>
 
   <div><label> Password: <input type="password" id="password" name="password" class="form-control"
