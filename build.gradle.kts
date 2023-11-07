@@ -16,7 +16,6 @@ configurations {
 		extendsFrom(configurations.annotationProcessor.get())
 	}
 }
-
 repositories {
 	mavenCentral()
 }
