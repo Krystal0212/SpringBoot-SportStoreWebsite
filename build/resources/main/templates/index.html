@@ -6,8 +6,9 @@
     <title>DawaSport</title>
 
     <base href="/">
-    <link rel="stylesheet" type="text/css" href="/css/home-styles.css" th:href="@{/css/home-styles.css}"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" href="/css/style_home_banner.css" th:href="@{/css/style_home_banner.css}"/>
+    <link rel="stylesheet" type="text/css" href="css/style_home_navbar.css" th:href="@{/css/style_home_navbar.css}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@500&display=swap">
@@ -16,7 +17,7 @@
 
 </head>
 <body>
-<div style="width=">
+<div class="navbar_menu">
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
 
@@ -58,6 +59,17 @@
                 </div>
             </div>
         </div>
+        <div id="customerName"></div>
+        <script>
+            const userJSON = localStorage.getItem('user');
+
+            if (userJSON) {
+                const userObject = JSON.parse(userJSON);
+
+                const welcomeMessage = `Welcome, ${userObject.userName}`;
+                document.getElementById('customerName').textContent = welcomeMessage;
+            }
+        </script>
     </nav>
     <!-- END nav -->
     <section>
@@ -79,12 +91,8 @@
         <img id="banner-image" src="../images/banner_slider_1.png" alt="Slider1">
     </div>
     <div>
-        <img src="//trackstore.qodeinteractive.com/wp-content/uploads/2017/11/landin-slider-img-89.png"
-             alt="d"
-             class=""
-             width="1918"
-             height="260"
-             style="position: relative; height: 100%; width: 100%;">
+        <img src="/images/banner_transparent.png"
+             class="transparent_slide">
     </div>
     <div class="rs-layer">
         <div id="rs_line1" class="rs_lines">

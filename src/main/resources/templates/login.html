@@ -1,52 +1,32 @@
 <!DOCTYPE html>
+
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.thymeleaf.org ">
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
-    <script rel="stylesheet" type="module" th:src="@{/static/js/firebase-config.js}"></script>
+    <title>DawaSport</title>
+    <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
+    <script rel="stylesheet" type="module" src="/js/login-authentication.js" th:src="@{/js/login-authentication.js}"></script>
 </head>
+<body>
 <form th:action="@{/login}" method="post" id="loginForm">
     <div><label> User Name: <input type="text" name="username" id="username" placeholder="Username" required
                                    autocomplete="username"/> </label></div>
     <div><label> Password: <input type="password" id="password" name="password" class="form-control"
                                   placeholder="Password" required autocomplete="current-password"> </label></div>
-    <div><input type="submit" value="Sign In" onclick="signInWithFirebase()"/></div>
-
+    <div><input type="submit" value="Sign In" id="signInButton"/></div>
+    <div> New ?</div>
+    <a href="/register" th:href="@{/register}" class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i class="sr-only">Register</i></span></a>
 
 </form>
-<script>
-  async function signInWithFirebase() {
-  const username = document.querySelector("input[name='username']").value;
-  const password = document.querySelector("input[name='password']").value;
-
-  // Reference to the "Customer" node
-  const customerRef = ref(database, "Customer");
-
-  try {
-    const customerSnapshot = await get(customerRef);
-    const customers = customerSnapshot.val();
-
-    // Loop through all customers and check for a matching username and password
-    let userFound = false;
-    for (const customerId in customers) {
-      if (customers[customerId].username === username && customers[customerId].password === password) {
-        userFound = true;
-        break; // Exit the loop when a match is found
-      }
-    }
-
-    if (userFound) {
-      // Successful login, you can redirect the user or perform other actions here
-      alert("Login successful!");
-    } else {
-      alert("Invalid username or password.");
-    }
-  } catch (error) {
-    console.error("Error checking login:", error);
-  }
-}
-
+<script type="module">
+    document.querySelector('#signInButton').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent form submission
+        checkCredentials();
+    });
+</script>
 
 </script>
+
 </body>
 </html>
