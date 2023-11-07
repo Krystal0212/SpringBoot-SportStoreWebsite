@@ -20,7 +20,6 @@
 <div class="navbar_menu">
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
-
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="fa fa-bars"></span> Menu
             </button>
@@ -54,18 +53,23 @@
                         <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
                         <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
                         <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
-                        <a href="/login" th:href="@{/login}" class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i class="sr-only">User</i></span></a>
+                        <a href="/login" th:href="@{/login}" id="loginBox" class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i class="sr-only">User</i></span></a>
                     </p>
                 </div>
             </div>
         </div>
-        <div id="customerName"></div>
+        <div class="account" id="customerName"></div>
         <script>
             const userJSON = localStorage.getItem('user');
 
             if (userJSON) {
                 try {
                     const userObject = JSON.parse(userJSON);
+                    const loginBox = document.getElementById("loginBox");
+
+                    if (loginBox) {
+                      loginBox.style.cssText = "display: none !important;";
+                    }
 
                     if (userObject && userObject.userName) {
                         const customerName = document.getElementById('customerName');
@@ -73,15 +77,14 @@
                         // Create a "Welcome" element and a line break element
                         const welcomeElement = document.createElement('div');
                         welcomeElement.textContent = 'Welcome';
-                        const lineBreakElement = document.createElement('br');
 
                         // Create a username element
                         const usernameElement = document.createElement('div');
                         usernameElement.textContent = userObject.userName;
+                        usernameElement.id = 'accountShownName';
 
                         // Append the elements to the customerName element
                         customerName.appendChild(welcomeElement);
-                        customerName.appendChild(lineBreakElement);
                         customerName.appendChild(usernameElement);
                     } else {
                         console.log("Invalid user data or missing 'userName' property.");

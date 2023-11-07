@@ -18,7 +18,6 @@ const redirectToIndexPage = (customerData,customerId) => {
     const user = {
         userId: customerId,
         userName: customerData.username,
-        userPassword: customerData.password,
         email: customerData.email,
         gender: customerData.gender,
         phoneNumber: customerData.phone_number,

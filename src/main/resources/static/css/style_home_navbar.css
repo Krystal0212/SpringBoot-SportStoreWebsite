@@ -46,6 +46,20 @@ html {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
+.account{
+    padding-left:auto;
+    padding-right:auto;
+    margin-right:35px;
+    margin-left:23px;
+    line-height:1.2;
+    text-align: center;
+}
+
+#accountShownName {
+    font-size:18px;
+    color:white !important;
+}
+
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block; }
 
@@ -450,8 +464,9 @@ pre {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
-  margin-right: auto;
+  margin-right: 0px;
   margin-left: auto; }
+
   @media (min-width: 576px) {
     .container {
       max-width: 540px; } }
