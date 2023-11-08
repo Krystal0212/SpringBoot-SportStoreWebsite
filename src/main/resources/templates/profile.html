@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+<h1>User Profile</h1>
+<p th:text="${userInfo.displayName}">Display Name: </p>
+<p th:text="${userInfo.email}">Email: </p>
+<!-- Add more user information fields as needed -->
+<a href="/logout">Logout</a>
+</body>
+</html>
