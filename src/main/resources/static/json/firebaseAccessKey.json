@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "finalterm-sportstorewebsite",
+  "private_key_id": "00e7e1cbde971a8503891df36bffaf3f12a192ff",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCM40q1KnaYIjcj\npyQCneF8klYmgHO+xrLoQ6Fa0emgmv6ocfZcJyPbvnluisN/SsMabyi83qQR4Pkq\nw5iMxztocf6WdF0p6Y7aBAmHRQ4pPaDV/0TNxl/t0UMVCehpAdFdRwmi4rCN8cCx\nMek6mIulMs/eFSHuj/XUulBJ3j3yqU3GAphUP0Tl3aldmIaLSFGTEVA7pmUojD5b\nULXxU3m1YUvFDNgVT+w63SJb3rL0yMvhyNNmodrQx2oS/fFKzaw3E8axT98gR7mL\nGDAedrIqQq1KR7uvbaG1uQGLBOT3KI2t/TG+X2a+JVJWKJBCMTaMgoNGlX7J3D8D\nJeKevMp1AgMBAAECggEADuUh2xz57FQjubp8QWWRNxMelhP7CLanqAwsZTZvqYnx\ndfwUdIIz1ZHh8ziq+gx8q5EIgM1WEcjT9vw2Zt3Sb1Sr+pqjVeDKOEz4d+tqV5xb\nInzKOKoqLrGy0qjZQC7PxHmT8HtgeKVQPruc4ZPKocTJOrzHuVnRfvPStLiRGpQ5\nCyNkwDjxHUo1SeJgY5+Tj5naCMwvyPc8n9UQsjZpKCsNl3u48v+8lPCh0C9NquZy\n8YUO5EO3+zNtgCrwBtanIJiDXtZCUNGntdFshI0AuUNHM+E0TAyf3bq7riJikc4X\nVU91xj+fwNCWxVjZMQTbFw0d64egQppLffR0W4DvUQKBgQC++LeZ0BZOoGk/Z3hl\nIs9zW6hd4WjBr5QVKkbBAj1FY5f9I1u2MpcLOtDFGbc+RMUlznkBDGSYt9/K3yAD\njh8ZAF4g9bpgfZiVCaP1SeCh8SMfYZkLOyi/aVmAVhf1/YWQ4i4L8MlKn7fcRTkA\nOwvGW15/4Ydj+3+4HYVbH88NRQKBgQC83LPPItLtMS+1Bq5eR3Oa/j8D+I/X/N8D\nyfUlIYQgxXYSxB2J8Km6Ofu6gu2S4nY10iLn8hSIcGZahd1sNRZTLKxRxA8CZYmA\nUjrrypmxS5G5L+SUdQLMGSkAUf3Ws+3kuB+wqZzMGiEIOT25P2y+Lq0P1NaLHjiv\nMo3B9SGjcQKBgQCW261WAU6N4CQkJR2zbxNHwqE3QEhbsNKfAZ2Q/K7gMLOxEYxy\nWnZ9NYIUIaNiujqvCfMGw/53sdFE1ovYox2nx2WUTelkLfMp0MrHiwu7gdzH/nZC\nrAIdayB7xAb7mME5WaMcZaLto0w/4iMMLpi3ohf9l3A3qEYVcKSW/oK2rQKBgDYg\nzwv7wBYo9bJdYtY0hkaSvb7Gm3tcxxIP7MmijHrT/R4txQWGyy5LdgEjizGA5D5S\nppxxfj8Ib91b5nUf1fEqqYyZs2+NaFY1uxtfKqNstCwuNMXzr0SNpXmpBiZl1TWr\nK7H3OrAogPUZar5QFjt/pywVZRPkKnzT8Vr4hZaRAoGAH3KUgIs28lFycwvN4klQ\nHu9krQD3PbpNusfmXZyr6o3KlxrFvN0pt3mnLf7qomYkCqIA6V1ZTyLk5yHQQXY9\nfQnkHdFYVs8Vs9kiVcEmnvY4EpvLe7w7N+mo34RF/3x0a4oDbmxmCghhN3Yn4Tiy\nqWKqzZJFUXschtwASljErEU=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-8naiw@finalterm-sportstorewebsite.iam.gserviceaccount.com",
+  "client_id": "112514856244981084168",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-8naiw%40finalterm-sportstorewebsite.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

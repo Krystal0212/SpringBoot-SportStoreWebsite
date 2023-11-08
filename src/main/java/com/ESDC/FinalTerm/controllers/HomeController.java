@@ -11,11 +11,6 @@ public class HomeController {
         return "index";
     }
 
-    @RequestMapping("/login")
-    public String loginPage() {
-        return "login"; // Return the name of the login.html template
-    }
-
     @GetMapping("/register")
     public String registerPage() {
         return "register"; // Return the name of the register.html template

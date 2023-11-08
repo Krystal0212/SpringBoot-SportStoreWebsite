@@ -3,22 +3,34 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.thymeleaf.org">
 <head>
     <title>DawaSport</title>
-    <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
-    <script rel="stylesheet" type="module" src="/js/login-authentication.js" th:src="@{/js/login-authentication.js}"></script>
+<!--<script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>-->
+<!--<script rel="stylesheet" type="module" src="/js/login-authentication.js" th:src="@{/js/login-authentication.js}"></script>-->
 </head>
 <body>
-<form th:action="@{/login}" method="post" id="loginForm">
-    <div><label> User Name: <input type="text" name="username" id="username" placeholder="Username" required
-                                   autocomplete="username"/> </label></div>
-    <div><label> Password: <input type="password" id="password" name="password" class="form-control"
-                                  placeholder="Password" required autocomplete="current-password"> </label></div>
-    <div><input type="submit" value="Sign In" id="signInButton"/></div>
-</form>
-<script type="module">
-    document.querySelector('#signInButton').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent form submission
-        checkCredentials();
-    });
-</script>
+    <form th:action="@{/login}" method="post" id="loginForm">
+        <div>
+            <label> User Name:
+                <input type="text" name="username" id="username" placeholder="Username" required autocomplete="username"/>
+            </label>
+        </div>
+        <div>
+            <label> Password:
+                <input type="password" id="password" name="password" class="form-control"
+                                      placeholder="Password" required autocomplete="current-password">
+            </label>
+        </div>
+        <div>
+            <input type="submit" value="Sign In" id="signInButton"/>
+        </div>
+    </form>
+    <div th:if="${param.error}" class="error-message">
+        Invalid username or password. Please try again.
+    </div>
+<!--<script type="module">-->
+<!--    document.querySelector('#signInButton').addEventListener('click', function(event) {-->
+<!--        event.preventDefault(); // Prevent form submission-->
+<!--        checkCredentials();-->
+<!--    });-->
+<!--</script>-->
 </body>
 </html>
