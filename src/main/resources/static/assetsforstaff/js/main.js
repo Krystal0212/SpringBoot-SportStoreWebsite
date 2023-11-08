@@ -19,3 +19,13 @@ toggle.onclick = function () {
   navigation.classList.toggle("active");
   main.classList.toggle("active");
 };
+
+                    const tableRows = document.querySelectorAll('tr[data-image]');
+                    const displayImage = document.getElementById('display-image');
+
+                    tableRows.forEach((row) => {
+                        row.addEventListener('click', () => {
+                            const imageSource = row.getAttribute('data-image');
+                            displayImage.src = imageSource;
+                        });
+                    });
