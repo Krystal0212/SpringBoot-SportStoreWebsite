@@ -8,8 +8,9 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private FirebaseDatabase firebaseDatabase;
     private User user;
+    boolean isChecked = false;
 
-    public  UserService() {
+    public UserService() {
         user = new User();
     }
 
@@ -23,25 +24,26 @@ public class UserService {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot customerSnapshot : dataSnapshot.getChildren()) {
                     User tempUser = customerSnapshot.getValue(User.class);
-//                    Boolean first = tempUser != null;
-//                    Boolean sec = tempUser.getUsername().equals(username);
-//                    Boolean third = tempUser.getPassword().equals(password);
-//                    Boolean all = first && sec && third;
+
                     if (tempUser != null && tempUser.getPassword().equals(password)) {
                         tempUser.setUserID(customerSnapshot.getKey());
                         user.setUser(tempUser);
-//                        callback.onLoginResult(user);
                         break;
                     }
                 }
+                isChecked = true;
             }
 
             @Override
-            public void onCancelled (DatabaseError databaseError){
+            public void onCancelled(DatabaseError databaseError) {
                 user = null;
             }
         });
-        return user;
+
+        while (isChecked) {
+            return user;
+        }
+        return null;
     }
 
     public interface UserCallback {

@@ -31,16 +31,18 @@ public class UserController {
     @PostMapping("/login")
     public String checkLogin(@RequestParam String username, @RequestParam String password, Model model) throws InterruptedException, ExecutionException {
 
-        final String[] file = {"login"};
+        final String[] file = {"login", "index"};
         User userGet = userService.loginCustomer(username, password);
         model.addAttribute("user", userGet);
         user = userGet;
 
         if (userGet != null) {
-            file[0] = "index";
+            if (userGet.getUserID() != null) {
+                return file[1];
+            }
         }
-        file[0] ="login";
 
-        return "index";
+
+        return file[0];
     }
 }
