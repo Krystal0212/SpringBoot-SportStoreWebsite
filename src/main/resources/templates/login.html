@@ -5,8 +5,13 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.thymeleaf.org">
 <head>
     <title>DawaSport</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
     <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
     <script rel="stylesheet" type="module" src="/js/login-authentication.js" th:src="@{/js/login-authentication.js}"></script>
+
+
 </head>
 <body>
 <form th:action="@{/login}" method="post" id="loginForm">
@@ -15,6 +20,7 @@
     <div><label> Password: <input type="password" id="password" name="password" class="form-control"
                                   placeholder="Password" required autocomplete="current-password"> </label></div>
     <div><input type="submit" value="Sign In" id="signInButton"/></div>
+    <button id="google-login">Đăng nhập bằng Google</button>
     <div> New ?</div>
     <a href="/register" th:href="@{/register}" class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i class="sr-only">Register</i></span></a>
 

@@ -15,6 +15,13 @@
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' type='text/css'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
+    <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+    <script rel="stylesheet" type="module" src="/js/index.js" th:src="@{/js/index.js}"></script>
+
+
 </head>
 <body>
 <div class="navbar_menu">
@@ -54,21 +61,18 @@
                         <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
                         <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
                         <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
-                        <a href="/login" th:href="@{/login}" class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i class="sr-only">User</i></span></a>
+                        <a href="/login" id="loginIcon" th:href="@{/login}" class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i class="sr-only">User</i></span></a>
                     </p>
                 </div>
             </div>
         </div>
         <div id="customerName"></div>
+        <button id="logOut" style="display: none"> Đăng xuất </button>
+
+
+
         <script>
-            const userJSON = localStorage.getItem('user');
-
-            if (userJSON) {
-                const userObject = JSON.parse(userJSON);
-
-                const welcomeMessage = `Welcome, ${userObject.userName}`;
-                document.getElementById('customerName').textContent = welcomeMessage;
-            }
+            //bla bla
         </script>
     </nav>
     <!-- END nav -->

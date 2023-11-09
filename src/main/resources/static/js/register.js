@@ -74,7 +74,7 @@ const checkEmptyFields = function checkEmptyFields(username, password, email, fu
   if (emptyFields.length > 0) {
     // Có ít nhất một trường thông tin bị bỏ trống
     const message = `Vui lòng điền đầy đủ thông tin: ${emptyFields.join(", ")}`;
-    alert(message); // Thay bằng thông báo hiển thị tùy theo giao diện của bạn
+    alert(message);
     return true;
   }
   return false;
@@ -112,6 +112,7 @@ const WriteDataToFirebase = function WriteDataToFirebase(username, password, ema
             name: String(fullName),
             gender: String(gender),
             phone_number: String(phoneNumber),
+            state: 'enable',
             // Các thông tin khác của người dùng
           };
 
@@ -127,8 +128,6 @@ const WriteDataToFirebase = function WriteDataToFirebase(username, password, ema
 };
 
  window.ClickRegister = function ClickRegister() {
-     //thêm hàm để check có thông tin nào bị bỏ trống
-     // hàm check xem email và username có tồn tại trong firebase chưa
      console.log("checkCredentials function called");
      const username = document.getElementById('username').value;
      const password = document.getElementById('password').value;
