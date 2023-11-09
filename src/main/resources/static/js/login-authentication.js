@@ -2,8 +2,11 @@ import * as database from "https://www.gstatic.com/firebasejs/10.5.2/firebase-da
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
 import { app } from './firebase-config.js'
 
+const userJSON = localStorage.getItem('user');
 
-
+if(userJSON){
+    loginTrollAlert()
+}
 const auth = getAuth(app);
 auth.languageCode = 'it';
 
@@ -152,7 +155,6 @@ const redirectToIndexPageForUser = (customerData,customerId) => {
 
     // Store the user data in localStorage for use in the protected index page
     localStorage.setItem("user", userJSON);
-
     // Redirect to the protected index page
     loginSuccessAlert();
 
@@ -162,6 +164,17 @@ async function loginSuccessAlert() {
         icon: 'success',
         title: 'Thành công!',
         text: 'Đăng nhập thành công!',
+    });
+
+    window.location.href = "/home"; // Update the URL as needed
+
+}
+
+async function loginTrollAlert() {
+    await Swal.fire({
+        icon: 'fail',
+        title: 'Rất tiếc!',
+        text: 'Bạn không có quyền vào đây!',
     });
 
     window.location.href = "/home"; // Update the URL as needed
