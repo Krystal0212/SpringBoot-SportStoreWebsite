@@ -31,7 +31,7 @@ public class User {
     private String userID;
 
     @Getter @Setter
-    private String username;
+    public String username;
 
     @Getter @Setter
     private String password;

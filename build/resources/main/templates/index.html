@@ -58,44 +58,48 @@
                 </div>
             </div>
         </div>
-        <div class="account" id="customerName"></div>
-        <script>
-            const userJSON = localStorage.getItem('user');
+        <div class="account" id="customerName" >
+            <div> Welcome,</div>
+            <div th:id="accountShownName" th:text="${param.name}" th:unless="${param.name == null}"></div>
+        </div>
+<!--        <div class="account" id="customerName"></div>-->
+<!--        <script>-->
+<!--            const userJSON = localStorage.getItem('user');-->
 
-            if (userJSON) {
-                try {
-                    const userObject = JSON.parse(userJSON);
-                    const loginBox = document.getElementById("loginBox");
+<!--            if (userJSON) {-->
+<!--                try {-->
+<!--                    const userObject = JSON.parse(userJSON);-->
+<!--                    const loginBox = document.getElementById("loginBox");-->
 
-                    if (loginBox) {
-                      loginBox.style.cssText = "display: none !important;";
-                    }
+<!--                    if (loginBox) {-->
+<!--                      loginBox.style.cssText = "display: none !important;";-->
+<!--                    }-->
 
-                    if (userObject && userObject.userName) {
-                        const customerName = document.getElementById('customerName');
+<!--                    if (userObject && userObject.userName) {-->
+<!--                        const customerName = document.getElementById('customerName');-->
 
-                        // Create a "Welcome" element and a line break element
-                        const welcomeElement = document.createElement('div');
-                        welcomeElement.textContent = 'Welcome';
+<!--                        // Create a "Welcome" element and a line break element-->
+<!--                        const welcomeElement = document.createElement('div');-->
+<!--                        welcomeElement.textContent = 'Welcome';-->
 
-                        // Create a username element
-                        const usernameElement = document.createElement('div');
-                        usernameElement.textContent = userObject.userName;
-                        usernameElement.id = 'accountShownName';
+<!--                        // Create a username element-->
+<!--                        const usernameElement = document.createElement('div');-->
+<!--                        usernameElement.textContent = userObject.userName;-->
+<!--                        usernameElement.id = 'accountShownName';-->
 
-                        // Append the elements to the customerName element
-                        customerName.appendChild(welcomeElement);
-                        customerName.appendChild(usernameElement);
-                    } else {
-                        console.log("Invalid user data or missing 'userName' property.");
-                    }
-                } catch (error) {
-                    console.error("Error parsing JSON data from local storage:", error);
-                }
-            } else {
-                console.log("No user data found in local storage.");
-            }
-        </script>
+<!--                        // Append the elements to the customerName element-->
+<!--                        customerName.appendChild(welcomeElement);-->
+<!--                        customerName.appendChild(usernameElement);-->
+<!--                    } else {-->
+<!--                        console.log("Invalid user data or missing 'userName' property.");-->
+<!--                    }-->
+<!--                } catch (error) {-->
+<!--                    console.error("Error parsing JSON data from local storage:", error);-->
+<!--                }-->
+<!--            } else {-->
+<!--                console.log("No user data found in local storage.");-->
+<!--            }-->
+<!--        </script>-->
     </nav>
     <!-- END nav -->
     <section>
