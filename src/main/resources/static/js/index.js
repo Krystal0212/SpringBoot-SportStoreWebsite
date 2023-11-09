@@ -24,7 +24,7 @@ if (userJSON) {
             if (user) {
                 // Nếu người dùng đang đăng nhập, user sẽ có giá trị
                 // lấy user hiện tại
-                showLoggedInState(userObject.userName);
+                showLoggedInState(userObject.fullName);
                 // Ấn dang xuat
                 logoutButton.addEventListener('click', () => {
                     // xu ly user google
@@ -50,7 +50,7 @@ if (userJSON) {
     } else {
         // Xử lý khi người dùng đăng nhập bằng tài khoản thông thường
         // Ví dụ: ẩn hoặc hiển thị các thành phần tương ứng
-        showLoggedInState(userObject.userName);
+        showLoggedInState(userObject.fullName);
         // Ấn đăng xuất
         logoutButton.addEventListener('click', () => {
             // dang xuat state user thường

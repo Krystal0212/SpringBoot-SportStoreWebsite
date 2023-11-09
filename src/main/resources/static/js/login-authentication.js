@@ -140,7 +140,7 @@ const redirectToIndexPageForUser = (customerData,customerId) => {
     const user = {
         userId: customerId,
         //Tại vì có cả user google dùng
-        userName: customerData.name,
+        userName: customerData.username,
         userPassword: customerData.password,
         email: customerData.email,
         gender: customerData.gender,
