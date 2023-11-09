@@ -66,17 +66,28 @@
             </div>
         </div>
 
-        <div class="account" id="customerName" >
-        </div>
-
-        <div class="account" id="customerName1" >
+        <div class="account" id="customerCasualName" th:if="${user} != null">
             <div> Welcome,</div>
-            <div th:id="accountShownName" th:text="${user.username}"></div>
             <div th:id="accountShownName" th:text="${userName}"></div>
-
         </div>
-        <button id="logOut" style="display: none"> Log out </button>
 
+        <div class="account" id="customerName" th:if="${user} == null"></div>
+
+        <button id="logOut" style="display: none"> Log out </button>
+        <button id="logOutAlt" style="display: block" th:if="${user} != null"> Log out </button>
+
+        <script>
+            document.getElementById("logoutButton").addEventListener("click", function() {
+                var form = document.createElement("form");
+
+                form.setAttribute("method", "post");
+                form.setAttribute("action", "/logout");
+
+                document.body.appendChild(form);
+
+                form.submit();
+            });
+        </script>
     </nav>
     <!-- END nav -->
     <section>

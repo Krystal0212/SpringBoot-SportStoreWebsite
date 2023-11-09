@@ -2,8 +2,7 @@ import {getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/fire
 import {app} from './firebase-config.js'
 
 const logoutButton = document.getElementById('logOut');
-const customerName = document.getElementById('customerName')
-
+const customerName = document.getElementById('customerName');
 
 const userJSON = localStorage.getItem('user');
 
@@ -12,49 +11,61 @@ if (userJSON) {
         const userObject = JSON.parse(userJSON);
 
         if (userObject.isGoogleUser) {
-            // Xử lý khi người dùng đăng nhập bằng Firebase Authentication
-            // Ví dụ: ẩn hoặc hiển thị các thành phần tương ứng
             const auth = getAuth(app);
-            // Kiểm tra xem người dùng đã đăng nhập hay chưa
+
+
+
+
+
+            // Check if the user is signed in
             onAuthStateChanged(auth, (user) => {
                 if (user) {
-                    // Nếu người dùng đang đăng nhập, user sẽ có giá trị
-                    // lấy user hiện tại
+                    // If the user is signed in, user will have a value
+                    // Get the current user
                     const loginIcon = document.getElementById('loginIcon');
-                    // Ẩn nút đăng nhập bằng cách đặt thuộc tính style.display thành 'none'
+
+                    // Hide the login button by setting the style.display property to 'none'
                     loginIcon.style.display = 'none';
-                    // Hiện nút đăng xuất nếu log in thành công
+
+                    // Show the logout button if login is successful
                     logoutButton.style.display = 'block';
-                    // Xuat thong bao neu log in thanh cong
-                    customerName.textContent = `Welcome, ${userObject.userName}`;
-                    // Ấn dang xuat
+
+                    // Display a message if login is successful
+                    const welcomeElement = document.createElement('div');
+                    welcomeElement.textContent = 'Welcome,';
+
+                    const usernameElement = document.createElement('div');
+                    usernameElement.textContent = userObject.userName;
+                    usernameElement.id = 'accountShownName';
+
+                    //Pass userObject.userName and userObject.isGoogleUser
+
+                    // Click logout
                     logoutButton.addEventListener('click', () => {
-                        // xu ly user google
+                        // Handle the Google user
                         if (auth) {
                             signOut(auth)
                                 .then(() => {
                                     logOutSuccessAlert();
                                 })
                                 .catch((error) => {
-                                    console.error('Lỗi khi đăng xuất:', error);
+                                    console.error('Error when signing out:', error);
                                 });
                         } else {
                             // bla
                         }
                     });
                 } else {
-                    // dang xuat state google
                     customerName.style.display = 'none';
-
                     logoutButton.style.display = 'none';
                 }
             });
 
         } else {
-            // Xử lý khi người dùng đăng nhập bằng tài khoản thông thường
-            // Ví dụ: ẩn hoặc hiển thị các thành phần tương ứng
+            // Process when user logs in with normal account
+            // Example: hide or show corresponding components
             logoutButton.style.display = 'block';
-            // set ten
+            // Set name
             const welcomeElement = document.createElement('div');
             welcomeElement.textContent = 'Welcome';
 
@@ -62,19 +73,22 @@ if (userJSON) {
             usernameElement.textContent = userObject.userName;
             usernameElement.id = 'accountShownName';
 
+            // Append the elements to the customerName element
             customerName.appendChild(welcomeElement);
             customerName.appendChild(usernameElement);
 
-            // Ấn đăng xuất
+            // Click log out
             logoutButton.addEventListener('click', () => {
-                // dang xuat state user thường
+                // Log out normal user state
                 logOutSuccessAlert()
+
                 customerName.style.display = 'none';
                 logoutButton.style.display = 'none';
             });
         }
     });
 }
+
 
 async function logOutSuccessAlert() {
     await Swal.fire({

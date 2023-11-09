@@ -50,4 +50,7 @@ public class User {
 
     @Getter @Setter
     private String state;
+
+    @Getter @Setter
+    private boolean isGoogleUser = false;
 }

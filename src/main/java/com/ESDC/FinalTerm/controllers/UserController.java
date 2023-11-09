@@ -3,6 +3,7 @@ package com.ESDC.FinalTerm.controllers;
 
 import com.ESDC.FinalTerm.objects.User;
 import com.google.gson.Gson;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +29,10 @@ public class UserController {
         return "login";
     }
 
-
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ModelAttribute
     public ModelAndView login(@RequestParam String username, @RequestParam String password, Model model) throws InterruptedException, ExecutionException {
-        User userGet = userService.loginCustomer(username, password);
+        User userGet = userService.loginCustomerByTyping(username, password);
         ModelAndView modelAndView = new ModelAndView("index");
 
         // Add the user object to the ModelAndView
@@ -41,29 +41,40 @@ public class UserController {
 
         // Return the ModelAndView object
         return modelAndView;
-//        model.addAttribute("user", userGet);
-//        model.addAttribute("userID", userGet.getUserID());
-//        model.addAttribute("userFullName", userGet.getName());
+    }
 
-//        if (userGet != null) {
-//            user = userGet;
-//        } else {
-//            user = null;
-//        }
-//
-//        if (userGet != null && userGet.getUserID() != null) {
-//            return new RedirectView("/home");
-//        }
-//
-//        return new RedirectView("/login");
+    @RequestMapping(value = "/google-login", method = RequestMethod.POST)
+    @ModelAttribute
+    public ModelAndView googleLogin(@RequestParam("userName") String userName, @RequestParam("email") String email, @RequestParam("isGoogleUser") boolean isGoogleUser) throws ExecutionException, InterruptedException {
+        // Create a new User object
+        User user = new User();
+        user.setUsername(userName);
+        user.setEmail(email);
+        user.setGoogleUser(isGoogleUser);
 
-//        if (userGet != null) {
-//            if (userGet.getUserID() != null) {
-//                return file[1];
-//            }
-//        }
-//
-//
-//        return file[0];
+        // Save the user object to the database
+        User userGet = userService.findAndSaveGoogleUser(user);
+
+        ModelAndView modelAndView = new ModelAndView("index");
+
+        // Add the user object to the ModelAndView
+        modelAndView.addObject("user", userGet);
+
+        //viet cai if de tra ve userName neu name ko ton tai
+        modelAndView.addObject("userName", userGet.getUsername());
+
+        // Return the ModelAndView object
+        return modelAndView;
+    }
+
+    @PostMapping("/logout")
+    public ModelAndView logout(Model model, HttpSession session) {
+
+        userService.logoutUser();
+        session.invalidate();
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/login");
+
+        return modelAndView;
     }
 }

@@ -12,58 +12,51 @@ public class UserService {
     private FirebaseDatabase firebaseDatabase;
     private User user;
     boolean isChecked = false;
+    private DatabaseReference usersRef;
+    private CompletableFuture<User> future;
 
     public UserService() {
         user = new User();
     }
+    private void saveUser(User userGet){
+        user = userGet;
+    }
 
-    public User loginCustomer(String username, String password) throws ExecutionException, InterruptedException {
+    public void initialize(){
+        user = new User();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference usersRef = firebaseDatabase.getReference("Customer");
-        Query query = usersRef.orderByChild("username").equalTo(username);
-//
-//        query.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot customerSnapshot : dataSnapshot.getChildren()) {
-//                    User tempUser = customerSnapshot.getValue(User.class);
-//
-//                    if (tempUser != null && tempUser.getPassword().equals(password)) {
-//                        tempUser.setUserID(customerSnapshot.getKey());
-//                        user.setUser(tempUser);
-//                        break;
-//                    }
-//                }
-//                isChecked = true;
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                user = null;
-//                isChecked = true;
-//            }
-//        });
-//
-//        while (isChecked) {
-//            ...
-//        }
-//        return user;
-        CompletableFuture<User> future = new CompletableFuture<>();
+        usersRef = firebaseDatabase.getReference("Customer");
+        future = new CompletableFuture<>();
+    }
+
+    public void logoutUser(){
+        user = new User();
+    }
+
+    public User findAndSaveGoogleUser(User userGet) throws ExecutionException, InterruptedException {
+        initialize();
+        User userData = loginCustomerByGoogle(userGet.getEmail(),userGet.getUsername());
+        saveUser(userData);
+        return userData;
+    }
+
+    public User loginCustomerByGoogle(String email, String username) throws ExecutionException, InterruptedException {
+        Query query = usersRef.orderByChild("email").equalTo(email);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = null;
+                User userFound = null;
                 for (DataSnapshot customerSnapshot : dataSnapshot.getChildren()) {
                     User tempUser = customerSnapshot.getValue(User.class);
 
-                    if (tempUser != null && tempUser.getPassword().equals(password)) {
+                    if (tempUser != null && tempUser.getUsername().equals(username)) {
                         tempUser.setUserID(customerSnapshot.getKey());
-                        user = tempUser;
+                        userFound = tempUser;
                         break;
                     }
                 }
-                future.complete(user);
+                future.complete(userFound);
             }
 
             @Override
@@ -75,7 +68,36 @@ public class UserService {
         return future.get();
     }
 
-    public interface UserCallback {
-        void onLoginResult(User user);
+
+    public User loginCustomerByTyping(String username, String password) throws ExecutionException, InterruptedException {
+        initialize();
+        Query query = usersRef.orderByChild("username").equalTo(username);
+        CompletableFuture<User> future = new CompletableFuture<>();
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User userFound = null;
+                for (DataSnapshot customerSnapshot : dataSnapshot.getChildren()) {
+                    User tempUser = customerSnapshot.getValue(User.class);
+
+                    if (tempUser != null && tempUser.getPassword().equals(password)) {
+                        tempUser.setUserID(customerSnapshot.getKey());
+                        saveUser(tempUser);
+                        userFound = tempUser;
+                        break;
+                    }
+                }
+                future.complete(userFound);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                future.complete(null);
+            }
+        });
+
+        return future.get();
     }
+
 }

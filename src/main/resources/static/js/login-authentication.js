@@ -18,11 +18,11 @@ googleLoginButton.addEventListener('click', () => {
 
             // Tạo dữ liệu người dùng
             const newUser = {
-                username: '',
+                username: user.displayName,
                 password: '',
                 email: user.email,
                 phone_number: '',
-                name: user.displayName,
+                name: '',
                 gender: '',
                 state: 'enable',
             };
@@ -83,8 +83,6 @@ googleLoginButton.addEventListener('click', () => {
                     console.error("Error code:", error.code);
                     console.error("Error message:", error.message);
                 });
-
-
         })
         .catch((error) => {
             console.error("Lỗi khi đăng nhập bằng Google:", error);
@@ -109,7 +107,7 @@ const redirectToIndexPageForGoogle = (customerData,customerId) => {
     const user = {
         userId: customerId,
         //Tại vì có cả user google dùng
-        userName: customerData.name,
+        userName: customerData.username,
         userPassword: customerData.password,
         email: customerData.email,
         gender: customerData.gender,
@@ -163,8 +161,25 @@ async function loginSuccessAlert() {
         text: 'Đăng nhập thành công!',
     });
 
-    window.location.href = "/home"; // Update the URL as needed
+    const formData = new FormData();
 
+    const userJSON = localStorage.getItem('user');
+    const userObject = JSON.parse(userJSON);
+
+    formData.append('userName', userObject.userName);
+    formData.append('email', userObject.email);
+    formData.append('isGoogleUser', userObject.isGoogleUser);
+
+    fetch('/google-login', {
+                  method: 'POST',
+                  body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                  // Handle the response here
+                });
+
+    //window.location.href = "/home"; // Update the URL as needed
 }
 //
 //window.checkCredentials = function() {
