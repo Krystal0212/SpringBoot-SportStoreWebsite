@@ -59,6 +59,25 @@ body {
   text-align: left;
   background-color: #fff; }
 
+.account{
+    padding-left:auto;
+    padding-right:auto;
+    margin-right:35px;
+    margin-left:23px;
+    line-height:1.2;
+    text-align: center;
+}
+
+#accountShownName {
+    font-size:18px;
+    color:white !important;
+}
+
+#accountShownName1 {
+    font-size:18px;
+    color:white !important;
+}
+
 [tabindex="-1"]:focus {
   outline: 0 !important; }
 

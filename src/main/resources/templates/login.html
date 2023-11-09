@@ -20,17 +20,20 @@
     <div><label> Password: <input type="password" id="password" name="password" class="form-control"
                                   placeholder="Password" required autocomplete="current-password"> </label></div>
     <div><input type="submit" value="Sign In" id="signInButton"/></div>
-    <button id="google-login">Đăng nhập bằng Google</button>
+    <button id="google-login">Log in by Google</button>
     <div> New ?</div>
     <a href="/register" th:href="@{/register}" class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i class="sr-only">Register</i></span></a>
 
 </form>
-<script type="module">
-    document.querySelector('#signInButton').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent form submission
-        checkCredentials();
-    });
-</script>
+<div th:if="${param.error}" class="error-message">
+    Invalid username or password. Please try again.
+</div>
+<!--<script type="module">-->
+<!--    document.querySelector('#signInButton').addEventListener('click', function(event) {-->
+<!--        event.preventDefault(); // Prevent form submission-->
+<!--        checkCredentials();-->
+<!--    });-->
+<!--</script>-->
 
 </script>
 

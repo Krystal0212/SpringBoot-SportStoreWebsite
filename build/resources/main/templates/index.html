@@ -27,7 +27,6 @@
 <div class="navbar_menu">
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
-
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="fa fa-bars"></span> Menu
             </button>
@@ -66,23 +65,24 @@
                 </div>
             </div>
         </div>
-        <div id="customerName"></div>
-        <button id="logOut" style="display: none"> Đăng xuất </button>
 
+        <div class="account" id="customerName" >
+        </div>
 
+        <div class="account" id="customerName1" >
+            <div> Welcome,</div>
+            <div th:id="accountShownName" th:text="${user.username}"></div>
+            <div th:id="accountShownName" th:text="${userName}"></div>
 
-        <script>
-            //bla bla
-        </script>
+        </div>
+        <button id="logOut" style="display: none"> Log out </button>
+
     </nav>
     <!-- END nav -->
     <section>
         <div class="container">
-            <div class="row justify-content-between">
-
-            </div>
+            <div class="row justify-content-between"></div>
         </div>
-
 
     </section>
     <script src="js/jquery.min.js"></script>
