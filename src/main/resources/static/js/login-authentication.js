@@ -41,7 +41,7 @@ googleLoginButton.addEventListener('click', () => {
                                 // Có người dùng tồn tại với cùng email, bạn có thể thực hiện cập nhật dữ liệu ở đây
                                 // Ví dụ: database.update(...)
                                 database.set(database.ref(dbRef, 'Customer/' + childSnapshot.key), newUser);
-                                redirectToIndexPage(childSnapshot.val(), childSnapshot.key);
+                                redirectToIndexPageForGoogle(childSnapshot.val(), childSnapshot.key);
                             }
                         });
 
@@ -70,7 +70,7 @@ googleLoginButton.addEventListener('click', () => {
 
                                     // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới
                                     database.set(database.ref(dbRef, 'Customer/' + newID), newUser);
-                                    redirectToIndexPage(newUser, newID);
+                                    redirectToIndexPageForGoogle(newUser, newID);
 
 
                                 })
@@ -99,14 +99,14 @@ const findMatchingCustomer = (snapshot, username, password) => {
         const customerData = snapshot.val()[snap];
         if (customerData.username === username && customerData.password === password) {
             console.log("Authentication successful!");
-            redirectToIndexPage(customerData,snap);
+            redirectToIndexPageForUser(customerData,snap);
             return;
         }
     }
     console.log("Invalid username or password");
 };
 
-const redirectToIndexPage = (customerData,customerId) => {
+const redirectToIndexPageForGoogle = (customerData,customerId) => {
     // Create a User object with the user's data
     const user = {
         userId: customerId,
@@ -118,6 +118,33 @@ const redirectToIndexPage = (customerData,customerId) => {
         phoneNumber: customerData.phone_number,
         fullName: customerData.name,
         state: customerData.state,
+        isGoogleUser: true,
+    };
+
+    // Convert user data to a JSON string
+    const userJSON = JSON.stringify(user);
+
+    // Store the user data in localStorage for use in the protected index page
+    localStorage.setItem("user", userJSON);
+
+    // Redirect to the protected index page
+    loginSuccessAlert();
+
+};
+
+const redirectToIndexPageForUser = (customerData,customerId) => {
+    // Create a User object with the user's data
+    const user = {
+        userId: customerId,
+        //Tại vì có cả user google dùng
+        userName: customerData.name,
+        userPassword: customerData.password,
+        email: customerData.email,
+        gender: customerData.gender,
+        phoneNumber: customerData.phone_number,
+        fullName: customerData.name,
+        state: customerData.state,
+        isGoogleUser: false,
     };
 
     // Convert user data to a JSON string
