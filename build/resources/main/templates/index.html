@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:href="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DawaSport</title>
 
     <base href="/">
@@ -21,26 +21,43 @@
     <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
     <script rel="stylesheet" type="module" src="/js/index.js" th:src="@{/js/index.js}"></script>
 
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- Style -->
+<!--    <link rel="stylesheet" href="css/style_home_navbar_menu.css">-->
+    <!-- Add these links to your HTML head -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </head>
 <body>
 <div class="navbar_menu">
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                    aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="fa fa-bars"></span> Menu
             </button>
             <form action="#" class="searchform order-lg-last">
                 <div class="form-group d-flex">
                     <input type="text" class="form-control pl-3" placeholder="Search">
-                    <button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span></button>
+                    <button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span>
+                    </button>
                 </div>
             </form>
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Page</a>
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Page</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown04">
                             <a class="dropdown-item" href="#">Page 1</a>
                             <a class="dropdown-item" href="#">Page 2</a>
@@ -56,38 +73,111 @@
             <div class="col d-flex justify-content-end">
                 <div class="social-media">
                     <p class="mb-0 d-flex">
-                        <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
-                        <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
-                        <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
-                        <a href="#" class="d-flex align-items-center justify-content-center"><span class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
-                        <a href="/login" id="loginIcon" th:href="@{/login}" class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i class="sr-only">User</i></span></a>
+                        <a href="#" class="d-flex align-items-center justify-content-center"><span
+                                class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
+                        <a href="#" class="d-flex align-items-center justify-content-center"><span
+                                class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
+                        <a href="#" class="d-flex align-items-center justify-content-center"><span
+                                class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
+                        <a href="#" class="d-flex align-items-center justify-content-center"><span
+                                class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
+                        <a href="/login" id="loginIcon" style="display:none !important;" th:href="@{/login} " th:if="${user?.name} == null"
+                           class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i
+                                class="sr-only">User</i></span></a>
                     </p>
                 </div>
             </div>
         </div>
 
-        <div class="account" id="customerCasualName" th:if="${user} != null">
-            <div> Welcome,</div>
-            <div th:id="accountShownName" th:text="${userName}"></div>
+        <!-- Example split danger button -->
+<!--        <div class="btn-group" th:if="${user?.name}">-->
+<!--            <button type="button" class="btn btn-danger"><span class="visually-hidden" th:id="accountShownName" th:text="${user?.name}"></span></button>-->
+<!--            <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                More-->
+<!--            </button>-->
+<!--            <ul class="dropdown-menu">-->
+<!--                <li><a class="dropdown-item" href="#">Action</a></li>-->
+<!--                <li><a class="dropdown-item" href="#">Another action</a></li>-->
+<!--                <li><a class="dropdown-item" href="#">Something else here</a></li>-->
+<!--                <li><hr class="dropdown-divider"></li>-->
+<!--                <li><a class="dropdown-item" href="#">Separated link</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+
+<!--        <div class="btn-group" th:if="${user?.name}">-->
+<!--            <button type="button" class="btn btn-danger"><span class="visually-hidden" th:id="accountShownName" th:text="${user?.name}"></span></button>-->
+
+<!--            <li class="nav-item dropdown">-->
+<!--                <button class="btn btn-danger dropdown-toggle dropdown-toggle-split" href="#" id="dropdown041" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                    More-->
+<!--                </button>-->
+<!--                <div class="dropdown-menu" aria-labelledby="dropdown04">-->
+<!--                    <a class="dropdown-item" href="#">Action</a>-->
+<!--                    <a class="dropdown-item" href="#">Another action</a>-->
+<!--                    <a class="dropdown-item" href="#">Something else here</a>-->
+<!--                    <hr class="dropdown-divider">-->
+<!--                    <a class="dropdown-item" href="#">Separated link</a>-->
+<!--                </div>-->
+<!--            </li>-->
+<!--        </div>-->
+        <div class="dropdown" th:if="${user} != null">
+            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden" th:text="${user?.name}"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                <li><a class="dropdown-item" href="#">....</a></li>
+                <li><a class="dropdown-item" href="#">....</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li style="text-align: center"><a  th:href="@{/user/logout}">Logout</a></li>
+            </ul>
         </div>
 
-        <div class="account" id="customerName" th:if="${user} == null"></div>
+        <div class="dropdown" th:if="${user} == null" style="display:none !important;" id="dropdownBox">
+            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden" th:id="customerName" ></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                <li><a class="dropdown-item" href="#">....</a></li>
+                <li><a class="dropdown-item" href="#">....</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li style="text-align: center"><a id="logOut">Logout</a></li>
+            </ul>
+        </div>
 
-        <button id="logOut" style="display: none"> Log out </button>
-        <button id="logOutAlt" style="display: block" th:if="${user} != null"> Log out </button>
+<!--        <span th:id="accountShownName" th:text="${user?.name}"></span>-->
+<!--        <div class="account" id="customerName" th:if="${user} == null"></div>-->
 
-        <script>
-            document.getElementById("logoutButton").addEventListener("click", function() {
-                var form = document.createElement("form");
+<!--        <button id="logOut" style="display: none" th:if="${user?.name} == null">Logout</button>-->
 
-                form.setAttribute("method", "post");
-                form.setAttribute("action", "/logout");
+<!--        <button id="logOutAlt" style="display: block" th:if="${user?.name} != null">-->
+<!--            <a th:href="@{/user/logout}">Logout</a>-->
+<!--        </button>-->
+<!--        <script th:inline="javascript">-->
+<!--            var user = /*[[${user}]]*/ null;-->
 
-                document.body.appendChild(form);
+<!--            if (user != null) {-->
+<!--                document.getElementById("logOutAlt").addEventListener("click", function () {-->
+<!--                    var form = document.createElement("form");-->
 
-                form.submit();
-            });
-        </script>
+<!--                    form.setAttribute("method", "post");-->
+<!--                    form.setAttribute("action", "/logout");-->
+
+<!--                    document.body.appendChild(form);-->
+
+<!--                    form.submit();-->
+
+<!--                    // Remove the form from the document after submission-->
+<!--                    document.body.removeChild(form);-->
+<!--                });-->
+<!--                const logoutButton = document.getElementById('logOut');-->
+<!--                const customerName = document.getElementById('customerName');-->
+
+<!--                logOutSuccessAlert()-->
+
+<!--                customerName.style.display = 'none';-->
+<!--                logoutButton.style.display = 'none';-->
+<!--            }-->
+<!--        </script>-->
     </nav>
     <!-- END nav -->
     <section>
@@ -96,10 +186,18 @@
         </div>
 
     </section>
+
+    <!--For nav bar -->
     <script src="js/jquery.min.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
+
+    <!--For user menu-->
+<!--    <script src="js/theirJS/jquery-3.3.1.min.js"></script>-->
+<!--    <script src="js/theirJS/popper.min.js"></script>-->
+<!--    <script src="js/theirJS/jquery.sticky.js"></script>-->
+<!--    <script src="js/theirJS/main1.js"></script>-->
 </div>
 <div class="banner">
     <div class="container-image">

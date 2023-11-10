@@ -1,52 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Register</title>
-  <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
-  <script rel="stylesheet" type="module" src="/js/register.js" th:src="@{/js/register.js}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
 </head>
-
 <body>
-<h1>Registration Page</h1>
 
-<form>
-  <div><label> Email: <input type="email" name="email" id="email" placeholder="Email" required
-                             autocomplete="email"/> </label></div>
+<form action="/user/register" method="post" th:object="${user}">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required><br>
 
-  <label for="gender">Gender:</label>
-  <select id="gender" name="gender">
-    <option value="Male">Nam</option>
-    <option value="Female">Nữ</option>
-  </select>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br>
 
-  <div><label> Name: <input type="text" name="name" id="name" placeholder="Name" required
-                            autocomplete="name"/> </label></div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required><br>
 
-  <div><label> User Name: <input type="text" name="username" id="username" placeholder="Username" required
-                                 autocomplete="username"/> </label></div>
-
-  <div><label> Phone number: <input type="number" name="phoneNumber" id="phoneNumber" placeholder="Phone" required
-                                    autocomplete="phoneNumber"/> </label></div>
-
-  <div><label> Password: <input type="password" id="password" name="password" class="form-control"
-                                placeholder="Password" required autocomplete="current-password"> </label></div>
-
-  <div><label> Password confirm: <input type="password" id="passwordConfirm" name="passwordConfirm" class="form-control"
-                                placeholder="Password confirm" required autocomplete="current-passwordConfirm"> </label></div>
-
-
-  <div>
-    <div><input type="submit" value="Register" id="registerButton"/></div>
-
-  </div>
-  <script type="module">
-    document.querySelector('#registerButton').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent form submission
-        ClickRegister();
-    });
-</script>
+    <button type="submit">Register</button>
 </form>
+
+<p th:if="${error}" style="color: red" th:text="${error}"></p>
+
+<a href="/user/login">Already have an account? Login</a>
 
 </body>
 </html>

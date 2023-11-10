@@ -1,41 +1,40 @@
 <!DOCTYPE html>
-
-
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>DawaSport</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <!-- Include the Google Sign-In JavaScript -->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">-->
+<!--    <script src="path/to/sweetalert2.all.min.js"></script>-->
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
-    <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
-    <script rel="stylesheet" type="module" src="/js/login-authentication.js" th:src="@{/js/login-authentication.js}"></script>
 
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script type="module" th:src="@{/js/firebase-config.js}"></script>
+    <script type="module" th:src="@{/js/login-authentication.js}"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
 
 </head>
 <body>
-<form th:action="@{/login}" method="post" id="loginForm">
-    <div><label> User Name: <input type="text" name="username" id="username" placeholder="Username" required
-                                   autocomplete="username"/></label></div>
-    <div><label> Password: <input type="password" id="password" name="password" class="form-control"
-                                  placeholder="Password" required autocomplete="current-password"> </label></div>
-    <div><input type="submit" value="Sign In" id="signInButton"/></div>
 
-    <div> New ?</div>
-    <a href="/register" th:href="@{/register}" class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i class="sr-only">Register</i></span></a>
+<form action="/user/login" method="post" th:object="${user}">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" placeholder="Username" required><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" placeholder="Password" required><br>
+
+    <button type="submit">Login</button>
 </form>
-<button id="google-login">Log in by Google</button>
-<div th:if="${param.error}" class="error-message">
-    Invalid username or password. Please try again.
-</div>
-<!--<script type="module">-->
-<!--    document.querySelector('#signInButton').addEventListener('click', function(event) {-->
-<!--        event.preventDefault(); // Prevent form submission-->
-<!--        checkCredentials();-->
-<!--    });-->
-<!--</script>-->
 
-</script>
+<div> New ?</div>
+<a href="/user/register">Register</a>
+<p th:if="${error}" style="color: red" th:text="${error}"></p>
+
+<button id="google-login">Log in by Google</button>
 
 </body>
 </html>

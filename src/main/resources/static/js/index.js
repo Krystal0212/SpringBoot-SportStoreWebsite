@@ -3,6 +3,7 @@ import {app} from './firebase-config.js'
 
 const logoutButton = document.getElementById('logOut');
 const customerName = document.getElementById('customerName');
+const dropdownBox = document.getElementById('dropdownBox');
 
 const userJSON = localStorage.getItem('user');
 
@@ -12,11 +13,6 @@ if (userJSON) {
 
         if (userObject.isGoogleUser) {
             const auth = getAuth(app);
-
-
-
-
-
             // Check if the user is signed in
             onAuthStateChanged(auth, (user) => {
                 if (user) {
@@ -25,18 +21,21 @@ if (userJSON) {
                     const loginIcon = document.getElementById('loginIcon');
 
                     // Hide the login button by setting the style.display property to 'none'
-                    loginIcon.style.display = 'none';
+                    loginIcon.style.cssText="display:none !important;";
 
-                    // Show the logout button if login is successful
-                    logoutButton.style.display = 'block';
+                    dropdownBox.style.cssText="display:block !important;";
 
                     // Display a message if login is successful
-                    const welcomeElement = document.createElement('div');
-                    welcomeElement.textContent = 'Welcome,';
+                    // const welcomeElement = document.createElement('div');
+                    // welcomeElement.textContent = 'Welcome,';
+                    //
+                    // const usernameElement = document.createElement('div');
+                    // usernameElement.textContent = userObject.userName;
+                    // usernameElement.id = 'accountShownName';
 
-                    const usernameElement = document.createElement('div');
-                    usernameElement.textContent = userObject.userName;
-                    usernameElement.id = 'accountShownName';
+                    // customerName.appendChild(welcomeElement);
+                    // customerName.appendChild(usernameElement);
+                    customerName.textContent = userObject.userName;
 
                     //Pass userObject.userName and userObject.isGoogleUser
 
@@ -56,8 +55,7 @@ if (userJSON) {
                         }
                     });
                 } else {
-                    customerName.style.display = 'none';
-                    logoutButton.style.display = 'none';
+                    dropdownBox.style.cssText="display:none !important;";
                 }
             });
 
@@ -77,6 +75,25 @@ if (userJSON) {
             customerName.appendChild(welcomeElement);
             customerName.appendChild(usernameElement);
 
+            // const formData = new FormData();
+            //
+            // const userJSON = localStorage.getItem('user');
+            // const userObject = JSON.parse(userJSON);
+
+            // formData.append('userName', userObject.userName);
+            // formData.append('email', userObject.email);
+            // formData.append('isGoogleUser', userObject.isGoogleUser);
+            //
+            // //window.location.href = "/home"; // Update the URL as needed
+            // fetch('/google-login', {
+            //     method: 'POST',
+            //     body: formData,
+            // })
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         // Handle the response here
+            // });
+
             // Click log out
             logoutButton.addEventListener('click', () => {
                 // Log out normal user state
@@ -87,6 +104,9 @@ if (userJSON) {
             });
         }
     });
+}else {
+    document.getElementById('loginIcon').style.cssText="display: block !important;";
+    document.getElementById('loginIcon').style.cssText="align: center !important;";
 }
 
 

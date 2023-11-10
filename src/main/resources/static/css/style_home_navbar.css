@@ -60,10 +60,9 @@ body {
   background-color: #fff; }
 
 .account{
-    /*padding-left:auto;
-    padding-right:auto;
-    margin-left:23px;*/
-    margin-right:35px;
+    width:150px;
+    margin-left:15px;
+    margin-right:25px;
     line-height:1.2;
     text-align: center;
 }
@@ -74,7 +73,8 @@ body {
 }
 
 [tabindex="-1"]:focus {
-  outline: 0 !important; }
+  outline: 0 !important;
+}
 
 hr {
   -webkit-box-sizing: content-box;

@@ -2,6 +2,8 @@ import * as database from "https://www.gstatic.com/firebasejs/10.5.2/firebase-da
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
 import { app } from './firebase-config.js'
 
+
+
 const auth = getAuth(app);
 auth.languageCode = 'it';
 
@@ -22,7 +24,7 @@ googleLoginButton.addEventListener('click', () => {
                 password: '',
                 email: user.email,
                 phone_number: '',
-                name: '',
+                name: user.displayName,
                 gender: '',
                 state: 'enable',
             };
@@ -38,7 +40,7 @@ googleLoginButton.addEventListener('click', () => {
                                 userExists = true;
                                 // Có người dùng tồn tại với cùng email, bạn có thể thực hiện cập nhật dữ liệu ở đây
                                 // Ví dụ: database.update(...)
-                                database.set(database.ref(dbRef, 'Customer/' + childSnapshot.key), newUser);
+                                // database.set(database.ref(dbRef, 'Customer/' + childSnapshot.key), newUser);
                                 redirectToIndexPageForGoogle(childSnapshot.val(), childSnapshot.key);
                             }
                         });
@@ -90,24 +92,24 @@ googleLoginButton.addEventListener('click', () => {
 
 });
 // Function to find the customer with matching username and password
-//const findMatchingCustomer = (snapshot, username, password) => {
-//    for (const snap in snapshot.val()) {
-//        const customerData = snapshot.val()[snap];
-//        if (customerData.username === username && customerData.password === password) {
-//            console.log("Authentication successful!");
-//            redirectToIndexPageForUser(customerData,snap);
-//            return;
-//        }
-//    }
-//    console.log("Invalid username or password");
-//};
+const findMatchingCustomer = (snapshot, username, password) => {
+    for (const snap in snapshot.val()) {
+        const customerData = snapshot.val()[snap];
+        if (customerData.username === username && customerData.password === password) {
+            console.log("Authentication successful!");
+            redirectToIndexPageForUser(customerData,snap);
+            return;
+        }
+    }
+    console.log("Invalid username or password");
+};
 
 const redirectToIndexPageForGoogle = (customerData,customerId) => {
     // Create a User object with the user's data
     const user = {
         userId: customerId,
         //Tại vì có cả user google dùng
-        userName: customerData.username,
+        userName: customerData.name,
         userPassword: customerData.password,
         email: customerData.email,
         gender: customerData.gender,
@@ -153,7 +155,6 @@ const redirectToIndexPageForUser = (customerData,customerId) => {
     loginSuccessAlert();
 
 };
-
 async function loginSuccessAlert() {
     await Swal.fire({
         icon: 'success',
@@ -161,45 +162,61 @@ async function loginSuccessAlert() {
         text: 'Đăng nhập thành công!',
     });
 
-    const formData = new FormData();
-
     const userJSON = localStorage.getItem('user');
     const userObject = JSON.parse(userJSON);
 
-    formData.append('userName', userObject.userName);
-    formData.append('email', userObject.email);
-    formData.append('isGoogleUser', userObject.isGoogleUser);
+    var userName = userObject.userName;
+    var email = userObject.email;
+    var isGoogleUser = userObject.isGoogleUser;
 
-    fetch('/google-login', {
-                  method: 'POST',
-                  body: formData,
-                })
-                .then(response => response.json())
-                .then(data => {
-                  // Handle the response here
-                });
+    var formData = new FormData();
+    formData.append("userName", userName);
+    formData.append("email", email);
+    formData.append("isGoogleUser", isGoogleUser);
 
     //window.location.href = "/home"; // Update the URL as needed
+    var xhr = new XMLHttpRequest();
+
+    // Configure it as a POST request to the "/user/google-login" endpoint
+    xhr.open("POST", "/user/google-login", true);
+
+    // Set up a callback function to handle the response
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Handle success, e.g., redirect to the dashboard
+                window.location.href = "/user/home";
+            } else {
+                // Handle error, e.g., display an error message
+                console.error('Error during Google login:', xhr.responseText);
+            }
+        }
+    };
+
+    // Send the request with the FormData containing user information
+    xhr.send(formData);
 }
-//
-//window.checkCredentials = function() {
-//    console.log("checkCredentials function called");
-//    const username = document.getElementById('username').value;
-//    const password = document.getElementById('password').value;
-//
-//    const dbRef = database.getDatabase();
-//    const customersRef = database.ref(dbRef, "Customer");
-//
-//    database.get(customersRef)
-//        .then((snapshot) => {
-//            if (snapshot.exists()) {
-//                findMatchingCustomer(snapshot, username, password);
-//            } else {
-//                console.log("No data available in the 'Customer' node");
-//            }
-//        })
-//        .catch((error) => {
-//            console.error("Error code:", error.code);
-//            console.error("Error message:", error.message);
-//        });
-//};
+
+
+window.checkCredentials = function() {
+    console.log("checkCredentials function called");
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    const dbRef = database.getDatabase();
+    const customersRef = database.ref(dbRef, "Customer");
+
+    database.get(customersRef)
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                findMatchingCustomer(snapshot, username, password);
+            } else {
+                console.log("No data available in the 'Customer' node");
+            }
+        })
+        .catch((error) => {
+            console.error("Error code:", error.code);
+            console.error("Error message:", error.message);
+        });
+};
+
