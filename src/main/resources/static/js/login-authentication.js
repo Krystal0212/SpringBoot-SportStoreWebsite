@@ -3,7 +3,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://w
 import { app } from './firebase-config.js'
 
 const userJSON = localStorage.getItem('user');
-
+// đối phó quay lại trang log in khi đã đăng nhập
 if(userJSON){
     loginTrollAlert()
 }
@@ -23,11 +23,11 @@ googleLoginButton.addEventListener('click', () => {
 
             // Tạo dữ liệu người dùng
             const newUser = {
-                username: '',
+                username: user.displayName,
                 password: '',
                 email: user.email,
                 phone_number: '',
-                name: user.displayName,
+                name: '',
                 gender: '',
                 state: 'enable',
             };
@@ -114,7 +114,7 @@ const redirectToIndexPageForGoogle = (customerData,customerId) => {
     const user = {
         userId: customerId,
         //Tại vì có cả user google dùng
-        userName: customerData.name,
+        userName: customerData.username,
         userPassword: customerData.password,
         email: customerData.email,
         gender: customerData.gender,

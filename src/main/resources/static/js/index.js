@@ -24,7 +24,7 @@ if (userJSON) {
             if (user) {
                 // Nếu người dùng đang đăng nhập, user sẽ có giá trị
                 // lấy user hiện tại
-                showLoggedInState(userObject.fullName);
+                showLoggedInState(userObject.userName);
                 // Ấn dang xuat
                 logoutButton.addEventListener('click', () => {
                     // xu ly user google
@@ -60,6 +60,10 @@ if (userJSON) {
             logoutButton.style.display = 'none';
         });
     }
+}
+else{
+    loginIcon.style.cssText = "display: block !important;";
+    loginIcon.style.cssText = "align: center !important;";
 }
 
 
