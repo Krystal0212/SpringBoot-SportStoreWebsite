@@ -170,16 +170,7 @@ async function loginSuccessAlert() {
     formData.append('email', userObject.email);
     formData.append('isGoogleUser', userObject.isGoogleUser);
 
-    fetch('/google-login', {
-                  method: 'POST',
-                  body: formData,
-                })
-                .then(response => response.json())
-                .then(data => {
-                  // Handle the response here
-                });
-
-    //window.location.href = "/home"; // Update the URL as needed
+    window.location.href = "/home"; // Update the URL as needed
 }
 //
 //window.checkCredentials = function() {

@@ -13,10 +13,6 @@ if (userJSON) {
         if (userObject.isGoogleUser) {
             const auth = getAuth(app);
 
-
-
-
-
             // Check if the user is signed in
             onAuthStateChanged(auth, (user) => {
                 if (user) {

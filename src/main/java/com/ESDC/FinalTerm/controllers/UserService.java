@@ -58,7 +58,6 @@ public class UserService {
                 }
                 future.complete(userFound);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 future.complete(null);

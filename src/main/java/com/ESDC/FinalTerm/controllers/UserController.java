@@ -45,7 +45,7 @@ public class UserController {
 
     @RequestMapping(value = "/google-login", method = RequestMethod.POST)
     @ModelAttribute
-    public ModelAndView googleLogin(@RequestParam("userName") String userName, @RequestParam("email") String email, @RequestParam("isGoogleUser") boolean isGoogleUser) throws ExecutionException, InterruptedException {
+    public String googleLogin(@RequestParam("userName") String userName, @RequestParam("email") String email, @RequestParam("isGoogleUser") boolean isGoogleUser, Model model) throws ExecutionException, InterruptedException {
         // Create a new User object
         User user = new User();
         user.setUsername(userName);
@@ -55,16 +55,17 @@ public class UserController {
         // Save the user object to the database
         User userGet = userService.findAndSaveGoogleUser(user);
 
-        ModelAndView modelAndView = new ModelAndView("index");
+        ModelAndView modelAndView = new ModelAndView("redirect:/index");
 
-        // Add the user object to the ModelAndView
         modelAndView.addObject("user", userGet);
 
-        //viet cai if de tra ve userName neu name ko ton tai
         modelAndView.addObject("userName", userGet.getUsername());
 
+        model.addAttribute("user",userGet);
+        model.addAttribute("userName",userGet.getUsername());
+
         // Return the ModelAndView object
-        return modelAndView;
+        return "index";
     }
 
     @PostMapping("/logout")
