@@ -1,23 +1,31 @@
 
+// Get the Firebase database
+var db = firebase.database();
 
-function showMessage(){
-    // Get the Firestore database
+// Create a reference to the `users` collection
+var productRef = db.ref("Product");
 
-    var db = firebase.database();
+// Add an event listener to the submit button
+document.querySelector("input[type='submit']").addEventListener("click", function() {
+  // Get the form data
+  var pId = document.querySelector("input[name='pID']").value;
+  var pName = document.querySelector("input[name='pName']").value;
+  var pBrand = document.querySelector("input[name='pBrand']").value;
+  var pType = document.querySelector("input[name='pType']").value;
+  var pPrice = document.querySelector("input[name='pPrice']").value;
+  var pQuantity = document.querySelector("input[name='pQuantity']").value;
 
-    // Create a reference to the `users` collection
-    var productRef = db.ref("Product");
+  // Create a user object to store the form data
+  var product = {
+    pId: pId,
+    pName: pName,
+    pBrand: pBrand,
+    pType: pType,
+    pPrice: pPrice,
+   pQuantity: pQuantity
+  };
 
-    // Create a user object to store the form data
-    var product = {
-      ProductID: document.getElementById("pID").value,
-      ProductName: document.getElementById("pName").value,
-      ProductBrand: document.getElementById("pBrand").value,
-      ProductType: document.getElementById("pType").value,
-      ProductPrice: document.getElementById("pPrice").value,
-      ProductQuantity: document.getElementById("pQuantity").value
-    };
+  // Save the user object to the database
+  productRef.push(product);
 
-    // Save the user object to the database
-    productRef.push(product);
-}
+});

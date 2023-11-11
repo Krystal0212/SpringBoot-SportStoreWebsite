@@ -463,27 +463,52 @@ body {
   background-color: #555555;
   color: white;
 }
+form {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
 
-.formproduct{
+label {
   display: block;
-  margin: auto;
-  padding: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
-.formproduct input{
-  padding-left: 5px;
-  width: 200px;
-  height: 25px;
-  padding-top: 15px;
-  padding-bottom: 10px;
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
-.formproduct label{
-  padding-top: 20px;
+
+input:focus {
+  border-color: #333;
 }
-.formproduct select{
-  padding-left: 5px;
-    width: 200px;
-    height: 25px;
-    padding-top: 15px;
-    padding-bottom: 10px;
+
+input[type="submit"] {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  line-height: 1.42857;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
 
