@@ -102,39 +102,69 @@
                     <div class="cardHeader">
                         <h2>Product</h2>
                     </div>
+
+                    <form action="#" id="add-product-form" name="addproductform" class="formproduct">
+
+                        <div class="form-group">
+                            <label for="pID">Product ID</label>
+                            <input type="text" name="pID" class="form-control" id="pID" required
+                                   pattern="^[а-яА-ЯёЁa-zA-Z0-9_ ]+$">
+                        </div>
+                        <div class="form-group">
+                            <label for="pName">Product Name</label>
+                            <input type="text" name="pName" class="form-control" id="pName" required
+                                   pattern="^[а-яА-ЯёЁa-zA-Z0-9_ ]+$">
+                        </div>
+                        <div class="form-group">
+                            <label for="pBrand">Product Brand</label>
+                            <input type="text" name="pBrand" class="form-control" id="pBrand" required
+                                   pattern="^[а-яА-ЯёЁa-zA-Z0-9_ ]+$">
+                        </div>
+<!--                        <div class="form-group">-->
+<!--                            <label for="pType">Product Type</label>-->
+<!--                            <select name="pType" id="pType" class="form-control" required>-->
+<!--                                <option value="Shoes">Shoes</option>-->
+<!--                                <option value="T-Shirt">T-Shirt</option>-->
+<!--                                <option value="Short">Short</option></select>-->
+<!--                        </div>-->
+                        <div class="form-group">
+                            <label for="pType">Product Type</label>
+                            <input type="text" name="pType" class="form-control" id="pType" required
+                                   pattern="^[а-яА-ЯёЁa-zA-Z0-9_ ]+$">
+                        </div>
+                        <div class="form-group">
+                            <label for="pPrice">Product Price</label>
+                            <input type="text" name="pPrice" class="form-control" id="pPrice" required
+                                   pattern="^[0-9]+([.])?[0-9]*([0-9]+)?$" title="number 0-9 '.'">
+                        </div>
+                        <div class="form-group">
+                            <label for="pQuantity">Product Quantity</label>
+                            <input type="text" name="pQuantity" class="form-control" id="pQuantity" required
+                                   pattern="^[0-9]+([.])?[0-9]*([0-9]+)?$" title="number 0-9 '.'">
+                        </div>
+                        <button onclick="event_function()" type="button" id="addToCart" class="btn button5">Add Product</button>
+                    </form>
                     <table>
                         <thead>
                         <tr>
+                            <td>ID</td>
                             <td>Name</td>
+                            <td>Brand</td>
+                            <td>Type</td>
                             <td>Price</td>
                             <td>Quantity</td>
+
                         </tr>
                         </thead>
                         <tbody>
                         <tr data-image="images/img1.jpg">
+                            <td>PD01</td>
                             <td >Badminton Racket</td>
+                            <td >Things</td>
+                            <td >Bat</td>
                             <td>$120</td>
                             <td>1200</td>
-                        </tr>
-                        <tr data-image="images/img2.jpg">
-                            <td>Puma T-Shirt</td>
-                            <td>$110</td>
-                            <td>1200</td>
-                        </tr>
-                        <tr data-image="images/img3.jpg">
-                            <td>Puma Shorts</td>
-                            <td>$100</td>
-                            <td>1200</td>
-                        </tr>
-                        <tr data-image="images/img4.jpg">
-                            <td>Addidas Shoes</td>
-                            <td>$120</td>
-                            <td>1200</td>
-                        </tr>
-                        <tr data-image="images/img5.jpg">
-                            <td>Nike Shoes</td>
-                            <td>$200</td>
-                            <td>1200</td>
+
                         </tr>
                         </tbody>
                     </table>
@@ -143,11 +173,14 @@
                     <img id="display-image" src="" alt="Selected Image">
                 </div>
     <!-- =========== Scripts =========  -->
-    <script src="assetsforstaff/js/main.js"></script>
-
+                <script src="assetsforstaff/js/main.js"></script>
+                <script src="assetsforstaff/js/newproduct.js"></script>
+                <script src="https://finalterm-sportstorewebsite-default-rtdb.asia-southeast1.firebasedatabase.app/"></script>
+                <script src="static/js/firebase-config.js"></script>
     <!-- ====== ionicons ======= -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
 </body>
 
 </html>

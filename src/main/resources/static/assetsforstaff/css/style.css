@@ -449,3 +449,41 @@ body {
     left: initial;
   }
 }
+.button5 {
+  width: 100px;
+  height: 30px;
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.button5:hover {
+  background-color: #555555;
+  color: white;
+}
+
+.formproduct{
+  display: block;
+  margin: auto;
+  padding: 20px;
+}
+.formproduct input{
+  padding-left: 5px;
+  width: 200px;
+  height: 25px;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+.formproduct label{
+  padding-top: 20px;
+}
+.formproduct select{
+  padding-left: 5px;
+    width: 200px;
+    height: 25px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
