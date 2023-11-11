@@ -34,7 +34,6 @@ const WriteDataToFirebase = function WriteDataToFirebase(username, password, ema
             pPrice: String(pPrice),
             pQuantity: String(pQuantity),
             state: 'enable',
-            // Các thông tin khác của người dùng
           };
 
           // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới
@@ -46,7 +45,6 @@ const WriteDataToFirebase = function WriteDataToFirebase(username, password, ema
                     {
                     database.set(database.ref(dbRef, 'Product/' + 'Shirt/' + newID), newProduct);
                     }
-
           return true;
         })
 };
@@ -56,4 +54,5 @@ window.addPButton = function addPButton() {
      const pType = document.getElementById('pType').value;
      const pPrice = document.getElementById('pPrice').value;
      const pQuantity = document.getElementById('pQuantity').value;
+     WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity)
      };
