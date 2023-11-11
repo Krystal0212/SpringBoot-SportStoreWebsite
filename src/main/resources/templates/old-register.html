@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Register</title>
+  <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
+  <script rel="stylesheet" type="module" src="/js/register.js" th:src="@{/js/register.js}"></script>
+</head>
+
+<body>
+<h1>Registration Page</h1>
+
+<form>
+  <div><label> Email: <input type="email" name="email" id="email" placeholder="Email" required
+                             autocomplete="email"/> </label></div>
+
+  <label for="gender">Gender:</label>
+  <select id="gender" name="gender">
+    <option value="Male">Nam</option>
+    <option value="Female">Nữ</option>
+  </select>
+
+  <div><label> Name: <input type="text" name="name" id="name" placeholder="Name" required
+                            autocomplete="name"/> </label></div>
+
+  <div><label> User Name: <input type="text" name="username" id="username" placeholder="Username" required
+                                 autocomplete="username"/> </label></div>
+
+  <div><label> Phone number: <input type="number" name="phoneNumber" id="phoneNumber" placeholder="Phone" required
+                                    autocomplete="phoneNumber"/> </label></div>
+
+  <div><label> Password: <input type="password" id="password" name="password" class="form-control"
+                                placeholder="Password" required autocomplete="current-password"> </label></div>
+
+  <div><label> Password confirm: <input type="password" id="passwordConfirm" name="passwordConfirm" class="form-control"
+                                placeholder="Password confirm" required autocomplete="current-passwordConfirm"> </label></div>
+
+
+  <div>
+    <div><input type="submit" value="Register" id="registerButton"/></div>
+
+  </div>
+  <script type="module">
+    document.querySelector('#registerButton').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent form submission
+        ClickRegister();
+    });
+</script>
+</form>
+
+</body>
+</html>

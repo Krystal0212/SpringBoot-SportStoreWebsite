@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
     @RequestMapping("home")
     public String index(){
-        return "index";
+        return "/index";
     }
 
     @RequestMapping("/login")
     public String loginPage() {
-        return "login"; // Return the name of the login.html template
+        return "login"; // Return the name of the login-old.html template
     }
 
     @GetMapping("/register")
     public String registerPage() {
-        return "register"; // Return the name of the register.html template
+        return "register"; // Return the name of the old-register.html template
     }
 
     @GetMapping("/staff-main")

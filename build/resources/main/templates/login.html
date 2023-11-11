@@ -1,52 +1,40 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.thymeleaf.org ">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
-    <script rel="stylesheet" type="module" th:src="@{/static/js/firebase-config.js}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <!-- Include the Google Sign-In JavaScript -->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">-->
+<!--    <script src="path/to/sweetalert2.all.min.js"></script>-->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script type="module" th:src="@{/js/firebase-config.js}"></script>
+    <script type="module" th:src="@{/js/login-authentication.js}"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+
 </head>
-<form th:action="@{/login}" method="post" id="loginForm">
-    <div><label> User Name: <input type="text" name="username" id="username" placeholder="Username" required
-                                   autocomplete="username"/> </label></div>
-    <div><label> Password: <input type="password" id="password" name="password" class="form-control"
-                                  placeholder="Password" required autocomplete="current-password"> </label></div>
-    <div><input type="submit" value="Sign In" onclick="signInWithFirebase()"/></div>
+<body>
 
+<form action="/user/login" method="post" th:object="${user}">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" placeholder="Username" required><br>
 
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" placeholder="Password" required><br>
+
+    <button type="submit">Login</button>
 </form>
-<script>
-  async function signInWithFirebase() {
-  const username = document.querySelector("input[name='username']").value;
-  const password = document.querySelector("input[name='password']").value;
 
-  // Reference to the "Customer" node
-  const customerRef = ref(database, "Customer");
+<div> New ?</div>
+<a href="/user/register">Register</a>
+<p th:if="${error}" style="color: red" th:text="${error}"></p>
 
-  try {
-    const customerSnapshot = await get(customerRef);
-    const customers = customerSnapshot.val();
+<button id="google-login">Log in by Google</button>
 
-    // Loop through all customers and check for a matching username and password
-    let userFound = false;
-    for (const customerId in customers) {
-      if (customers[customerId].username === username && customers[customerId].password === password) {
-        userFound = true;
-        break; // Exit the loop when a match is found
-      }
-    }
-
-    if (userFound) {
-      // Successful login, you can redirect the user or perform other actions here
-      alert("Login successful!");
-    } else {
-      alert("Invalid username or password.");
-    }
-  } catch (error) {
-    console.error("Error checking login:", error);
-  }
-}
-
-
-</script>
 </body>
 </html>
