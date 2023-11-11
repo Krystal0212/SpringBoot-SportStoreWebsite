@@ -41,7 +41,7 @@ googleLoginButton.addEventListener('click', () => {
                                 // Có người dùng tồn tại với cùng email, bạn có thể thực hiện cập nhật dữ liệu ở đây
                                 // Ví dụ: database.update(...)
                                 // database.set(database.ref(dbRef, 'Customer/' + childSnapshot.key), newUser);
-                                redirectToIndexPageForGoogle(childSnapshot.val(), childSnapshot.key);
+                                redirectToIndexPageForGoogle(userData, childSnapshot.key);
                             }
                         });
 
@@ -109,12 +109,12 @@ const redirectToIndexPageForGoogle = (customerData,customerId) => {
     const user = {
         userId: customerId,
         //Tại vì có cả user google dùng
-        userName: customerData.name,
+        userName: customerData.displayName,
         userPassword: customerData.password,
         email: customerData.email,
         gender: customerData.gender,
         phoneNumber: customerData.phone_number,
-        fullName: customerData.name,
+        fullName: customerData.displayName,
         state: customerData.state,
         isGoogleUser: true,
     };
@@ -135,12 +135,12 @@ const redirectToIndexPageForUser = (customerData,customerId) => {
     const user = {
         userId: customerId,
         //Tại vì có cả user google dùng
-        userName: customerData.name,
+        userName: customerData.displayName,
         userPassword: customerData.password,
         email: customerData.email,
         gender: customerData.gender,
         phoneNumber: customerData.phone_number,
-        fullName: customerData.name,
+        fullName: customerData.displayName,
         state: customerData.state,
         isGoogleUser: false,
     };

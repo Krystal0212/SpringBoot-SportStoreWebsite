@@ -12,6 +12,4 @@ import java.util.concurrent.ExecutionException;
 public class GoogleLoginController {
     @Autowired
     private UserService userService;
-
-
 }
