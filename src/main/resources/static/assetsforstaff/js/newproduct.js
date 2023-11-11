@@ -39,7 +39,7 @@ const WriteDataToFirebase = function WriteDataToFirebase(pName, pBrand, pType, p
                                        state: 'enable',
                                      };
                                      // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới
-                                     database.set(database.ref(dbRef, 'Product/' + 'Shoes/' + newID), newProduct);
+                                     database.set(database.ref(pRefShoes, + newID), newProduct);
                                      return true;
                    })
 
