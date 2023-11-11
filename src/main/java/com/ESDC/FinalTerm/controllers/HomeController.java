@@ -20,4 +20,14 @@ public class HomeController {
     public String registerPage() {
         return "register"; // Return the name of the old-register.html template
     }
+
+    @GetMapping("/staff-main")
+    public String staffProduct() {
+        return "staffmain"; // Return the name of the product.html template
+    }
+
+    @GetMapping("/staff-customer")
+    public String staffCustomer() {
+        return "staffcustomer"; // Return the name of the product.html template
+    }
 }
