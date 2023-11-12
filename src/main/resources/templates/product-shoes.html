@@ -113,10 +113,8 @@
                         <!-- Filter by brand -->
                         <div class="mb-3">
                             <label for="brand">Brand:</label>
-                            <select class="form-control" id="brand">
-                                <option value="brand1">Nike</option>
-                                <option value="brand2">Adidas</option>
-                                <!-- Add more options as needed -->
+                            <select class="form-control" id="brand" th:field="${product.brand}">
+                                <option th:each="brand : ${brandOptions}" th:value="${brand}" th:text="${brand}"></option>
                             </select>
                         </div>
 
