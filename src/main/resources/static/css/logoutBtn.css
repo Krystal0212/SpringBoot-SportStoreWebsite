@@ -1,0 +1,8 @@
+.logout-btn {
+    background-color: red; /* Màu nền đỏ */
+    color: white; /* Màu chữ trắng */
+    padding: 8px 16px; /* Điều chỉnh khoảng cách bên trong nút */
+    border: none; /* Loại bỏ đường viền */
+    border-radius: 4px; /* Bo tròn góc */
+    cursor: pointer;
+}
