@@ -225,8 +225,8 @@
                     <h3 class="product-title" th:text="${product.brand + ' - ' + product.name}" > </h3>
                     <strong class="product-price" th:text="${'Price: $' + product.price}" > </strong>
 
-                    <span class="icon-cross" id="btnAdd">
-                        <img src="/images/cross.svg" class="img-fluid">
+                    <span class="icon-cross" >
+                        <img src="/images/cross.svg" class="img-fluid" id="btnAdd_${iterStat.index}" th:attr="data-productName=${product.name}">
                     </span>
                 </a>
             </div>
@@ -234,25 +234,36 @@
             <!-- Xu ly su kien add -->
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                    // Lấy tất cả các nút thêm
-                    const addButtons = document.querySelectorAll('.btnAdd');
+                        const userJSON = localStorage.getItem('user');
 
-                    // Thêm sự kiện nghe cho mỗi nút thêm
-                    addButtons.forEach(function (button) {
-                        button.addEventListener('click', function () {
-                            // Lấy thông tin sản phẩm từ thuộc tính data
-                            const brand = button.dataset.productBrand;
-                            const name = button.dataset.productName;
-                            const price = button.dataset.productPrice;
-
-                            // Thực hiện bất kỳ hành động nào bạn muốn với thông tin sản phẩm
-                            console.log('Product Brand:', brand);
-                            console.log('Product Name:', name);
-                            console.log('Product Price:', price);
-
-                            // Đây là nơi bạn có thể thực hiện thêm sản phẩm vào giỏ hàng hoặc bất kỳ hành động nào khác.
+                        // Lặp qua các nút thêm và thêm sự kiện nghe
+                        document.querySelectorAll('[id^="btnAdd_"]').forEach(function (button) {
+                            button.addEventListener('click', function () {
+                                if(userJSON){
+                                    const userObject = JSON.parse(userJSON);
+                                    const userName = userObject.username;
+                                    // Lấy thông tin sản phẩm từ thuộc tính data
+                                    const itemName = button.getAttribute('data-productName');
+                                    addToCart(itemName, userName, "Shoes");
+                                } else {
+                                    Swal.fire({
+                                        title: 'You have not logged in yet',
+                                        text: 'Please log in to continue!',
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Yes, log in now'
+                                    }).then((result) => {
+                                        // Nếu người dùng nhấn OK (confirm)
+                                        if (result.isConfirmed) {
+                                            // Chuyển đến trang login khi người dùng đồng ý
+                                            window.location.href = "/login";
+                                        }
+                                    });
+                                }
+                            });
                         });
-                    });
                 });
             </script>
             <!-- End Column 2 -->
@@ -529,5 +540,6 @@
 </body>
 
 <script rel="stylesheet" type="module" src="/js/index.js" th:src="@{/js/product-shoes.js}"></script>
+<script rel="stylesheet" type="module" src="/js/index.js" th:src="@{/js/addToCart.js}"></script>
 
 </html>
