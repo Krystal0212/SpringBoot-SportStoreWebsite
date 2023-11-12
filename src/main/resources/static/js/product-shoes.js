@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                     // Chuyển đến trang logout khi người dùng đồng ý
                                     localStorage.removeItem("google checker")
                                     localStorage.removeItem("user")
-                                    window.location.href = "/user/logout";
+                                    window.location.href = "/shoes";
                                 }
                             });
 
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         // Chuyển đến trang logout khi người dùng đồng ý
                         localStorage.removeItem("google checker")
                         localStorage.removeItem("user")
-                        window.location.href = "/user/logout";
+                        window.location.href = "/shoes";
                     }
                 });
             });

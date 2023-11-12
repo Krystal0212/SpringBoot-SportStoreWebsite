@@ -10,6 +10,8 @@
     <!--Style For Custom Elements-->
     <link rel="stylesheet" type="text/css" href="/css/style_home_banner.css" th:href="@{/css/style_home_banner.css}"/>
     <link rel="stylesheet" type="text/css" href="/css/style_home_navbar.css" th:href="@{/css/style_home_navbar.css}">
+    <link rel="stylesheet" type="text/css" href="/css/style_home_navbar.css" th:href="@{/css/logoutBtn.css}">
+
     <link rel="stylesheet" type="text/css" href="/css/style_home_tiny_slider.css">
     <link rel="stylesheet" type="text/css" href="/css/style_general_body_and_footer.css">
 
@@ -17,6 +19,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@500&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' type='text/css'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -177,7 +180,12 @@
                 <li><a class="dropdown-item" href="#">....</a></li>
                 <li><a class="dropdown-item" href="#">....</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li style="text-align: center"><a  href="/user/logout" id="logOut">Logout</a></li>
+                <li style="text-align: center">
+                    <a id="logOut" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+
             </ul>
         </div>
 
