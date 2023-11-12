@@ -3,8 +3,7 @@ import * as database from "https://www.gstatic.com/firebasejs/10.5.2/firebase-da
 // Add an event listener to the submit button
 
 
-
- window.ClickAdd = function ClickAdd() {
+window.ClickAdd = function ClickAdd(){
      const pName = document.getElementById('pName').value;
      const pBrand = document.getElementById('pBrand').value;
      const pType = document.getElementById('pType').value;
@@ -23,6 +22,8 @@ import * as database from "https://www.gstatic.com/firebasejs/10.5.2/firebase-da
 
         const dbRef = database.getDatabase();
         const pRef = database.ref(dbRef, "Product");
+
+
 
         return database.get(pRef)
             .then((snapshot) => {

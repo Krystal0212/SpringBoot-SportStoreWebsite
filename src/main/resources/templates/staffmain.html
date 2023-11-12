@@ -9,8 +9,8 @@
     <!-- ======= Styles ====== -->
     <link rel="stylesheet" href="assetsforstaff/css/style.css">
     <script src="assetsforstaff/js/main.js"></script>
-    <script src="assetsforstaff/js/newproduct.js"></script>
-    <script src="static/js/firebase-config.js"></script>
+    <script rel="stylesheet" type="module" th:src="@{assetsforstaff/js/newproduct.js}"></script>
+    <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
 </head>
 
 <body>
@@ -122,7 +122,8 @@
                         <label for="pPrice">Product Quantity</label>
                         <input type="text" name="pQuantity" class="form-control" id="pQuantity" required
                                pattern="^[0-9]+([.])?[0-9]*([0-9]+)?$" title="number 0-9 '.'">
-                        <input type="submit" value="Add" id="add">
+                        <input type="submit" value="Add" id="add" onclick="addProduct()">
+
                         <script type="module">
     document.querySelector('#add').addEventListener('click', function(event) {
         event.preventDefault(); // Prevent form submission
