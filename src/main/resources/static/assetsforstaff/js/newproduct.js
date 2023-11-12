@@ -42,7 +42,6 @@ import * as database from "https://www.gstatic.com/firebasejs/10.5.2/firebase-da
               // Tạo ID mới
               const newID = `PD${(latestID + 1).toString().padStart(2, "0")}`;
 
-              // Tạo dữ liệu người dùng
               const newP = {
                 pName: String(pName),
                 pBrand: String(pBrand),
