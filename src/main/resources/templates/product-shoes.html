@@ -54,7 +54,7 @@
         <div class="row justify-content-between">
             <div class="col-lg-5">
                 <div class="intro-excerpt">
-                    <h1>Modern Interior <span clsas="d-block">Stride in Style, Step with Innovation</span></h1>
+                    <h1>Modern Interior <span class="d-block">Stride in Style, Step with Innovation</span></h1>
                     <p class="mb-4">Upgrade your stride with DawaTrainers – where innovation meets comfort for the ultimate step forward.</p>
                     <p><a href="" class="btn btn-secondary me-2">Shop Now</a><a href="#" class="btn btn-white-outline">Explore</a>
                     </p>
@@ -82,9 +82,48 @@
 
             <!-- Start Column 1 -->
             <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
-                <h2 class="mb-4 section-title">Check our brand new trainers.</h2>
-                <p class="mb-4">Step into style and comfort with our brand new trainers – the perfect blend of fashion and functionality! </p>
-                <p><a href="shop.html" class="btn">Explore</a></p>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Filter Options</h5>
+                        <!-- Search by product name -->
+                        <div class="mb-3">
+                            <label for="productName">Product Name:</label>
+                            <input type="text" class="form-control" id="productName" placeholder="Enter product name">
+                        </div>
+
+                        <!-- Price range -->
+                        <div class="mb-3">
+                            <label for="minPrice">Min Price:</label>
+                            <input type="number" class="form-control" id="minPrice" placeholder="Min">
+                        </div>
+                        <div class="mb-3">
+                            <label for="maxPrice">Max Price:</label>
+                            <input type="number" class="form-control" id="maxPrice" placeholder="Max">
+                        </div>
+
+                        <!-- Sort by price -->
+                        <div class="mb-3">
+                            <label for="sortByPrice">Sort by Price:</label>
+                            <select class="form-control" id="sortByPrice">
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                        </div>
+
+                        <!-- Filter by brand -->
+                        <div class="mb-3">
+                            <label for="brand">Brand:</label>
+                            <select class="form-control" id="brand">
+                                <option value="brand1">Nike</option>
+                                <option value="brand2">Adidas</option>
+                                <!-- Add more options as needed -->
+                            </select>
+                        </div>
+
+                        <!-- Apply button -->
+                        <button class="btn btn-primary">Apply Filters</button>
+                    </div>
+                </div>
             </div>
             <!-- End Column 1 -->
 
