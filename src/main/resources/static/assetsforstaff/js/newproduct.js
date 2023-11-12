@@ -3,15 +3,21 @@ import * as database from "https://www.gstatic.com/firebasejs/10.5.2/firebase-da
 // Add an event listener to the submit button
 
 
+
 window.ClickAdd = function ClickAdd(){
+
+const input = document.getElementById('imageInput');
+
+
      const pName = document.getElementById('pName').value;
      const pBrand = document.getElementById('pBrand').value;
      const pType = document.getElementById('pType').value;
      const pPrice = document.getElementById('pPrice').value;
      const pQuantity = document.getElementById('pQuantity').value;
         const pDe = document.getElementById('pDe').value;
-        const pUrl = document.getElementById('imageUrl').value;
-     WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,pUrl)
+        const imageUrl = document.getElementById('imageUrl').value;
+        const status = "enable";
+     WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,imageUrl,status)
                           .then(() => {
                               alert("Thêm thành công!");
                           })
@@ -19,41 +25,43 @@ window.ClickAdd = function ClickAdd(){
 
 
 
-    const WriteDataToFirebase = function WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,pUrl){
+    const WriteDataToFirebase = function WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,imageUrl,status){
 
     if(pType === "Shoes")
     {
     const dbRef = database.getDatabase();
-    const pRef = database.ref(dbRef, "Product");return database.get(pRef)
-        .then((snapshot) => {
-            const pData = snapshot.val();
-            const latestID = Object.keys(pData).reduce((maxID, key) => {
-                const match = key.match(/^S(\d+)$/);
-                if (match) {
-                    const currentID = parseInt(match[1]);
-                    if (currentID > maxID) {
-                        maxID = currentID;
-                    }
-                }
-                return maxID;
-                }, 0);
+                                const pRef = database.ref(dbRef, "Product");
+                        return database.get(pRef)
+                            .then((snapshot) => {
+                              const pData = snapshot.val();
+                        const latestID = Object.keys(pData).reduce((maxID, key) => {
+                                                    const match = key.match(/^S(\d+)$/);
+                                                    if (match) {
+                                                      const currentID = parseInt(match[1]);
+                                                      if (currentID > maxID) {
+                                                        maxID = currentID;
+                                                      }
+                                                    }
+                                                    return maxID;
+                                                  }, 0);
 
-            // Tạo ID mới
-            const newID = `S${(latestID + 1).toString().padStart(2, "0")}`;
+                                                  // Tạo ID mới
+                                                  const newID = `S${(latestID + 1).toString().padStart(2, "0")}`;
 
-            const newP = {
-                name: String(pName),
-                brand: String(pBrand),
-                price: String(pPrice),
-                quantity: String(pQuantity),
-                description: String(pDe),
-                url: String(pUrl),
-            };
+                              const newP = {
+                                name: String(pName),
+                                brand: String(pBrand),
+                                price: String(pPrice),
+                                quantity: String(pQuantity),
+                                description: String(pDe),
+                                url: String(imageUrl),
+                                status: String(status),
+                              };
 
-            // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới
-            database.set(database.ref(dbRef, 'Product/' + pType + '/' + newID), newP);
-            return true;
-        })
+                              // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới
+                                database.set(database.ref(dbRef, 'Product/' + pType + '/' + newID), newP);
+                              return true;
+                            })
     }
     if(pType === "Clothes")
         {
@@ -82,7 +90,8 @@ window.ClickAdd = function ClickAdd(){
                                     price: String(pPrice),
                                     quantity: String(pQuantity),
                                     description: String(pDe),
-                                    url: String(pUrl),
+                                    url: String(imageUrl),
+                                    status: String(status),
                                   };
 
                                   // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới
@@ -117,7 +126,8 @@ window.ClickAdd = function ClickAdd(){
                                             price: String(pPrice),
                                             quantity: String(pQuantity),
                                             description: String(pDe),
-                                            url: String(pUrl),
+                                            url: String(imageUrl),
+                                            status: String(status),
                                           };
 
                                           // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới
