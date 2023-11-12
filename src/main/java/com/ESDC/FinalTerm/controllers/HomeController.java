@@ -37,9 +37,8 @@ public class HomeController {
         // Lấy danh sách sản phẩm Shoes
         List<Product> shoes = productService.getProductsByType("Shoes");
         model.addAttribute("shoes", shoes);
-        return "Shoes";
+        return "product-shoes";
     }
-
     @GetMapping("/staff-main")
     public String staffProduct() {
         return "staffmain"; // Return the name of the product.html template

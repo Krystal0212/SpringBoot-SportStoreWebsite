@@ -285,6 +285,6 @@ public class UserController {
         // Lấy danh sách sản phẩm Shoes
         List<Product> shoes = productService.getProductsByType("Shoes");
         model.addAttribute("shoes", shoes);
-        return "Shoes";
+        return "product-shoes";
     }
 }
