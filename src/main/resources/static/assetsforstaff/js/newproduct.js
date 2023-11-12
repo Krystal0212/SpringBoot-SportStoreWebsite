@@ -31,9 +31,9 @@ import * as database from "https://www.gstatic.com/firebasejs/10.5.2/firebase-da
 
         return database.get(pRef)
             .then((snapshot) => {
-              const userData = snapshot.val();
+              const pData = snapshot.val();
 
-              const latestID = Object.keys(userData).reduce((maxID, key) => {
+              const latestID = Object.keys(pData).reduce((maxID, key) => {
                 const match = key.match(/^PD(\d+)$/);
                 if (match) {
                   const currentID = parseInt(match[1]);
