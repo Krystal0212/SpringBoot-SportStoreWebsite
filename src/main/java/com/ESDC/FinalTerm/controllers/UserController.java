@@ -86,205 +86,59 @@ public class UserController {
         return "index";
     }
 
-//    @GetMapping("/register")
-//    public String showRegistrationForm(Model model) {
-//        model.addAttribute("user", new User());
-//        return "register";
-//    }
-//
-//    @PostMapping("/register")
-//    public String registerUser(@ModelAttribute User user, Model model) {
-//        try {
-//            User registeredUser = userService.registerUser(user);
-//            model.addAttribute("user", registeredUser);
-//            return "redirect:/user/login";
-//        } catch (ExecutionException | InterruptedException e) {
-//            model.addAttribute("error", "Error during registration");
-//            return "register";
-//        } catch (RuntimeException e) {
-//            model.addAttribute("error", e.getMessage());
-//            return "register";
-//        }
-//    }
+    @PostMapping("/google-login")
+    public ResponseEntity<String> loginGoogleUser(@RequestParam("userName") String userName, @RequestParam("email") String email, @RequestParam("isGoogleUser") boolean isGoogleUser, Model model) {
+        try {
+            User user = new User();
+            user.setUsername(userName);
+            user.setEmail(email);
+            user.setGoogleUser(isGoogleUser);
 
-//    @GetMapping("/google-login")
-//    public String googleLogin(@RequestParam("userName") String userName,
-//                              @RequestParam("email") String email,
-//                              @RequestParam("isGoogleUser") boolean isGoogleUser,
-//                              Model model) {
-//
-//        // Create a User object with the received data
-//        User user = new User();
-//        user.setUsername(userName);
-//        user.setEmail(email);
-//        user.setGoogleUser(isGoogleUser);
-//
-//        try {
-//            // Login or save the user to the Firebase Realtime Database as needed
-//            if (isGoogleUser) {
-//                user = userService.findAndSaveGoogleUser(user);
-//            } else {
-//                // Handle regular login logic
-//                // Example: user = userService.loginUser(user.getUsername(), user.getPassword());
-//            }
-//
-//            // Add the user to the model for use in the view
-//            model.addAttribute("user", user);
-//
-//            // Redirect to the dashboard or home page
-//            return "redirect:/user/dashboard";
-//        } catch (Exception e) {
-//            model.addAttribute("error", "Error during login");
-//            return "login";
-//        }
-//    }
-
-        @PostMapping("/google-login")
-        public ResponseEntity<String> loginGoogleUser(@RequestParam("userName") String userName, @RequestParam("email") String email, @RequestParam("isGoogleUser") boolean isGoogleUser, Model model) {
-            try {
-                User user = new User();
-                user.setUsername(userName);
-                user.setEmail(email);
-                user.setGoogleUser(isGoogleUser);
-
-                User loggedInUser = userService.findAndSaveGoogleUser(user);
-                //đưa user đó vào localStorage
-                ObjectMapper objectMapper = new ObjectMapper();
-                String jsonString = objectMapper.writeValueAsString(loggedInUser);
+            User loggedInUser = userService.findAndSaveGoogleUser(user);
+            //đưa user đó vào localStorage
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString = objectMapper.writeValueAsString(loggedInUser);
 
 
-                if (loggedInUser != null) {
-                    model.addAttribute("user", user);
+            if (loggedInUser != null) {
+                model.addAttribute("user", user);
 
-                    // Return a success response
-                    return ResponseEntity.ok("Google login successful");
-                } else {
-                    model.addAttribute("error", "Google login failed");
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Invalid account");
-                }
-            } catch (ExecutionException | InterruptedException e) {
-                model.addAttribute("error", "Error during Google login");
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during Google login");
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+                // Return a success response
+                return ResponseEntity.ok("Google login successful");
+            } else {
+                model.addAttribute("error", "Google login failed");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Invalid account");
             }
+        } catch (ExecutionException | InterruptedException e) {
+            model.addAttribute("error", "Error during Google login");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during Google login");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
-
-//    private UserService userService;
-//    Boolean isChecked = false;
-//    private User user;
-//
-//    public UserController(UserService userService) {
-//        this.userService = userService;
-//    }
-//
-//    @GetMapping("/login")
-//    public String loginPage() {
-//        return "login";
-//    }
-//
-//    @RequestMapping(value = "/login", method = RequestMethod.POST)
-//    @ModelAttribute
-//    public ModelAndView login(@RequestParam String username, @RequestParam String password, Model model) throws InterruptedException, ExecutionException {
-//        User userGet = userService.loginCustomerByTyping(username, password);
-//        ModelAndView modelAndView = new ModelAndView();
-//
-//        if (userGet != null) {
-//        // modelAndView = new ModelAndView(new RedirectView("/home", true));
-//            modelAndView = new ModelAndView("/index" );
-//
-//            // Add the user object to the ModelAndView
-//            modelAndView.addObject("user", userGet);
-//            modelAndView.addObject("userName", userGet.getName());
-//        } else {
-//            modelAndView = new ModelAndView("redirect:/login?error=true");
-//        }
-//
-//        // Return the ModelAndView object
-//        return modelAndView;
-////        if (userGet != null) {
-////            // Add the user object to the model
-////            model.addAttribute("user", userGet);
-////            model.addAttribute("userName", userGet.getName());
-////
-////            // Redirect to "/home"
-////            return "redirect:/home";
-////        } else {
-////            // Handle unsuccessful login
-////            model.addAttribute("error", "true");
-////
-////            // Redirect to "/login"
-////            return "redirect:/login";
-////        }
-//    }
-//
-//    @PostMapping(value = "/google-login")
-//    @ModelAttribute
-//    public String googleLogin(@RequestParam("userName") String userName, @RequestParam("email") String email, @RequestParam("isGoogleUser") boolean isGoogleUser, HttpServletRequest request) throws ExecutionException, InterruptedException {
-//        try {
-//            // Create a new User object
-////            User user = new User();
-////            user.setUsername(userName);
-////            user.setEmail(email);
-////            user.setGoogleUser(isGoogleUser);
-////
-////            // Save the user object to the database
-////            User userGet = userService.findAndSaveGoogleUser(user);
-////
-////            ModelAndView modelAndView = new ModelAndView("index");
-////
-////            // Add the user object to the ModelAndView
-////            modelAndView.addObject("user", userGet);
-////
-////            //viet cai if de tra ve userName neu name ko ton tai
-////            modelAndView.addObject("userName", userGet.getUsername());
-////
-////            // Return the ModelAndView object
-////            return modelAndView;
-//            User user = new User();
-//            user.setUsername(userName);
-//            user.setEmail(email);
-//            user.setGoogleUser(isGoogleUser);
-//
-//            // Save the user object to the database
-//            User userGet = userService.findAndSaveGoogleUser(user);
-//
-//            // Add the user object to the session
-//            request.getSession().setAttribute("user", userGet);
-//
-//            // Add the user name only if it exists
-//            if (userGet.getUsername() != null) {
-//                request.getSession().setAttribute("userName", userGet.getUsername());
-//            }
-//
-//            // Redirect to "/home"
-//            return "redirect:/home";
-//        } catch (Exception e) {
-//            // Log the exception
-//            e.printStackTrace();
-//
-//            // Handle the exception, you might want to redirect to an error page or handle it in a way that makes sense for your application
-//            //return new ModelAndView("error");
-//            return "redirect:/login";
-//        }
-//    }
-//
-//    @PostMapping("/logout")
-//    public ModelAndView logout(Model model, HttpSession session) {
-//
-//        userService.logoutUser();
-//        session.invalidate();
-//
-//        ModelAndView modelAndView = new ModelAndView("redirect:/login");
-//
-//        return modelAndView;
-//    }
+    }
 
     @GetMapping("/shoes")
     public String showShoes(Model model) {
         // Lấy danh sách sản phẩm Shoes
         List<Product> shoes = productService.getProductsByType("Shoes");
-        model.addAttribute("shoes", shoes);
+        List<String> brands = productService.getCurrentBrands(shoes);
+        model.addAttribute("brands", brands);
+        model.addAttribute("products", shoes);
         return "product-shoes";
+    }
+
+    @PostMapping("/shoes/filter")
+    public String getProductByTypeAndFilter(@PathVariable String type,
+                                            @RequestParam(required = false) String productName,
+                                            @RequestParam(required = false) Double minPrice,
+                                            @RequestParam(required = false) Double maxPrice,
+                                            @RequestParam(required = false) String sortByPrice,
+                                            @RequestParam(required = false) List<String> brandList,
+                                            Model model) {
+        List<Product> products = productService.getProductByTypeAndFilter(type,productName, minPrice, maxPrice, sortByPrice, brandList);
+
+        model.addAttribute("products", products);
+
+        return "product-shoes"; // Giả sử có một view có tên là "productList" để hiển thị danh sách sản phẩm
     }
 }

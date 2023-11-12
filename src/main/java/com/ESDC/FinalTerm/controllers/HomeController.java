@@ -6,8 +6,7 @@ import com.ESDC.FinalTerm.controllers.Product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
@@ -17,6 +16,8 @@ import java.util.List;
 public class HomeController {
     @Autowired
     private ProductService productService;
+    private List<String> brands;
+
     @RequestMapping("/home")
     public String index(){
         return "index";
@@ -35,9 +36,24 @@ public class HomeController {
     @GetMapping("/shoes")
     public String shoes(Model model){
         // Lấy danh sách sản phẩm Shoes
-        List<Product> shoes = productService.getProductsByType("Shoes");
-        model.addAttribute("shoes", shoes);
+        List<Product> products = productService.getProductsByType("Shoes");
+        brands = productService.getCurrentBrands(products);
+        model.addAttribute("brands", brands);
+        model.addAttribute("products", products);
         return "product-shoes";
+    }
+
+    @PostMapping("/shoes/filter")
+    public String getProductByTypeAndFilter(@RequestParam(required = false) String productName,
+                                            @RequestParam(required = false) Double minPrice,
+                                            @RequestParam(required = false) Double maxPrice,
+                                            @RequestParam(required = false) String sortByPrice,
+                                            @RequestParam(required = false) List<String> brandList,
+                                            Model model) {
+        List<Product> products = productService.getProductByTypeAndFilter("Shoes",productName, minPrice, maxPrice, sortByPrice, brandList);
+        model.addAttribute("products", products);
+        model.addAttribute("brands", brands);
+        return "product-shoes"; // Giả sử có một view có tên là "productList" để hiển thị danh sách sản phẩm
     }
     @GetMapping("/staff-main")
     public String staffProduct() {

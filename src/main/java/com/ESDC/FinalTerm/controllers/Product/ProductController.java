@@ -33,4 +33,6 @@ public class ProductController {
         model.addAttribute("products", products);
         return "productList"; // Giả sử có một view có tên là "productList" để hiển thị danh sách sản phẩm
     }
+
+
 }

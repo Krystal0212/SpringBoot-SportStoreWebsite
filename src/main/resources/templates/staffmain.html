@@ -131,8 +131,7 @@
 
                         <div>
                             <label for="imageInput">Product URL (Click me to pick file)</label>
-                            <input type="file" name="pUrl" class="form-control" id="imageInput" style="display: none;">
-                            <button onclick="convertImageToURL()">Convert to URL</button>
+                            <input type="file" name="pUrl" class="form-control" id="imageInput" style="display: none;" onchange="convertImageToURL()">
                             <div id="outputContainer" style="display: none;">
                                 <h3>Converted Image</h3>
                                 <img id="outputImage" alt="Converted Image">
