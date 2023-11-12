@@ -41,7 +41,7 @@ googleLoginButton.addEventListener('click', () => {
                                 // Có người dùng tồn tại với cùng email, bạn có thể thực hiện cập nhật dữ liệu ở đây
                                 // Ví dụ: database.update(...)
                                 // database.set(database.ref(dbRef, 'Customer/' + childSnapshot.key), newUser);
-                                redirectToIndexPageForGoogle(userData, childSnapshot.key);
+                                redirectToIndexPageForGoogle(childSnapshot.val(), childSnapshot.key);
                             }
                         });
 

@@ -39,4 +39,14 @@ public class HomeController {
         model.addAttribute("shoes", shoes);
         return "Shoes";
     }
+
+    @GetMapping("/staff-main")
+    public String staffProduct() {
+        return "staffmain"; // Return the name of the product.html template
+    }
+
+    @GetMapping("/staff-customer")
+    public String staffCustomer() {
+        return "staffcustomer"; // Return the name of the product.html template
+    }
 }

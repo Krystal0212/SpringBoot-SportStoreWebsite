@@ -5,7 +5,6 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 public class User {
-
     public User(String email, String gender, String name, String password, String phone_number, String state, String username){
         this.email = email;
         this.gender = gender;

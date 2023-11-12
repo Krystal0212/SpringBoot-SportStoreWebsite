@@ -86,26 +86,26 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new User());
-        return "register";
-    }
-
-    @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user, Model model) {
-        try {
-            User registeredUser = userService.registerUser(user);
-            model.addAttribute("user", registeredUser);
-            return "redirect:/user/login";
-        } catch (ExecutionException | InterruptedException e) {
-            model.addAttribute("error", "Error during registration");
-            return "register";
-        } catch (RuntimeException e) {
-            model.addAttribute("error", e.getMessage());
-            return "register";
-        }
-    }
+//    @GetMapping("/register")
+//    public String showRegistrationForm(Model model) {
+//        model.addAttribute("user", new User());
+//        return "register";
+//    }
+//
+//    @PostMapping("/register")
+//    public String registerUser(@ModelAttribute User user, Model model) {
+//        try {
+//            User registeredUser = userService.registerUser(user);
+//            model.addAttribute("user", registeredUser);
+//            return "redirect:/user/login";
+//        } catch (ExecutionException | InterruptedException e) {
+//            model.addAttribute("error", "Error during registration");
+//            return "register";
+//        } catch (RuntimeException e) {
+//            model.addAttribute("error", e.getMessage());
+//            return "register";
+//        }
+//    }
 
 //    @GetMapping("/google-login")
 //    public String googleLogin(@RequestParam("userName") String userName,
