@@ -19,7 +19,6 @@ import * as database from "https://www.gstatic.com/firebasejs/10.5.2/firebase-da
          const bnt = document.getElementById('addPButton').value;
         WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity)
         .then(() => {alert("Thêm sản phẩm thành công!");
-        window.location.href = "/staff-main";
         })
     }
     bnt.addEventListener('click',add1);
