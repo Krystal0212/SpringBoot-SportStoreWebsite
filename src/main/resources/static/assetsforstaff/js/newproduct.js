@@ -16,7 +16,8 @@ const input = document.getElementById('imageInput');
      const pQuantity = document.getElementById('pQuantity').value;
         const pDe = document.getElementById('pDe').value;
         const imageUrl = document.getElementById('imageUrl').value;
-     WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,imageUrl)
+        const status = "enable";
+     WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,imageUrl,status)
                           .then(() => {
                               alert("Thêm thành công!");
                           })
@@ -24,7 +25,7 @@ const input = document.getElementById('imageInput');
 
 
 
-    const WriteDataToFirebase = function WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,imageUrl){
+    const WriteDataToFirebase = function WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,imageUrl,status){
 
     if(pType === "Shoes")
     {
@@ -54,6 +55,7 @@ const input = document.getElementById('imageInput');
                                 quantity: String(pQuantity),
                                 description: String(pDe),
                                 url: String(imageUrl),
+                                status: String(status),
                               };
 
                               // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới
@@ -89,6 +91,7 @@ const input = document.getElementById('imageInput');
                                     quantity: String(pQuantity),
                                     description: String(pDe),
                                     url: String(imageUrl),
+                                    status: String(status),
                                   };
 
                                   // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới
@@ -124,6 +127,7 @@ const input = document.getElementById('imageInput');
                                             quantity: String(pQuantity),
                                             description: String(pDe),
                                             url: String(imageUrl),
+                                            status: String(status),
                                           };
 
                                           // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới
