@@ -2,11 +2,16 @@ package com.ESDC.FinalTerm.controllers.Product;
 
 import org.springframework.stereotype.Service;
 import com.google.firebase.database.*;
+
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -25,7 +30,9 @@ public class ProductServiceImpl implements ProductService {
                 try {
                     for (DataSnapshot snap : snapshot.getChildren()) {
                         Product myProduct = snap.getValue(Product.class);
-                        products.add(myProduct);
+                        if(myProduct.getStatus().equals("enable")){
+                            products.add(myProduct);
+                        }
                     }
                     future.complete(products);
                 } catch (Exception e) {
@@ -40,5 +47,41 @@ public class ProductServiceImpl implements ProductService {
         });
 
         return future.join();
+    }
+
+    @Override
+    public List<Product> getProductByTypeAndFilter(String type, String productName, Double minPrice, Double maxPrice, String sortOrder, List<String> brandList) {
+        List<Product> allProducts = getProductsByType(type);
+
+        // Apply filters
+        List<Product> filteredProducts = allProducts.stream()
+                .filter(product -> productName == null || product.getName().toLowerCase().contains(productName.toLowerCase()))
+                .filter(product -> minPrice == null || product.getIntPrice() >= minPrice)
+                .filter(product -> maxPrice == null || product.getIntPrice() <= maxPrice)
+                .filter(product -> brandList==null || brandList.contains(product.getBrand()))
+                .sorted((p1, p2) -> {
+                    if ("asc".equals(sortOrder)) {
+                        return Integer.compare(p1.getIntPrice(), p2.getIntPrice());
+                    } else if ("desc".equals(sortOrder)) {
+                        return Integer.compare(p2.getIntPrice(), p1.getIntPrice());
+                    }
+                    return 0;
+                })
+                .collect(Collectors.toList());
+
+        return filteredProducts;
+    }
+
+    public List<String> getCurrentBrands(List<Product> products){
+        Set<String> uniqueBrandsSet = new HashSet<>();
+
+        for (Product product : products) {
+            uniqueBrandsSet.add(product.getBrand());
+        }
+
+        // Convert the set to a list
+        List<String> uniqueBrandsList = new ArrayList<>(uniqueBrandsSet);
+
+        return uniqueBrandsList;
     }
 }

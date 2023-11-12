@@ -3,15 +3,21 @@ import * as database from "https://www.gstatic.com/firebasejs/10.5.2/firebase-da
 // Add an event listener to the submit button
 
 
+
 window.ClickAdd = function ClickAdd(){
+
+const input = document.getElementById('imageInput');
+
+
      const pName = document.getElementById('pName').value;
      const pBrand = document.getElementById('pBrand').value;
      const pType = document.getElementById('pType').value;
      const pPrice = document.getElementById('pPrice').value;
      const pQuantity = document.getElementById('pQuantity').value;
         const pDe = document.getElementById('pDe').value;
-        const pUrl = document.getElementById('pUrl').value;
-     WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,pUrl)
+        const imageUrl = document.getElementById('imageUrl').value;
+        const status = "enable";
+     WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,imageUrl,status)
                           .then(() => {
                               alert("Thêm thành công!");
                           })
@@ -19,7 +25,7 @@ window.ClickAdd = function ClickAdd(){
 
 
 
-    const WriteDataToFirebase = function WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,pUrl){
+    const WriteDataToFirebase = function WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,imageUrl,status){
 
     if(pType === "Shoes")
     {
@@ -48,7 +54,8 @@ window.ClickAdd = function ClickAdd(){
                                 price: String(pPrice),
                                 quantity: String(pQuantity),
                                 description: String(pDe),
-                                url: String(pUrl),
+                                url: String(imageUrl),
+                                status: String(status),
                               };
 
                               // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới
@@ -56,7 +63,7 @@ window.ClickAdd = function ClickAdd(){
                               return true;
                             })
     }
-    if(pType === "Clother")
+    if(pType === "Clothes")
         {
         const dbRef = database.getDatabase();
                                     const pRef = database.ref(dbRef, "Product");
@@ -83,7 +90,8 @@ window.ClickAdd = function ClickAdd(){
                                     price: String(pPrice),
                                     quantity: String(pQuantity),
                                     description: String(pDe),
-                                    url: String(pUrl),
+                                    url: String(imageUrl),
+                                    status: String(status),
                                   };
 
                                   // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới
@@ -118,7 +126,8 @@ window.ClickAdd = function ClickAdd(){
                                             price: String(pPrice),
                                             quantity: String(pQuantity),
                                             description: String(pDe),
-                                            url: String(pUrl),
+                                            url: String(imageUrl),
+                                            status: String(status),
                                           };
 
                                           // Ghi dữ liệu người dùng vào cơ sở dữ liệu Firebase với ID mới

@@ -146,80 +146,59 @@
             <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
                 <div class="card">
                     <div class="card-body">
-                        <!-- Search by product name -->
-                        <div class="mb-3">
-                            <label for="productName">Product Name:</label>
-                            <input type="text" class="form-control" id="productName" placeholder="Enter product name">
-                        </div>
+                        <form method="post" action="/shoes/filter">
+                            <!-- Search by product name -->
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="productName" name="productName" placeholder="Enter product name" th:value="${productName}">
+                            </div>
 
-                        <!-- Price range -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="minPrice">Min Price:</label>
-                                <div class="input-group">
-                                    <input type="text" inputmode="numeric" pattern="[0-9]*" class="form-control" id="minPrice" placeholder="Min" title="Please enter a valid number">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">$</span>
+                            <!-- Price range -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" inputmode="numeric" pattern="[0-9]*" class="form-control" id="minPrice" name="minPrice" placeholder="Min" title="Please enter a valid number" th:value="${minPrice}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input type="text" inputmode="numeric" pattern="[0-9]*" class="form-control" id="maxPrice" name="maxPrice" placeholder="Max" title="Please enter a valid number" th:value="${maxPrice}">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">$</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <label for="maxPrice">Max Price:</label>
-                                <div class="input-group">
-                                    <input type="text" inputmode="numeric" pattern="[0-9]*" class="form-control" id="maxPrice" placeholder="Max" title="Please enter a valid number">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">$</span>
-                                    </div>
-                                </div>
+
+                            <!-- Sort by price -->
+                            <div class="mb-3">
+                                <label for="sortByPrice">Sort by Price:</label>
+                                <select class="form-control" id="sortByPrice" name="sortByPrice" th:value="${sortByPrice}">
+                                    <option value="asc">Ascending</option>
+                                    <option value="desc">Descending</option>
+                                </select>
                             </div>
-                        </div>
-                        <!--Script For Min Max Boxs-->
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                // Function to restrict input to numeric values
-                                function restrictToNumeric(inputElement) {
-                                    inputElement.addEventListener('input', function(event) {
-                                        const inputValue = event.target.value;
-                                        const numericValue = inputValue.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-                                        event.target.value = numericValue;
-                                    });
-                                }
 
-                                // Get input elements by ID and restrict input to numeric values
-                                const minPriceInput = document.getElementById('minPrice');
-                                const maxPriceInput = document.getElementById('maxPrice');
+                            <!-- Filter by brand -->
+                            <div class="mb-3">
+                                <label for="brandList">Brand:</label>
+                                <select class="form-control" id="brandList" name="brandList" multiple th:selected="${brandList}">
+                                    <option th:each="brand : ${brands}" th:value="${brand}" th:text="${brand}"></option>
+                                </select>
+                            </div>
 
-                                restrictToNumeric(minPriceInput);
-                                restrictToNumeric(maxPriceInput);
-                            });
-                        </script>
-
-                        <!-- Sort by price -->
-                        <div class="mb-3">
-                            <label for="sortByPrice">Sort by Price:</label>
-                            <select class="form-control" id="sortByPrice">
-                                <option value="asc">Ascending</option>
-                                <option value="desc">Descending</option>
-                            </select>
-                        </div>
-
-                        <!-- Filter by brand -->
-<!--                        <div class="mb-3">-->
-<!--                            <label for="brand">Brand:</label>-->
-<!--                            <select class="form-control" id="brand" th:field="${product.brand}">-->
-<!--                                <option th:each="brand : ${brandOptions}" th:value="${brand}" th:text="${brand}"></option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-
-                        <!-- Apply button -->
-                        <button class="btn btn-primary">Apply Filters</button>
+                            <!-- Apply button -->
+                            <button class="btn btn-primary">Apply Filters</button>
+                        </form>
                     </div>
                 </div>
             </div>
             <!-- End Column 1 -->
 
             <!-- Start Column 2 -->
-            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0" th:each="product : ${shoes}">
+            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0" th:each="product : ${products}">
                 <a class="product-item">
                     <img th:src="${product.url}" class="img-fluid product-thumbnail">
                     <h3 class="product-title" th:text="${product.brand + ' - ' + product.name}" > </h3>

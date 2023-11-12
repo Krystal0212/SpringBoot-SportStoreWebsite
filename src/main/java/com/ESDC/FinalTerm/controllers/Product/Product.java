@@ -1,70 +1,51 @@
 package com.ESDC.FinalTerm.controllers.Product;
 
-public class Product {
-    private String brand;
-    private String name;
-    private String price;
-    private String quantity;
-    private String description;
-    private String url;
+import lombok.Getter;
+import lombok.Setter;
 
-    public Product(String brand, String name, String price, String quantity, String url, String description) {
+public class Product {
+    @Getter @Setter
+    private String brand;
+    @Getter @Setter
+    private String name;
+    @Setter
+    private String price;
+    @Setter
+    private String quantity;
+    @Getter @Setter
+    private String description;
+    @Getter @Setter
+    private String url;
+    @Getter @Setter
+    private String status;
+
+    public Product(String brand, String name, String price, String quantity, String status, String url, String description) {
         this.brand = brand;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.url = url;
         this.description = description;
+        this.status = status;
     }
 
     public Product() {
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
     public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
-        this.quantity = quantity;
-    }
-    public String getDescription() {
-        return description;
+    public int getIntPrice() {
+        return Integer.parseInt(price);
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    public int getIntQuantity() {
+        return Integer.parseInt(quantity);
     }
 
 }
