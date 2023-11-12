@@ -225,11 +225,36 @@
                     <h3 class="product-title" th:text="${product.brand + ' - ' + product.name}" > </h3>
                     <strong class="product-price" th:text="${'Price: $' + product.price}" > </strong>
 
-                    <span class="icon-cross">
-								<img src="/images/cross.svg" class="img-fluid">
-							</span>
+                    <span class="icon-cross" id="btnAdd">
+                        <img src="/images/cross.svg" class="img-fluid">
+                    </span>
                 </a>
             </div>
+
+            <!-- Xu ly su kien add -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Lấy tất cả các nút thêm
+                    const addButtons = document.querySelectorAll('.btnAdd');
+
+                    // Thêm sự kiện nghe cho mỗi nút thêm
+                    addButtons.forEach(function (button) {
+                        button.addEventListener('click', function () {
+                            // Lấy thông tin sản phẩm từ thuộc tính data
+                            const brand = button.dataset.productBrand;
+                            const name = button.dataset.productName;
+                            const price = button.dataset.productPrice;
+
+                            // Thực hiện bất kỳ hành động nào bạn muốn với thông tin sản phẩm
+                            console.log('Product Brand:', brand);
+                            console.log('Product Name:', name);
+                            console.log('Product Price:', price);
+
+                            // Đây là nơi bạn có thể thực hiện thêm sản phẩm vào giỏ hàng hoặc bất kỳ hành động nào khác.
+                        });
+                    });
+                });
+            </script>
             <!-- End Column 2 -->
 
             <!-- Start Column 3 -->
