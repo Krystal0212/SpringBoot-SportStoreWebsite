@@ -19,7 +19,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
     <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
-    <script rel="stylesheet" type="module" src="/js/index.js" th:src="@{/js/index.js}"></script>
+
+    <!--  Xu ly get user tu localStorage ( nếu có )    >-->
+    <script th:inline="javascript">
+        var myUser = /*[(${myUser})]*/'';
+        localStorage.setItem('user', JSON.stringify(myUser));
+    </script>
+
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
     <link rel="stylesheet" href="fonts/icomoon/style.css">
@@ -54,12 +60,49 @@
             </form>
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
+
+                    <li class="nav-item active" >
+                        <a href="/user/home"  id="Home" class="nav-link">Home</a>
+                    </li>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            // Kiểm tra xem localStorage("user") có tồn tại không
+                            var user = localStorage.getItem('user');
+                            var homeLink = document.getElementById('Home');
+
+                            if (user) {
+                                // Nếu có tồn tại, điều hướng đến "/user/home"
+                                homeLink.href = "/user/home";
+                            } else {
+                                // Nếu không tồn tại, điều hướng đến "/home"
+                                homeLink.href = "/home";
+                            }
+                        });
+                    </script>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Page</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown04">
-                            <a class="dropdown-item" href="#">Page 1</a>
+                            <a id="Shoes" class="dropdown-item" href="/user/shoes">Page 1</a>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    // Kiểm tra xem localStorage("user") có tồn tại không
+                                    var user = localStorage.getItem('user');
+                                    var shoesLink = document.getElementById('Shoes');
+
+                                    if (user) {
+                                        // Nếu có tồn tại, điều hướng đến "/user/shoes"
+                                        shoesLink.href = "/user/shoes";
+                                    } else {
+                                        // Nếu không tồn tại, điều hướng đến "/shoes"
+                                        shoesLink.href = "/shoes";
+                                    }
+                                });
+                            </script>
+
                             <a class="dropdown-item" href="#">Page 2</a>
                             <a class="dropdown-item" href="#">Page 3</a>
                             <a class="dropdown-item" href="#">Page 4</a>
@@ -81,7 +124,7 @@
                                 class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
                         <a href="#" class="d-flex align-items-center justify-content-center"><span
                                 class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
-                        <a href="/login" id="loginIcon" style="display:none !important;" th:href="@{/login} " th:if="${user?.name} == null"
+                        <a href="/login" id="loginIcon" style="display: none !important;" th:href="@{/login} "
                            class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i
                                 class="sr-only">User</i></span></a>
                     </p>
@@ -120,29 +163,71 @@
 <!--                </div>-->
 <!--            </li>-->
 <!--        </div>-->
-        <div class="dropdown" th:if="${user} != null">
+
+
+        <div class="dropdown"  id="dropdownBox" style="display: none;">
             <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="visually-hidden" th:text="${user?.name}"></span>
+                <span class="visually-hidden"  id="customerName"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
                 <li><a class="dropdown-item" href="#">....</a></li>
                 <li><a class="dropdown-item" href="#">....</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li style="text-align: center"><a  th:href="@{/user/logout}">Logout</a></li>
+                <li style="text-align: center"><a  href="/user/logout" id="logOut">Logout</a></li>
             </ul>
         </div>
 
-        <div class="dropdown" th:if="${user} == null" style="display:none !important;" id="dropdownBox">
-            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="visually-hidden" th:id="customerName" ></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                <li><a class="dropdown-item" href="#">....</a></li>
-                <li><a class="dropdown-item" href="#">....</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li style="text-align: center"><a id="logOut">Logout</a></li>
-            </ul>
-        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const dropdownBox = document.getElementById('dropdownBox');
+                const customerName = document.getElementById('customerName');
+                const loginIcon = document.getElementById('loginIcon');
+
+
+                // Kiểm tra xem localStorage('user') có rỗng không
+                const userJSON = localStorage.getItem('user');
+
+                if (userJSON) {
+                    const userObject = JSON.parse(userJSON);
+
+                    // Hiển thị dropdownBox và đặt dữ liệu vào customerName
+                    dropdownBox.style.display = 'block';
+                    customerName.textContent = userObject.name;
+                    loginIcon.style.cssText="display: none !important;";
+                } else {
+                    // Nếu localStorage('user') rỗng, ẩn dropdownBox
+                    dropdownBox.style.display = 'none';
+                    loginIcon.style.cssText="display: block !important;";
+                    loginIcon.style.cssText="align: center !important;";
+                }
+            });
+        </script>
+
+<!--        <div class="dropdown" th:if="${user} != null" id="dropdownBox">-->
+<!--            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                <span class="visually-hidden"  id="customerName" th:text="${user?.name}"></span>-->
+<!--            </button>-->
+<!--            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">-->
+<!--                <li><a class="dropdown-item" href="#">....</a></li>-->
+<!--                <li><a class="dropdown-item" href="#">....</a></li>-->
+<!--                <li><hr class="dropdown-divider"></li>-->
+<!--                <li style="text-align: center"><a  href="/user/logout" id="logOut">Logout</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+
+
+
+        <!--        <div class="dropdown" th:if="${user} == null" style="display:none !important;" >-->
+<!--            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                <span class="visually-hidden" id="customerName" ></span>-->
+<!--            </button>-->
+<!--            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">-->
+<!--                <li><a class="dropdown-item" href="#">....</a></li>-->
+<!--                <li><a class="dropdown-item" href="#">....</a></li>-->
+<!--                <li><hr class="dropdown-divider"></li>-->
+<!--                <li style="text-align: center"><a>Logout</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
 
 <!--        <span th:id="accountShownName" th:text="${user?.name}"></span>-->
 <!--        <div class="account" id="customerName" th:if="${user} == null"></div>-->
@@ -199,6 +284,7 @@
 <!--    <script src="js/theirJS/jquery.sticky.js"></script>-->
 <!--    <script src="js/theirJS/main1.js"></script>-->
 </div>
+
 <div class="banner">
     <div class="container-image">
         <img id="banner-image" src="../images/banner_slider_1.png" alt="Slider1">
@@ -218,4 +304,6 @@
     <script th:src="@{/js/home-banner.js}"></script>
 </div>
 </body>
+<script rel="stylesheet" type="module" src="/js/index.js" th:src="@{/js/index.js}"></script>
+
 </html>

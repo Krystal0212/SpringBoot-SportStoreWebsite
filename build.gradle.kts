@@ -35,6 +35,8 @@ dependencies {
 
 	implementation ("org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE")
 	implementation ("org.springframework.security:spring-security-test")
+	implementation ("com.fasterxml.jackson.core:jackson-databind:2.12.5")
+
 
 }
 

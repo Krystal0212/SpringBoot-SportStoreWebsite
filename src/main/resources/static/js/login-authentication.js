@@ -41,7 +41,7 @@ googleLoginButton.addEventListener('click', () => {
                                 // Có người dùng tồn tại với cùng email, bạn có thể thực hiện cập nhật dữ liệu ở đây
                                 // Ví dụ: database.update(...)
                                 // database.set(database.ref(dbRef, 'Customer/' + childSnapshot.key), newUser);
-                                redirectToIndexPageForGoogle(childSnapshot.val(), childSnapshot.key);
+                                redirectToIndexPageForGoogle(userData, childSnapshot.key);
                             }
                         });
 
@@ -109,7 +109,7 @@ const redirectToIndexPageForGoogle = (customerData,customerId) => {
     const user = {
         userId: customerId,
         //Tại vì có cả user google dùng
-        userName: customerData.name,
+        userName: customerData.username,
         userPassword: customerData.password,
         email: customerData.email,
         gender: customerData.gender,
@@ -123,7 +123,23 @@ const redirectToIndexPageForGoogle = (customerData,customerId) => {
     const userJSON = JSON.stringify(user);
 
     // Store the user data in localStorage for use in the protected index page
-    localStorage.setItem("user", userJSON);
+    localStorage.setItem("google checker", userJSON);
+
+    const userForUse = {
+        email : customerData.email,
+        gender : customerData.gender,
+        name : customerData.name,
+        password : customerData.password,
+        phone_number : customerData.phone_number,
+        state : customerData.state,
+        username : customerData.username,
+    };
+
+    // Convert user data to a JSON string
+    const userForUseJSON = JSON.stringify(userForUse);
+
+    // Store the user data in localStorage for use in the protected index page
+    localStorage.setItem("user", userForUseJSON);
 
     // Redirect to the protected index page
     loginSuccessAlert();
@@ -135,7 +151,7 @@ const redirectToIndexPageForUser = (customerData,customerId) => {
     const user = {
         userId: customerId,
         //Tại vì có cả user google dùng
-        userName: customerData.name,
+        userName: customerData.username,
         userPassword: customerData.password,
         email: customerData.email,
         gender: customerData.gender,
@@ -158,11 +174,11 @@ const redirectToIndexPageForUser = (customerData,customerId) => {
 async function loginSuccessAlert() {
     await Swal.fire({
         icon: 'success',
-        title: 'Thành công!',
+        title: 'Thông báo',
         text: 'Đăng nhập thành công!',
     });
 
-    const userJSON = localStorage.getItem('user');
+    const userJSON = localStorage.getItem('google checker');
     const userObject = JSON.parse(userJSON);
 
     var userName = userObject.userName;

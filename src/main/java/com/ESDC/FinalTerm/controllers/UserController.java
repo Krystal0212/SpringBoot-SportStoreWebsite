@@ -1,7 +1,11 @@
 package com.ESDC.FinalTerm.controllers;
 
 
+import com.ESDC.FinalTerm.controllers.Product.Product;
+import com.ESDC.FinalTerm.controllers.Product.ProductService;
 import com.ESDC.FinalTerm.objects.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -16,15 +20,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Controller
 @ControllerAdvice
 @RequestMapping("/user")
 public class UserController {
+    @Autowired
+
+    private ObjectMapper objectMapper;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
@@ -32,12 +43,16 @@ public class UserController {
         return "login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/home")
     public String loginUser(@ModelAttribute User user, Model model) {
         try {
             User loggedInUser = userService.loginCustomerByTyping(user.getUsername(), user.getPassword());
 
             if (loggedInUser != null) {
+                //đưa user đó vào localStorage
+                String myUser = objectMapper.writeValueAsString(loggedInUser);
+
+                model.addAttribute("myUser", myUser);
                 model.addAttribute("user", loggedInUser);
                 return "index";
             } else {
@@ -47,13 +62,15 @@ public class UserController {
         } catch (ExecutionException | InterruptedException e) {
             model.addAttribute("error", "Error during login");
             return "login";
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @GetMapping("/logout")
     public String logoutUser() {
         userService.logoutUser();
-        return "redirect:/";
+        return "redirect:/home";
     }
 
     @GetMapping("/dashboard")
@@ -65,12 +82,8 @@ public class UserController {
     }
 
     @GetMapping("/home")
-    public String showHome() {
-        if (userService.isUserLoggedIn()) {
-            return "index";
-        } else {
-            return "home";
-        }
+    public String showHome(Model model) {
+        return "index";
     }
 
     @GetMapping("/register")
@@ -135,6 +148,10 @@ public class UserController {
                 user.setGoogleUser(isGoogleUser);
 
                 User loggedInUser = userService.findAndSaveGoogleUser(user);
+                //đưa user đó vào localStorage
+                ObjectMapper objectMapper = new ObjectMapper();
+                String jsonString = objectMapper.writeValueAsString(loggedInUser);
+
 
                 if (loggedInUser != null) {
                     model.addAttribute("user", user);
@@ -148,6 +165,8 @@ public class UserController {
             } catch (ExecutionException | InterruptedException e) {
                 model.addAttribute("error", "Error during Google login");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error during Google login");
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
             }
         }
 
@@ -260,4 +279,12 @@ public class UserController {
 //
 //        return modelAndView;
 //    }
+
+    @GetMapping("/shoes")
+    public String showShoes(Model model) {
+        // Lấy danh sách sản phẩm Shoes
+        List<Product> shoes = productService.getProductsByType("Shoes");
+        model.addAttribute("shoes", shoes);
+        return "Shoes";
+    }
 }
