@@ -4,40 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DawaSport</title>
+    <link rel="shortcut icon" href="/images/DawaSport_Logo_1.png">
 
     <base href="/">
+    <!--Style For Custom Elements-->
     <link rel="stylesheet" type="text/css" href="/css/style_home_banner.css" th:href="@{/css/style_home_banner.css}"/>
-    <link rel="stylesheet" type="text/css" href="css/style_home_navbar.css" th:href="@{/css/style_home_navbar.css}">
+    <link rel="stylesheet" type="text/css" href="/css/style_home_navbar.css" th:href="@{/css/style_home_navbar.css}">
+    <link rel="stylesheet" type="text/css" href="/css/style_home_navbar.css" th:href="@{/css/logoutBtn.css}">
 
+    <link rel="stylesheet" type="text/css" href="/css/style_home_tiny_slider.css">
+    <link rel="stylesheet" type="text/css" href="/css/style_general_body_and_footer.css">
+
+    <!--Style For Fonts And Icons-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@500&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' type='text/css'>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <!--Style And Script For Confirm Status Box-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
     <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
-    <script rel="stylesheet" type="module" src="/js/index.js" th:src="@{/js/index.js}"></script>
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-    <link rel="stylesheet" href="fonts/icomoon/style.css">
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <!--  Xu ly get user tu localStorage ( nếu có )    >-->
+    <script th:inline="javascript">
+        var myUser = /*[(${myUser})]*/'';
+        localStorage.setItem('user', JSON.stringify(myUser));
+    </script>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
 
-    <!-- Style -->
-<!--    <link rel="stylesheet" href="css/style_home_navbar_menu.css">-->
-    <!-- Add these links to your HTML head -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <!--Script For Firebase-->
+    <script type="module" th:src="@{/js/firebase-config.js}"></script>
+    <script type="module" th:src="@{/js/index.js}"></script>
+    <script type="module" th:src="@{https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js}"></script>
+
+    <!--Style And Script For Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
 </head>
 <body>
+
+<!-- Start Navigation Bar Section -->
 <div class="navbar_menu">
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
         <div class="container">
@@ -54,12 +67,49 @@
             </form>
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
+
+                    <li class="nav-item active" >
+                        <a href="/user/home"  id="Home" class="nav-link">Home</a>
+                    </li>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            // Kiểm tra xem localStorage("user") có tồn tại không
+                            var user = localStorage.getItem('user');
+                            var homeLink = document.getElementById('Home');
+
+                            if (user) {
+                                // Nếu có tồn tại, điều hướng đến "/user/home"
+                                homeLink.href = "/user/home";
+                            } else {
+                                // Nếu không tồn tại, điều hướng đến "/home"
+                                homeLink.href = "/home";
+                            }
+                        });
+                    </script>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">Page</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown04">
-                            <a class="dropdown-item" href="#">Page 1</a>
+                            <a id="Shoes" class="dropdown-item" href="/user/shoes">Page 1</a>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    // Kiểm tra xem localStorage("user") có tồn tại không
+                                    var user = localStorage.getItem('user');
+                                    var shoesLink = document.getElementById('Shoes');
+
+                                    if (user) {
+                                        // Nếu có tồn tại, điều hướng đến "/user/shoes"
+                                        shoesLink.href = "/user/shoes";
+                                    } else {
+                                        // Nếu không tồn tại, điều hướng đến "/shoes"
+                                        shoesLink.href = "/shoes";
+                                    }
+                                });
+                            </script>
+
                             <a class="dropdown-item" href="#">Page 2</a>
                             <a class="dropdown-item" href="#">Page 3</a>
                             <a class="dropdown-item" href="#">Page 4</a>
@@ -81,7 +131,7 @@
                                 class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
                         <a href="#" class="d-flex align-items-center justify-content-center"><span
                                 class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
-                        <a href="/login" id="loginIcon" style="display:none !important;" th:href="@{/login} " th:if="${user?.name} == null"
+                        <a href="/login" id="loginIcon" style="display: none !important;" th:href="@{/login} "
                            class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i
                                 class="sr-only">User</i></span></a>
                     </p>
@@ -120,29 +170,76 @@
 <!--                </div>-->
 <!--            </li>-->
 <!--        </div>-->
-        <div class="dropdown" th:if="${user} != null">
+
+
+        <div class="dropdown"  id="dropdownBox" style="display: none;">
             <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="visually-hidden" th:text="${user?.name}"></span>
+                <span class="visually-hidden"  id="customerName"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
                 <li><a class="dropdown-item" href="#">....</a></li>
                 <li><a class="dropdown-item" href="#">....</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li style="text-align: center"><a  th:href="@{/user/logout}">Logout</a></li>
+                <li style="text-align: center">
+                    <a id="logOut" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+
             </ul>
         </div>
 
-        <div class="dropdown" th:if="${user} == null" style="display:none !important;" id="dropdownBox">
-            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="visually-hidden" th:id="customerName" ></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                <li><a class="dropdown-item" href="#">....</a></li>
-                <li><a class="dropdown-item" href="#">....</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li style="text-align: center"><a id="logOut">Logout</a></li>
-            </ul>
-        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const dropdownBox = document.getElementById('dropdownBox');
+                const customerName = document.getElementById('customerName');
+                const loginIcon = document.getElementById('loginIcon');
+
+
+                // Kiểm tra xem localStorage('user') có rỗng không
+                const userJSON = localStorage.getItem('user');
+
+                if (userJSON) {
+                    const userObject = JSON.parse(userJSON);
+
+                    // Hiển thị dropdownBox và đặt dữ liệu vào customerName
+                    dropdownBox.style.display = 'block';
+                    customerName.textContent = userObject.name;
+                    loginIcon.style.cssText="display: none !important;";
+                } else {
+                    // Nếu localStorage('user') rỗng, ẩn dropdownBox
+                    dropdownBox.style.display = 'none';
+                    loginIcon.style.cssText="display: block !important;";
+                    loginIcon.style.cssText="align: center !important;";
+                }
+            });
+        </script>
+
+<!--        <div class="dropdown" th:if="${user} != null" id="dropdownBox">-->
+<!--            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                <span class="visually-hidden"  id="customerName" th:text="${user?.name}"></span>-->
+<!--            </button>-->
+<!--            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">-->
+<!--                <li><a class="dropdown-item" href="#">....</a></li>-->
+<!--                <li><a class="dropdown-item" href="#">....</a></li>-->
+<!--                <li><hr class="dropdown-divider"></li>-->
+<!--                <li style="text-align: center"><a  href="/user/logout" id="logOut">Logout</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+
+
+
+        <!--        <div class="dropdown" th:if="${user} == null" style="display:none !important;" >-->
+<!--            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                <span class="visually-hidden" id="customerName" ></span>-->
+<!--            </button>-->
+<!--            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">-->
+<!--                <li><a class="dropdown-item" href="#">....</a></li>-->
+<!--                <li><a class="dropdown-item" href="#">....</a></li>-->
+<!--                <li><hr class="dropdown-divider"></li>-->
+<!--                <li style="text-align: center"><a>Logout</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
 
 <!--        <span th:id="accountShownName" th:text="${user?.name}"></span>-->
 <!--        <div class="account" id="customerName" th:if="${user} == null"></div>-->
@@ -179,6 +276,7 @@
 <!--            }-->
 <!--        </script>-->
     </nav>
+
     <!-- END nav -->
     <section>
         <div class="container">
@@ -188,17 +286,15 @@
     </section>
 
     <!--For nav bar -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/popper.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/main.js"></script>
-
-    <!--For user menu-->
-<!--    <script src="js/theirJS/jquery-3.3.1.min.js"></script>-->
-<!--    <script src="js/theirJS/popper.min.js"></script>-->
-<!--    <script src="js/theirJS/jquery.sticky.js"></script>-->
-<!--    <script src="js/theirJS/main1.js"></script>-->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/main.js"></script>
 </div>
+
+<!-- End Navigation Bar Section -->
+
+<!-- Start Slide Banner Section -->
 <div class="banner">
     <div class="container-image">
         <img id="banner-image" src="../images/banner_slider_1.png" alt="Slider1">
@@ -215,7 +311,443 @@
             <div id="banner-text2" class="rs_splitted_chars">Begins Here</div>
         </div>
     </div>
+    <!-- Script For Banner-->
     <script th:src="@{/js/home-banner.js}"></script>
 </div>
+<!-- End Slide Banner Section -->
+
+<!-- Start Why Choose Us Section -->
+<div class="why-choose-section">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-6">
+                <h2 class="section-title">Why Choose Us</h2>
+                <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit
+                    imperdiet dolor tempor tristique.</p>
+
+                <div class="row my-5">
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src="/images/truck.svg" alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>Fast &amp; Free Shipping</h3>
+                            <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
+                                vulputate.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src="/images/bag.svg" alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>Easy to Shop</h3>
+                            <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
+                                vulputate.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src="/images/support.svg" alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>24/7 Support</h3>
+                            <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
+                                vulputate.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-6">
+                        <div class="feature">
+                            <div class="icon">
+                                <img src="/images/return.svg" alt="Image" class="imf-fluid">
+                            </div>
+                            <h3>Hassle Free Returns</h3>
+                            <p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
+                                vulputate.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="img-wrap">
+                    <img src="/images/why-choose-us-img.jpg" alt="Image" class="img-fluid">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Why Choose Us Section -->
+
+<!-- Start We Help Section -->
+<div class="we-help-section">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-7 mb-5 mb-lg-0">
+                <div class="imgs-grid">
+                    <div class="grid grid-1"><img src="images/img-grid-1.jpg" alt="DawaFit.co"></div>
+                    <div class="grid grid-2"><img src="images/img-grid-2.jpg" alt="DawaFit.co"></div>
+                    <div class="grid grid-3"><img src="images/img-grid-3.jpg" alt="DawaFit.co"></div>
+                </div>
+            </div>
+            <div class="col-lg-5 ps-lg-5">
+                <h2 class="section-title mb-4">We Help You Make Modern Interior Design</h2>
+                <p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam
+                    ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant
+                    morbi tristique senectus et netus et malesuada</p>
+
+                <ul class="list-unstyled custom-list my-4">
+                    <li>Donec vitae odio quis nisl dapibus malesuada</li>
+                    <li>Donec vitae odio quis nisl dapibus malesuada</li>
+                    <li>Donec vitae odio quis nisl dapibus malesuada</li>
+                    <li>Donec vitae odio quis nisl dapibus malesuada</li>
+                </ul>
+                <p><a herf="#" class="btn">Explore</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End We Help Section -->
+
+<!-- Start Popular Product -->
+<div class="popular-product">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
+                <div class="product-item-sm d-flex">
+                    <div class="thumbnail">
+                        <img src="images/product-1.png" alt="Image" class="img-fluid">
+                    </div>
+                    <div class="pt-3">
+                        <h3>Nordic Chair</h3>
+                        <p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio </p>
+                        <p><a href="#">Read More</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
+                <div class="product-item-sm d-flex">
+                    <div class="thumbnail">
+                        <img src="images/product-2.png" alt="Image" class="img-fluid">
+                    </div>
+                    <div class="pt-3">
+                        <h3>Kruzo Aero Chair</h3>
+                        <p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio </p>
+                        <p><a href="#">Read More</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
+                <div class="product-item-sm d-flex">
+                    <div class="thumbnail">
+                        <img src="images/product-3.png" alt="Image" class="img-fluid">
+                    </div>
+                    <div class="pt-3">
+                        <h3>Ergonomic Chair</h3>
+                        <p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio </p>
+                        <p><a href="#">Read More</a></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Popular Product -->
+
+<!-- Start Testimonial Slider -->
+<div class="testimonial-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 mx-auto text-center">
+                <h2 class="section-title">Testimonials</h2>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="testimonial-slider-wrap text-center">
+
+                    <div id="testimonial-nav">
+                        <span class="prev" data-controls="prev"><span class="fa fa-chevron-left"></span></span>
+                        <span class="next" data-controls="next"><span class="fa fa-chevron-right"></span></span>
+                    </div>
+
+                    <div class="testimonial-slider">
+
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+
+                                    <div class="testimonial-block text-center">
+                                        <blockquote class="mb-5">
+                                            <p>&ldquo;Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio
+                                                quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate
+                                                velit imperdiet dolor tempor tristique. Pellentesque habitant morbi
+                                                tristique senectus et netus et malesuada fames ac turpis egestas.
+                                                Integer convallis volutpat dui quis scelerisque.&rdquo;</p>
+                                        </blockquote>
+
+                                        <div class="author-info">
+                                            <div class="author-pic">
+                                                <img src="images/person-1.png" alt="Maria Jones" class="img-fluid">
+                                            </div>
+                                            <h3 class="font-weight-bold">Maria Jones</h3>
+                                            <span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END item -->
+
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+
+                                    <div class="testimonial-block text-center">
+                                        <blockquote class="mb-5">
+                                            <p>&ldquo;Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio
+                                                quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate
+                                                velit imperdiet dolor tempor tristique. Pellentesque habitant morbi
+                                                tristique senectus et netus et malesuada fames ac turpis egestas.
+                                                Integer convallis volutpat dui quis scelerisque.&rdquo;</p>
+                                        </blockquote>
+
+                                        <div class="author-info">
+                                            <div class="author-pic">
+                                                <img src="images/person-1.png" alt="Maria Jones" class="img-fluid">
+                                            </div>
+                                            <h3 class="font-weight-bold">Maria Jones</h3>
+                                            <span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END item -->
+
+                        <div class="item">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8 mx-auto">
+
+                                    <div class="testimonial-block text-center">
+                                        <blockquote class="mb-5">
+                                            <p>&ldquo;Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio
+                                                quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate
+                                                velit imperdiet dolor tempor tristique. Pellentesque habitant morbi
+                                                tristique senectus et netus et malesuada fames ac turpis egestas.
+                                                Integer convallis volutpat dui quis scelerisque.&rdquo;</p>
+                                        </blockquote>
+
+                                        <div class="author-info">
+                                            <div class="author-pic">
+                                                <img src="images/person-1.png" alt="Maria Jones" class="img-fluid">
+                                            </div>
+                                            <h3 class="font-weight-bold">Maria Jones</h3>
+                                            <span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END item -->
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Testimonial Slider -->
+
+<!-- Start Blog Section -->
+<div class="blog-section">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <h2 class="section-title">Recent Blog</h2>
+            </div>
+            <div class="col-md-6 text-start text-md-end">
+                <a href="#" class="more">View All Posts</a>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
+                <div class="post-entry">
+                    <a href="#" class="post-thumbnail"><img src="images/post-1.jpg" alt="Image" class="img-fluid"></a>
+                    <div class="post-content-entry">
+                        <h3><a href="#">First Time Home Owner Ideas</a></h3>
+                        <div class="meta">
+                            <span>by <a href="#">Kristin Watson</a></span> <span>on <a href="#">Dec 19, 2021</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
+                <div class="post-entry">
+                    <a href="#" class="post-thumbnail"><img src="images/post-2.jpg" alt="Image" class="img-fluid"></a>
+                    <div class="post-content-entry">
+                        <h3><a href="#">How To Keep Your Furniture Clean</a></h3>
+                        <div class="meta">
+                            <span>by <a href="#">Robert Fox</a></span> <span>on <a href="#">Dec 15, 2021</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
+                <div class="post-entry">
+                    <a href="#" class="post-thumbnail"><img src="images/post-3.jpg" alt="Image" class="img-fluid"></a>
+                    <div class="post-content-entry">
+                        <h3><a href="#">Small Space Furniture Apartment Ideas</a></h3>
+                        <div class="meta">
+                            <span>by <a href="#">Kristin Watson</a></span> <span>on <a href="#">Dec 12, 2021</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Blog Section -->
+
+<!-- Start Footer Section -->
+<footer class="footer-section">
+    <div class="container relative">
+
+        <div class="sofa-img">
+            <img src="/images/sofa.png" alt="Image" class="img-fluid">
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="subscription-form">
+                    <h3 class="d-flex align-items-center">
+                        <span class="me-1">
+                            <img src="/images/envelope-outline.svg" alt="Image" class="img-fluid">
+                        </span>
+                        <span>Subscribe to Newsletter</span>
+                    </h3>
+
+                    <form action="#" class="row g-3">
+                        <div class="col-auto">
+                            <input type="text" class="form-control" placeholder="Enter your name">
+                        </div>
+                        <div class="col-auto">
+                            <input type="email" class="form-control" placeholder="Enter your email">
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary">
+                                <span class="fa fa-paper-plane"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-5 mb-5">
+            <div class="col-lg-4">
+                <div class="mb-4 footer-logo-wrap" style="margin-bottom: 0 !important;">
+                    <a href="#" class="footer-logo">DawaSport<span>.</span></a>
+                </div>
+                <p class="mb-4">Discover a world of sports excellence at DawaSport – your ultimate destination for
+                    premium athletic gear and equipment. Whether you're a seasoned athlete or just starting your fitness
+                    journey, we've got everything you need to conquer your goals!</p>
+
+                <ul class="list-unstyled custom-social">
+                    <li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="row links-wrap">
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#"></a></li>
+                            <li><a href="#"></a></li>
+                            <li><a href="#"></a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">About us</a></li>
+                            <li><a href="#">Services</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Contact us</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Jobs</a></li>
+                            <li><a href="#">Our team</a></li>
+                            <li><a href="#">Leadership</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Shoes</a></li>
+                            <li><a href="#">Athletic Wear</a></li>
+                            <li><a href="#">Sports Accessories</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="border-top copyright">
+            <div class="row pt-4">
+                <div class="col-lg-6">
+                    <p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                        . All Rights Reserved. &mdash; Designed with love by <a>DawaFit.co</a>
+                        Distributed By <a>DawaSport</a>
+                    </p>
+                </div>
+
+                <div class="col-lg-6 text-center text-lg-end">
+                    <ul class="list-unstyled d-inline-flex ms-auto">
+                        <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+                        <li class="me-4"><a>&nbsp;&nbsp;&nbsp;</a></li>
+                        <li><a href="#">&nbsp;Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer Section -->
+
+<!-- Script For Body And Footer -->
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/js_home_tiny_slider.js"></script>
+<script src="/js/js_home_custom.js"></script>
+
 </body>
+<script rel="stylesheet" type="module" src="/js/index.js" th:src="@{/js/index.js}"></script>
+
 </html>

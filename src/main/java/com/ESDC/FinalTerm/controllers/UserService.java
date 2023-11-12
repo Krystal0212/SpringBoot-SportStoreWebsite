@@ -96,7 +96,7 @@ public class UserService {
                 future.complete(null);
             }
         });
-
+        saveUser(future.get());
         return future.get();
     }
 
@@ -206,5 +206,4 @@ public class UserService {
 //
 //        return future.get();
 //    }
-
 }
