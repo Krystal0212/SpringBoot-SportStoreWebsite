@@ -11,6 +11,12 @@ import * as database from "https://www.gstatic.com/firebasejs/10.5.2/firebase-da
 
 
     Function add1(){
+    const pName = document.getElementById('pName').value;
+         const pBrand = document.getElementById('pBrand').value;
+         const pType = document.getElementById('pType').value;
+         const pPrice = document.getElementById('pPrice').value;
+         const pQuantity = document.getElementById('pQuantity').value;
+         const bnt = document.getElementById('addPButton').value;
         WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity)
         .then(() => {alert("Thêm sản phẩm thành công!");
         window.location.href = "/staff-main";
