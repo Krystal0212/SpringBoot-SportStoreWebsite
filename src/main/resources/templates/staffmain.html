@@ -122,8 +122,15 @@
                         <label for="pPrice">Product Quantity</label>
                         <input type="text" name="pQuantity" class="form-control" id="pQuantity" required
                                pattern="^[0-9]+([.])?[0-9]*([0-9]+)?$" title="number 0-9 '.'">
-                        <input type="submit" value="Add" id="addPButton">
+                        <input type="submit" value="Add" id="add">
+                        <script type="module">
+    document.querySelector('#add').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent form submission
+        ClickAdd();
+    });
+</script>
                     </form>
+
 
                     <table>
                         <thead>

@@ -2,26 +2,22 @@ import * as database from "https://www.gstatic.com/firebasejs/10.5.2/firebase-da
 // Get the Firebase database
 // Add an event listener to the submit button
 
+
+
+ window.ClickAdd = function ClickAdd() {
      const pName = document.getElementById('pName').value;
      const pBrand = document.getElementById('pBrand').value;
      const pType = document.getElementById('pType').value;
      const pPrice = document.getElementById('pPrice').value;
      const pQuantity = document.getElementById('pQuantity').value;
-     const bnt = document.getElementById('addPButton').value;
+
+     WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity)
+                          .then(() => {
+                              alert("Thêm thành công!");
+                          })
+ };
 
 
-    Function add1(){
-    const pName = document.getElementById('pName').value;
-         const pBrand = document.getElementById('pBrand').value;
-         const pType = document.getElementById('pType').value;
-         const pPrice = document.getElementById('pPrice').value;
-         const pQuantity = document.getElementById('pQuantity').value;
-         const bnt = document.getElementById('addPButton').value;
-        WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity)
-        .then(() => {alert("Thêm sản phẩm thành công!");
-        })
-    }
-    bnt.addEventListener('click',add1);
 
     const WriteDataToFirebase = function WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity){
 
@@ -60,3 +56,42 @@ import * as database from "https://www.gstatic.com/firebasejs/10.5.2/firebase-da
               return true;
             })
     };
+
+
+//var pName = document.querySelector("input[name='pName']").value;
+//var pBrand = document.querySelector("input[name='pBrand']").value;
+//var pType = document.querySelector("input[name='pType']").value;
+//var pPrice = document.querySelector("input[name='pPrice']").value;
+//var pQuantity = document.querySelector("input[name='pQuantity']").value;
+//
+//var product = {
+//  pName: pName,
+//  pBrand: pBrand,
+//  pType: pType,
+//    pPrice: pPrice,
+//  pQuantity: pQuantity
+//};
+//
+//var db = firebase.database();
+//var pRef = db.ref("Product");
+//pRef.push(product);
+//
+//Function add1(){
+//var pName = document.querySelector("input[name='pName']").value;
+//var pBrand = document.querySelector("input[name='pBrand']").value;
+//var pType = document.querySelector("input[name='pType']").value;
+//var pPrice = document.querySelector("input[name='pPrice']").value;
+//var pQuantity = document.querySelector("input[name='pQuantity']").value;
+//var product = {
+//  pName: pName,
+//  pBrand: pBrand,
+//  pType: pType,
+//    pPrice: pPrice,
+//  pQuantity: pQuantity
+//};
+//var db = firebase.database();
+//var pRef = db.ref("Product");
+//pRef.push(product);
+//    }
+//    const bnt = document.getElementById('addPButton').value;
+//    bnt.addEventListener('click',add1);
