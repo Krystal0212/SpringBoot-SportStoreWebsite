@@ -20,7 +20,7 @@ public class ProductController {
         List<String> uniqueBrands = Arrays.asList("Brand 1", "Nike", "Brand 3");
 
         // Add the brand options to the model
-        model.addAttribute("brandOptions", uniqueBrands);
+//        model.addAttribute("brandOptions", uniqueBrands);
 
         return "/product-shoes";
     }
