@@ -103,7 +103,20 @@
                         });
                     </script>
                 </li>
-                <li><a class="nav-link" href="/user/cart"><img src="/images/cart.svg" alt="cart"></a></li>
+                <li><a class="nav-link" id="cart" href="/"><img src="/images/cart.svg"  calt="cart"></a></li>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        // Kiểm tra xem localStorage("user") có tồn tại không
+                        var user = localStorage.getItem('user');
+                        var cartLink = document.getElementById('cart');
+
+                        if (user) {
+                            cartLink.href = "/user/cart";
+                        } else {
+                            cartLink.href = "/cart";
+                        }
+                    });
+                </script>
             </ul>
         </div>
     </div>
@@ -146,7 +159,7 @@
             <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
                 <div class="card">
                     <div class="card-body">
-                        <form method="post" action="/shoes/filter">
+                        <form method="post" id="apply" action="/shoes/filter">
                             <!-- Search by product name -->
                             <div class="mb-3">
                                 <input type="text" class="form-control" id="productName" name="productName" placeholder="Enter product name" th:value="${productName}">
@@ -192,6 +205,22 @@
                             <!-- Apply button -->
                             <button class="btn btn-primary">Apply Filters</button>
                         </form>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                // Kiểm tra xem localStorage("user") có tồn tại không
+                                var user = localStorage.getItem('user');
+                                var applyLink = document.getElementById('apply');
+
+                                if (user) {
+                                    // Nếu có tồn tại, điều hướng đến "/user/home"
+                                    applyLink.action = "/user/shoes/filter";
+                                } else {
+                                    // Nếu không tồn tại, điều hướng đến "/home"
+                                    applyLink.action = "/shoes/filter";
+                                }
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
@@ -518,7 +547,12 @@
 <script src="/js/js_home_custom.js"></script>
 </body>
 
-<script rel="stylesheet" type="module" src="/js/index.js" th:src="@{/js/product-shoes.js}"></script>
+<!-- handle log out -->
+
+<script rel="stylesheet" type="module" th:src="@{/js/product-shoes.js}"></script>
+
+<!-- add gio hang -->
+
 <script rel="stylesheet" type="module" src="/js/index.js" th:src="@{/js/addToCart.js}"></script>
 
 </html>

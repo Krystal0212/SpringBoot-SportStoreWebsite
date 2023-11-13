@@ -64,4 +64,9 @@ public class HomeController {
     public String staffCustomer() {
         return "staffcustomer"; // Return the name of the product.html template
     }
+
+    @GetMapping("/cart")
+    public String Cart() {
+        return "redirect:/home"; // Return the name of the product.html template
+    }
 }

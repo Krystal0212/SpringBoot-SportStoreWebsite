@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Page</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .loading-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .loading-text {
+            font-size: 20px;
+        }
+
+        .loading-cart {
+            width: 40px;
+            height: 40px;
+            background-image: url('https://cdn-icons-png.flaticon.com/512/263/263142.png'); /* Đường dẫn đến hình ảnh xe đẩy */
+            background-size: contain;
+            animation: bounce 0.3s infinite alternate;
+        }
+
+        .dot-animation {
+            display: inline-block;
+            animation: bounce 0.3s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="loading-container">
+    <div class="loading-cart"></div>
+    <div class="loading-text">LOADING YOUR CART &nbsp;<span class="dot-animation">.</span><span class="dot-animation">.</span><span class="dot-animation">.</span></div>
+</div>
+
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        //Request post userID len server
+        const userID = localStorage.getItem('userID');
+
+        if (userID) {
+            const url = '/user/saveUserId';
+            const requestData = {
+                userId: userID,
+            };
+
+            // Sử dụng fetch để gửi yêu cầu HTTP POST đến endpoint trên Spring Boot
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json(); // Nếu có phản hồi JSON, phân tích nó
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    window.location.href = "/user/cart";
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        } else {
+            console.log('No userID found in localStorage');
+            window.location.href = "/user/home";
+        }
+    });
+</script>
+
+</html>

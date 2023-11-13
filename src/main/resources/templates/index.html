@@ -29,16 +29,23 @@
     <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
 
-    <!--  Xu ly get user tu localStorage ( nếu có )    >-->
+    <!--  Xu ly get user cho usertyping    >-->
     <script th:inline="javascript">
         var myUser = /*[(${myUser})]*/'';
         localStorage.setItem('user', JSON.stringify(myUser));
     </script>
 
+    <script>
+        const userJson = localStorage.getItem("user");
+        if(userJson){
+            document.addEventListener('DOMContentLoaded', function () {
+                readUserID();
+            });
+        }
+    </script>
 
     <!--Script For Firebase-->
     <script type="module" th:src="@{/js/firebase-config.js}"></script>
-    <script type="module" th:src="@{/js/index.js}"></script>
     <script type="module" th:src="@{https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js}"></script>
 
     <!--Style And Script For Bootstrap CSS -->

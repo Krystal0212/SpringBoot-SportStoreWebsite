@@ -29,6 +29,14 @@ public class Product {
         this.status = status;
     }
 
+    public Product(String brand, String name, String price, String quantity, String url) {
+        this.brand = brand;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.url = url;
+    }
+
     public Product() {
     }
 
@@ -46,6 +54,14 @@ public class Product {
 
     public int getIntQuantity() {
         return Integer.parseInt(quantity);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

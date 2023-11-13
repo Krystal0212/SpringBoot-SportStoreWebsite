@@ -23,7 +23,6 @@ window.addToCart = function (itemName, userName, productType) {
                     console.log(userKey);
                 });
             }
-
             if (itemSnapshot.exists()) {
                 itemSnapshot.forEach((childSnapshot) => {
                     itemKey = childSnapshot.key;
@@ -39,6 +38,7 @@ window.addToCart = function (itemName, userName, productType) {
 
             //kiem tra xem item đó có trong cart của user này chưa dựa vào 2 cái get key trên
             const userCartRef = ref(dbRef, "CustomerCart/" + userKey + "/" + productType + "/" + itemKey);
+            const product = ref(dbRef, "Product/Shoes");
             // Sử dụng get để kiểm tra xem node có tồn tại hay không
             get(userCartRef)
                 .then((snapshot) => {
@@ -57,7 +57,7 @@ window.addToCart = function (itemName, userName, productType) {
                             brand: itemBrand,
                             name: itemName,
                             url: itemURL,
-                            quantity: 1,
+                            quantity: String(1),
                         }
 
                         const userCartRef = ref(dbRef, "CustomerCart/" + userKey + "/" + productType + "/" + itemKey);

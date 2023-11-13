@@ -1,4 +1,6 @@
 import {getAuth, onAuthStateChanged, signOut} from "https://www.gstatic.com/firebasejs/10.5.2/firebase-auth.js";
+import { getDatabase, ref, query, orderByChild, equalTo, get, set } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js";
+
 import {app} from './firebase-config.js'
 
 const customerName = document.getElementById('customerName');
@@ -6,6 +8,8 @@ const dropdownBox = document.getElementById('dropdownBox');
 
 const userJSON = localStorage.getItem('google checker');
 const userJSON2 = localStorage.getItem('user');
+const userID = localStorage.getItem('userID');
+
 
 const auth = getAuth(app);
 
@@ -61,6 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                     // Chuyển đến trang logout khi người dùng đồng ý
                                     localStorage.removeItem("google checker")
                                     localStorage.removeItem("user")
+                                    localStorage.removeItem("userID")
                                     window.location.href = "/user/logout";
                                 }
                             });
@@ -90,6 +95,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         // Chuyển đến trang logout khi người dùng đồng ý
                         localStorage.removeItem("google checker")
                         localStorage.removeItem("user")
+                        localStorage.removeItem("userID")
                         window.location.href = "/user/logout";
                     }
                 });
@@ -98,7 +104,32 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+window.readUserID = function (){
+    let userKey;
+    const dbRef = getDatabase();
+    const customersRef = ref(dbRef, "Customer");
 
+    const userJSON = localStorage.getItem('user');
+    const userObject = JSON.parse(userJSON);
+    const userName = userObject.username;
+
+    const userQuery = query(customersRef, orderByChild("username"), equalTo(userName));
+    Promise.all([get(userQuery)])
+        .then(([userSnapshot]) => {
+            if (userSnapshot.exists()) {
+                userSnapshot.forEach((childSnapshot) => {
+                    userKey = childSnapshot.key;
+                    const user = childSnapshot.val();
+                    localStorage.setItem('userID', userKey);
+                    console.log(user);
+                    console.log(userKey);
+                });
+            }
+        })
+        .catch((error) => {
+            console.error("Lỗi khi lấy dữ liệu: ", error);
+        });
+}
 
 // if (userJSON || userJSON2) {
 //     document.addEventListener('DOMContentLoaded', function () {
@@ -216,4 +247,5 @@ async function logOutSuccessAlert() {
         text: 'Đăng xuất thành công!',
     });
 }
+
 
