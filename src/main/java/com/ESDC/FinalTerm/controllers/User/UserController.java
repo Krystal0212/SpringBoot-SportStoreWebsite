@@ -2,8 +2,9 @@ package com.ESDC.FinalTerm.controllers.User;
 
 
 import com.ESDC.FinalTerm.controllers.Product.Product;
+import com.ESDC.FinalTerm.controllers.Product.ProductInCart;
 import com.ESDC.FinalTerm.controllers.Product.ProductService;
-import com.ESDC.FinalTerm.objects.User;
+import com.ESDC.FinalTerm.controllers.User.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -41,7 +42,6 @@ public class UserController {
 
     @Autowired
     private ProductService productService;
-    private List<String> brands;
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
