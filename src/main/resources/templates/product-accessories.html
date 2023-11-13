@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="/images/DawaSport_Logo_4.png">
+    <meta name="keywords" content="bootstrap, bootstrap4"/>
+
+    <!-- Bootstrap CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style_home_navbar.css" th:href="@{/css/logoutBtn.css}">
+    <link href="/css/style_general_body_and_footer.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
+    <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+    <title>DawaSport</title>
+</head>
+
+<body>
+
+<!-- Start Header/Navigation -->
+<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="DawaSport navigation bar">
+
+    <div class="container">
+        <a class="navbar-brand" id="Logo" href="/">DawaWearings<span>.</span></a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsDawaSport"
+                aria-controls="navbarsDawaSport" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsDawaSport">
+            <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0" style="margin-left: auto!important;">
+                <li class="nav-item active">
+                    <a class="nav-link" id="Home" href="/">Home</a>
+                </li>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        // Kiểm tra xem localStorage("user") có tồn tại không
+                        var user = localStorage.getItem('user');
+                        var homeLink = document.getElementById('Home');
+                        var logoLink = document.getElementById('Logo');
+
+                        if (user) {
+                            // Nếu có tồn tại, điều hướng đến "/user/home"
+                            homeLink.href = "/user/home";
+                            logoLink.href = "/user/home";
+                        } else {
+                            // Nếu không tồn tại, điều hướng đến "/home"
+                            homeLink.href = "/home";
+                            logoLink.href = "/home";
+                        }
+                    });
+                </script>
+                <li><a class="nav-link" href="/about">About us</a></li>
+                <li><a class="nav-link" href="/service">Services</a></li>
+                <li><a class="nav-link" href="/blog">Blog</a></li>
+                <li><a class="nav-link" href="/contact">Contact us</a></li>
+            </ul>
+
+            <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+                <li>
+                    <div class="dropdown"  id="dropdownBox" style="display: none;">
+                        <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="visually-hidden"  id="customerName"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                            <li><a class="dropdown-item" href="#">....</a></li>
+                            <li><a class="dropdown-item" href="#">....</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li style="text-align: center">
+                                <a id="logOut" class="logout-btn">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const dropdownBox = document.getElementById('dropdownBox');
+                            const customerName = document.getElementById('customerName');
+
+                            // Kiểm tra xem localStorage('user') có rỗng không
+                            const userJSON = localStorage.getItem('user');
+
+                            if (userJSON) {
+                                const userObject = JSON.parse(userJSON);
+
+                                // Hiển thị dropdownBox và đặt dữ liệu vào customerName
+                                dropdownBox.style.display = 'block';
+                                customerName.textContent = userObject.name;
+                            } else {
+                                // Nếu localStorage('user') rỗng, ẩn dropdownBox
+                                dropdownBox.style.display = 'none';
+                            }
+                        });
+                    </script>
+                </li>
+                <li><a class="nav-link" href="/user/cart"><img src="/images/cart.svg" alt="cart"></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- End Header/Navigation -->
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.ESDC.FinalTerm.objects;
+package com.ESDC.FinalTerm.controllers.User;
 
 import lombok.*;
 

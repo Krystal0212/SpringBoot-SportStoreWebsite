@@ -1,15 +1,16 @@
 <!doctype html>
-<html lang="en" style="scroll-behavior: smooth !important;">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="/images/DawaSport_Logo_2.png">
+    <link rel="shortcut icon" href="/images/DawaSport_Logo_3.png">
     <meta name="keywords" content="bootstrap, bootstrap4"/>
 
     <!-- Bootstrap CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style_home_navbar.css" th:href="@{/css/logoutBtn.css}">
     <link href="/css/style_general_body_and_footer.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
@@ -25,7 +26,7 @@
 <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="DawaSport navigation bar">
 
     <div class="container">
-        <a class="navbar-brand" id="Logo" href="/">DawaTrainers<span>.</span></a>
+        <a class="navbar-brand" id="Logo" href="/">DawaWearings<span>.</span></a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsDawaSport"
                 aria-controls="navbarsDawaSport" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,23 +39,22 @@
                     <a class="nav-link" id="Home" href="/">Home</a>
                 </li>
                 <script>
-                    window.onload = function () {
-                        // Get the "Shop Now" button
-                        var shopNowButton = document.querySelector('.shop-now-btn');
+                    document.addEventListener("DOMContentLoaded", function() {
+                        // Kiểm tra xem localStorage("user") có tồn tại không
+                        var user = localStorage.getItem('user');
+                        var homeLink = document.getElementById('Home');
+                        var logoLink = document.getElementById('Logo');
 
-                        // Add click event listener to the button
-                        shopNowButton.addEventListener('click', function (e) {
-                            e.preventDefault(); // Prevent the default behavior of the link
-
-                            // Get the target element by its id
-                            var targetElement = document.getElementById('product-section');
-
-                            // Scroll to the target element with smooth behavior
-                            if (targetElement) {
-                                targetElement.scrollIntoView({ behavior: 'smooth' });
-                            }
-                        });
-                    };
+                        if (user) {
+                            // Nếu có tồn tại, điều hướng đến "/user/home"
+                            homeLink.href = "/user/home";
+                            logoLink.href = "/user/home";
+                        } else {
+                            // Nếu không tồn tại, điều hướng đến "/home"
+                            homeLink.href = "/home";
+                            logoLink.href = "/home";
+                        }
+                    });
                 </script>
                 <li><a class="nav-link" href="/about">About us</a></li>
                 <li><a class="nav-link" href="/service">Services</a></li>
@@ -116,42 +116,22 @@
         <div class="row justify-content-between">
             <div class="col-lg-5">
                 <div class="intro-excerpt">
-                    <h1>Prime Trainers <span class="d-block">Stride in Style, Step with Innovation</span></h1>
-                    <p class="mb-4">Upgrade your stride with DawaTrainers – where innovation meets comfort for the ultimate step forward.</p>
+                    <h1>Elevate Your Workout Style</h1>
+                    <p class="mb-4">Revolutionize your fitness journey with DawaWearings – where style meets performance for the ultimate workout experience.</p>
                     <p>
-                        <a href="#product-section" class="btn btn-secondary me-2 shop-now-btn">Shop Now</a>
-                        <a href="/shoes" class="btn btn-secondary me-2 shop-now-btn">Shop Now</a>
-                        <a href="#product-section" class="btn btn-secondary me-2 shop-now-btn">Shop Now</a>
-<!--                    <a href="#" class="btn btn-white-outline">Explore</a>-->
-
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function () {
-                                // Get the "Shop Now" button
-                                var shopNowButton = document.querySelector('.shop-now-btn');
-
-                                // Add click event listener to the button
-                                shopNowButton.addEventListener('click', function (e) {
-                                    e.preventDefault(); // Prevent the default behavior of the link
-
-                                    // Get the target element by its id
-                                    var targetElement = document.getElementById('product-section');
-
-                                    // Scroll to the target element with smooth behavior
-                                    targetElement.scrollIntoView({ behavior: 'smooth' });
-                                });
-                            });
-                        </script>
+                        <a href="#product-section" class="btn btn-secondary me-2 shop-now-btn">Explore Gym Apparel</a>
+                        <!-- Add a button or link to shop or explore more -->
                     </p>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="hero-img-wrap" style="max-width: 280px !important;">
-                    <img src="/images/shoes-photography-2.jpg" class="img-fluid" style="max-width: 280px !important;">
+                    <img src="/images/gym-apparel-1.jpg" class="img-fluid" style="max-width: 280px !important;">
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="hero-img-wrap" >
-                    <img src="/images/shoes-photography-1.jpg" class="img-fluid" style="max-width: 280px !important;">
+                    <img src="/images/gym-apparel-2.jpg" class="img-fluid" style="max-width: 280px !important;">
                 </div>
             </div>
         </div>
@@ -160,7 +140,7 @@
 <!-- End Hero Section -->
 
 <!-- Start Product Section -->
-<div id="product-section" class="product-section" style="padding-bottom: 250px !important;">
+<div class="product-section" style="padding-bottom: 250px !important;">
     <div class="container" >
         <div class="row">
             <!-- Start Column 1 -->
@@ -232,8 +212,29 @@
             </div>
 
             <!-- Xu ly su kien add -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Lấy tất cả các nút thêm
+                    const addButtons = document.querySelectorAll('.btnAdd');
 
-            <!-- End Column 2 -->
+                    // Thêm sự kiện nghe cho mỗi nút thêm
+                    addButtons.forEach(function (button) {
+                        button.addEventListener('click', function () {
+                            // Lấy thông tin sản phẩm từ thuộc tính data
+                            const brand = button.dataset.productBrand;
+                            const name = button.dataset.productName;
+                            const price = button.dataset.productPrice;
+
+                            // Thực hiện bất kỳ hành động nào bạn muốn với thông tin sản phẩm
+                            console.log('Product Brand:', brand);
+                            console.log('Product Name:', name);
+                            console.log('Product Price:', price);
+
+                            // Đây là nơi bạn có thể thực hiện thêm sản phẩm vào giỏ hàng hoặc bất kỳ hành động nào khác.
+                        });
+                    });
+                });
+            </script>
         </div>
     </div>
 </div>
@@ -321,9 +322,9 @@
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a href="#">Shoes</a></li>
-                            <li><a href="#">Athletic Wear</a></li>
-                            <li><a href="#">Sports Accessories</a></li>
+                            <li><a href="/shoes">Shoes</a></li>
+                            <li><a href="/clothes">Athletic Wear</a></li>
+                            <li><a href="/accessories">Sports Accessories</a></li>
                         </ul>
                     </div>
                 </div>
@@ -352,9 +353,8 @@
     </div>
 </footer>
 <!-- End Footer Section -->
-
 </body>
 
-<script rel="stylesheet" type="module" th:src="@{/js/js_product-shoes.js}"></script>
+<script rel="stylesheet" type="module" th:src="@{/js/js_product-clothes.js}"></script>
 
 </html>
