@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -24,7 +24,6 @@
 
 <!-- Start Header/Navigation -->
 <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="DawaSport navigation bar">
-
     <div class="container">
         <a class="navbar-brand" id="Logo" href="/">DawaWearings<span>.</span></a>
 
@@ -116,22 +115,59 @@
         <div class="row justify-content-between">
             <div class="col-lg-5">
                 <div class="intro-excerpt">
-                    <h1>Elevate Your Workout Style</h1>
+                    <h1> Comfortable Workout Activewear
+                        <span class="d-block">Elevate Your Workout Style></span>
+                    </h1>
                     <p class="mb-4">Revolutionize your fitness journey with DawaWearings – where style meets performance for the ultimate workout experience.</p>
                     <p>
                         <a href="#product-section" class="btn btn-secondary me-2 shop-now-btn">Explore Gym Apparel</a>
-                        <!-- Add a button or link to shop or explore more -->
+                        <a href="/" id="goToShoes" class="btn btn-white-outline">Trainers Section</a>
+                        <a href="/" id="goToAccessories" class="btn btn-white-outline">Accessories Section</a>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Get the "Shop Now" button
+                                var shopNowButton = document.querySelector('.shop-now-btn');
+                                var user = localStorage.getItem('user');
+                                var shoesLink = document.getElementById('goToShoes');
+
+                                if (user) {
+                                    shoesLink.href = "/user/shoes";
+                                } else {
+                                    shoesLink.href = "/shoes";
+                                }
+
+                                var accessoryLink = document.getElementById('goToAccessories');
+
+                                if (user) {
+                                    accessoryLink.href = "/user/accessories";
+                                } else {
+                                    accessoryLink.href = "/accessories";
+                                }
+
+                                // Add click event listener to the button
+                                shopNowButton.addEventListener('click', function (e) {
+                                    e.preventDefault(); // Prevent the default behavior of the link
+
+                                    // Get the target element by its id
+                                    var targetElement = document.getElementById('product-section');
+
+                                    // Scroll to the target element with smooth behavior
+                                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                                });
+                            });
+                        </script>
                     </p>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="hero-img-wrap" style="max-width: 280px !important;">
-                    <img src="/images/gym-apparel-1.jpg" class="img-fluid" style="max-width: 280px !important;">
+                    <img src="/images/gym-apparel-1.png" class="img-fluid" style="max-width: 280px !important;">
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="hero-img-wrap" >
-                    <img src="/images/gym-apparel-2.jpg" class="img-fluid" style="max-width: 280px !important;">
+                    <img src="/images/gym-apparel-2.png" class="img-fluid" style="max-width: 280px !important;">
                 </div>
             </div>
         </div>
@@ -140,14 +176,14 @@
 <!-- End Hero Section -->
 
 <!-- Start Product Section -->
-<div class="product-section" style="padding-bottom: 250px !important;">
+<div id="product-section" class="product-section" style="padding-bottom: 250px !important;">
     <div class="container" >
         <div class="row">
             <!-- Start Column 1 -->
             <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
                 <div class="card">
                     <div class="card-body">
-                        <form method="post" action="/shoes/filter">
+                        <form method="post" action="/clothes/filter">
                             <!-- Search by product name -->
                             <div class="mb-3">
                                 <input type="text" class="form-control" id="productName" name="productName" placeholder="Enter product name" th:value="${productName}">
@@ -206,7 +242,7 @@
                     <strong class="product-price" th:text="${'Price: $' + product.price}" > </strong>
 
                     <span class="icon-cross" id="btnAdd">
-                        <img src="/images/cross.svg" class="img-fluid">
+                        <img src="/images/cross.svg" class="img-fluid" id="btnAdd_${iterStat.index}" th:attr="data-productName=${product.name}">
                     </span>
                 </a>
             </div>
@@ -214,23 +250,34 @@
             <!-- Xu ly su kien add -->
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                    // Lấy tất cả các nút thêm
-                    const addButtons = document.querySelectorAll('.btnAdd');
+                    const userJSON = localStorage.getItem('user');
 
-                    // Thêm sự kiện nghe cho mỗi nút thêm
-                    addButtons.forEach(function (button) {
+                    // Lặp qua các nút thêm và thêm sự kiện nghe
+                    document.querySelectorAll('[id^="btnAdd_"]').forEach(function (button) {
                         button.addEventListener('click', function () {
-                            // Lấy thông tin sản phẩm từ thuộc tính data
-                            const brand = button.dataset.productBrand;
-                            const name = button.dataset.productName;
-                            const price = button.dataset.productPrice;
-
-                            // Thực hiện bất kỳ hành động nào bạn muốn với thông tin sản phẩm
-                            console.log('Product Brand:', brand);
-                            console.log('Product Name:', name);
-                            console.log('Product Price:', price);
-
-                            // Đây là nơi bạn có thể thực hiện thêm sản phẩm vào giỏ hàng hoặc bất kỳ hành động nào khác.
+                            if(userJSON){
+                                const userObject = JSON.parse(userJSON);
+                                const userName = userObject.username;
+                                // Lấy thông tin sản phẩm từ thuộc tính data
+                                const itemName = button.getAttribute('data-productName');
+                                addToCart(itemName, userName, "Clothes");
+                            } else {
+                                Swal.fire({
+                                    title: 'You have not logged in yet',
+                                    text: 'Please log in to continue!',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Yes, log in now'
+                                }).then((result) => {
+                                    // Nếu người dùng nhấn OK (confirm)
+                                    if (result.isConfirmed) {
+                                        // Chuyển đến trang login khi người dùng đồng ý
+                                        window.location.href = "/login";
+                                    }
+                                });
+                            }
                         });
                     });
                 });
@@ -245,7 +292,7 @@
     <div class="container relative">
 
         <div class="sofa-img" style="right: -185px; top:-320px">
-            <img style="width: 780px !important; max-width: 100% !important;" src="/images/shoes_showcase.png" alt="Image" class="img-fluid">
+            <img style="width: 780px !important; max-width: 100% !important;" src="/images/clothes_showcase.png" alt="Image" class="img-fluid">
         </div>
 
         <div class="row">
@@ -322,10 +369,39 @@
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a href="/shoes">Shoes</a></li>
-                            <li><a href="/clothes">Athletic Wear</a></li>
-                            <li><a href="/accessories">Sports Accessories</a></li>
+                            <li><a id="Shoes" href="#">Shoes</a></li>
+                            <li><a id="Clothes" href="#">Athletic Wear</a></li>
+                            <li><a id="Accessories" href="#">Sports Accessories</a></li>
                         </ul>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Get the "Shop Now" button
+                                var user = localStorage.getItem('user');
+                                var shoesLink = document.getElementById('Shoes');
+
+                                if (user) {
+                                    shoesLink.href = "/user/shoes";
+                                } else {
+                                    shoesLink.href = "/shoes";
+                                }
+
+                                var accessoryLink = document.getElementById('Accessories');
+
+                                if (user) {
+                                    accessoryLink.href = "/user/accessories";
+                                } else {
+                                    accessoryLink.href = "/accessories";
+                                }
+
+                                var clothesLink = document.getElementById('Clothes');
+
+                                if (user) {
+                                    clothesLink.href = "/user/clothes";
+                                } else {
+                                    clothesLink.href = "/clothes";
+                                }
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
@@ -353,8 +429,10 @@
     </div>
 </footer>
 <!-- End Footer Section -->
+
 </body>
 
+<script rel="stylesheet" type="module" th:src="@{/js/addToCart.js}"></script>
 <script rel="stylesheet" type="module" th:src="@{/js/js_product-clothes.js}"></script>
 
 </html>

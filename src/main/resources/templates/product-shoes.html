@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -10,6 +10,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style_home_navbar.css" th:href="@{/css/logoutBtn.css}">
     <link href="/css/style_general_body_and_footer.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
@@ -23,7 +24,6 @@
 
 <!-- Start Header/Navigation -->
 <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="DawaSport navigation bar">
-
     <div class="container">
         <a class="navbar-brand" id="Logo" href="/">DawaTrainers<span>.</span></a>
 
@@ -76,12 +76,10 @@
                                     <i class="fas fa-sign-out-alt"></i> Logout
                                 </a>
                             </li>
-
                         </ul>
                     </div>
 
                     <script>
-
                         document.addEventListener("DOMContentLoaded", function() {
                             const dropdownBox = document.getElementById('dropdownBox');
                             const customerName = document.getElementById('customerName');
@@ -104,7 +102,6 @@
             </ul>
         </div>
     </div>
-
 </nav>
 <!-- End Header/Navigation -->
 
@@ -114,18 +111,35 @@
         <div class="row justify-content-between">
             <div class="col-lg-5">
                 <div class="intro-excerpt">
-                    <h1>Prime Trainers <span class="d-block">Stride in Style, Step with Innovation</span></h1>
+                    <h1>Prime Trainers
+                        <span class="d-block">Stride in Style, Step with Innovation</span>
+                    </h1>
                     <p class="mb-4">Upgrade your stride with DawaTrainers – where innovation meets comfort for the ultimate step forward.</p>
                     <p>
                         <a href="#product-section" class="btn btn-secondary me-2 shop-now-btn">Shop Now</a>
-                        <a href="/shoes" class="btn btn-secondary me-2 shop-now-btn">Shop Now</a>
-                        <a href="#product-section" class="btn btn-secondary me-2 shop-now-btn">Shop Now</a>
-<!--                    <a href="#" class="btn btn-white-outline">Explore</a>-->
+                        <a href="/" id="goToClothes" class="btn btn-white-outline">Clothes Section</a>
+                        <a href="/" id="goToAccessories" class="btn btn-white-outline">Accessories Section</a>
 
                         <script>
                             document.addEventListener("DOMContentLoaded", function () {
                                 // Get the "Shop Now" button
                                 var shopNowButton = document.querySelector('.shop-now-btn');
+                                var user = localStorage.getItem('user');
+                                var accessoryLink = document.getElementById('goToAccessories');
+
+                                if (user) {
+                                    accessoryLink.href = "/user/accessories";
+                                } else {
+                                    accessoryLink.href = "/accessories";
+                                }
+
+                                var clothLink = document.getElementById('goToClothes');
+
+                                if (user) {
+                                    clothLink.href = "/user/clothes";
+                                } else {
+                                    clothLink.href = "/clothes";
+                                }
 
                                 // Add click event listener to the button
                                 shopNowButton.addEventListener('click', function (e) {
@@ -352,10 +366,39 @@
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a href="#">Shoes</a></li>
-                            <li><a href="#">Athletic Wear</a></li>
-                            <li><a href="#">Sports Accessories</a></li>
+                            <li><a id="Shoes" href="#">Shoes</a></li>
+                            <li><a id="Clothes" href="#">Athletic Wear</a></li>
+                            <li><a id="Accessories" href="#">Sports Accessories</a></li>
                         </ul>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Get the "Shop Now" button
+                                var user = localStorage.getItem('user');
+                                var shoesLink = document.getElementById('Shoes');
+
+                                if (user) {
+                                    shoesLink.href = "/user/shoes";
+                                } else {
+                                    shoesLink.href = "/shoes";
+                                }
+
+                                var accessoryLink = document.getElementById('Accessories');
+
+                                if (user) {
+                                    accessoryLink.href = "/user/accessories";
+                                } else {
+                                    accessoryLink.href = "/accessories";
+                                }
+
+                                var clothesLink = document.getElementById('Clothes');
+
+                                if (user) {
+                                    clothesLink.href = "/user/clothes";
+                                } else {
+                                    clothesLink.href = "/clothes";
+                                }
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
@@ -386,8 +429,7 @@
 
 </body>
 
-<script rel="stylesheet" type="module" src="/js/index.js" th:src="@{/js/product-shoes.js}"></script>
-<script rel="stylesheet" type="module" src="/js/index.js" th:src="@{/js/addToCart.js}"></script>
+<script rel="stylesheet" type="module" th:src="@{/js/addToCart.js}"></script>
 <script rel="stylesheet" type="module" th:src="@{/js/js_product-shoes.js}"></script>
 
 </html>

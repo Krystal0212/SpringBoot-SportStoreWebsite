@@ -29,6 +29,7 @@ public class UserController {
 
     @Autowired
     private ProductService productService;
+    private List<String> brands;
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
@@ -111,27 +112,71 @@ public class UserController {
     }
 
     @GetMapping("/shoes")
-    public String showShoes(Model model) {
+    public String shoes(Model model){
         // Lấy danh sách sản phẩm Shoes
-        List<Product> shoes = productService.getProductsByType("Shoes");
-        List<String> brands = productService.getCurrentBrands(shoes);
+        List<Product> products = productService.getProductsByType("Shoes");
+        brands = productService.getCurrentBrands(products);
         model.addAttribute("brands", brands);
-        model.addAttribute("products", shoes);
+        model.addAttribute("products", products);
         return "product-shoes";
     }
 
     @PostMapping("/shoes/filter")
-    public String getProductByTypeAndFilter(@PathVariable String type,
-                                            @RequestParam(required = false) String productName,
-                                            @RequestParam(required = false) Double minPrice,
-                                            @RequestParam(required = false) Double maxPrice,
-                                            @RequestParam(required = false) String sortByPrice,
-                                            @RequestParam(required = false) List<String> brandList,
-                                            Model model) {
-        List<Product> products = productService.getProductByTypeAndFilter(type,productName, minPrice, maxPrice, sortByPrice, brandList);
-
+    public String shoesFilter(@RequestParam(required = false) String productName,
+                              @RequestParam(required = false) Double minPrice,
+                              @RequestParam(required = false) Double maxPrice,
+                              @RequestParam(required = false) String sortByPrice,
+                              @RequestParam(required = false) List<String> brandList,
+                              Model model) {
+        List<Product> products = productService.getProductByTypeAndFilter("Shoes",productName, minPrice, maxPrice, sortByPrice, brandList);
         model.addAttribute("products", products);
-
+        model.addAttribute("brands", brands);
         return "product-shoes"; // Giả sử có một view có tên là "productList" để hiển thị danh sách sản phẩm
+    }
+
+    @GetMapping("/clothes")
+    public String clothes(Model model){
+        // Lấy danh sách sản phẩm Shoes
+        List<Product> products = productService.getProductsByType("Clothes");
+        brands = productService.getCurrentBrands(products);
+        model.addAttribute("brands", brands);
+        model.addAttribute("products", products);
+        return "product-clothes";
+    }
+
+    @PostMapping("/clothes/filter")
+    public String clothesFilter(@RequestParam(required = false) String productName,
+                                @RequestParam(required = false) Double minPrice,
+                                @RequestParam(required = false) Double maxPrice,
+                                @RequestParam(required = false) String sortByPrice,
+                                @RequestParam(required = false) List<String> brandList,
+                                Model model) {
+        List<Product> products = productService.getProductByTypeAndFilter("Clothes",productName, minPrice, maxPrice, sortByPrice, brandList);
+        model.addAttribute("products", products);
+        model.addAttribute("brands", brands);
+        return "product-clothes"; // Giả sử có một view có tên là "productList" để hiển thị danh sách sản phẩm
+    }
+
+    @GetMapping("/accessories")
+    public String accessories(Model model){
+        // Lấy danh sách sản phẩm Shoes
+        List<Product> products = productService.getProductsByType("Accessory");
+        brands = productService.getCurrentBrands(products);
+        model.addAttribute("brands", brands);
+        model.addAttribute("products", products);
+        return "product-accessories";
+    }
+
+    @PostMapping("/accessories/filter")
+    public String accessoriesFilter(@RequestParam(required = false) String productName,
+                                    @RequestParam(required = false) Double minPrice,
+                                    @RequestParam(required = false) Double maxPrice,
+                                    @RequestParam(required = false) String sortByPrice,
+                                    @RequestParam(required = false) List<String> brandList,
+                                    Model model) {
+        List<Product> products = productService.getProductByTypeAndFilter("Accessory",productName, minPrice, maxPrice, sortByPrice, brandList);
+        model.addAttribute("products", products);
+        model.addAttribute("brands", brands);
+        return "product-accessories"; // Giả sử có một view có tên là "productList" để hiển thị danh sách sản phẩm
     }
 }
