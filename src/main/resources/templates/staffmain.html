@@ -8,9 +8,11 @@
     <title>Responsive Admin Dashboard</title>
     <!-- ======= Styles ====== -->
     <link rel="stylesheet" href="assetsforstaff/css/style.css">
-    <script src="assetsforstaff/js/main.js"></script>
     <script rel="stylesheet" type="module" th:src="@{assetsforstaff/js/newproduct.js}"></script>
     <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.2.0/firebase-database.js"></script>
+
 </head>
 
 <body>
@@ -110,7 +112,7 @@
                         <label for="pType">Product Type</label>
                         <select type="text" id="pType" name="pType" style="margin-bottom: 10px;">
                             <option value="Shoes">Shoes</option>
-                            <option value="Clother">Clother</option>
+                            <option value="Clothes">Clothes</option>
                             <option value="Accessory">Accessory</option>
                         </select>
                         <label for="pName">Product Name</label>
@@ -187,7 +189,13 @@
                     </form>
 
 
-                    <table>
+                    <select type="text" id="dType" name="dType" style="margin-bottom: 10px; height: 20px;">
+                        <option value="Shoes">Shoes</option>
+                        <option value="Clothes">Clothes</option>
+                        <option value="Accessory">Accessory</option>
+                    </select>
+                    <input type="submit" value="getData" id="getData" onclick="setData()" style="margin-top: 10px;">
+                    <table id="productTable">
                         <thead>
                         <tr>
                             <td>ID</td>
@@ -196,24 +204,11 @@
                             <td>Type</td>
                             <td>Price</td>
                             <td>Quantity</td>
-
                         </tr>
                         </thead>
                         <tbody>
-                        <tr data-image="images/img1.jpg">
-                            <td>PD01</td>
-                            <td >Badminton Racket</td>
-                            <td >Things</td>
-                            <td >Bat</td>
-                            <td>$120</td>
-                            <td>1200</td>
-
-                        </tr>
                         </tbody>
                     </table>
-                </div>
-                <div id="image-container">
-                    <img id="display-image" src="" alt="Selected Image">
                 </div>
             </div>
         </div>

@@ -1,6 +1,5 @@
-package com.ESDC.FinalTerm.controllers;
+package com.ESDC.FinalTerm.controllers.User;
 
-import com.ESDC.FinalTerm.objects.User;
 import com.google.firebase.database.*;
 import org.springframework.stereotype.Service;
 

@@ -97,29 +97,30 @@
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">Page</a>
+                           aria-haspopup="true" aria-expanded="false">Buy What You Need</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown04">
-                            <a id="Shoes" class="dropdown-item" href="/user/shoes">Page 1</a>
-
+                            <a id="Shoes" class="dropdown-item" href="/user/shoes">Trainers</a>
+                            <a id="Clothes" class="dropdown-item" href="#">Clothes</a>
+                            <a id="Accessories" class="dropdown-item" href="#">Accessories</a>
                             <script>
                                 document.addEventListener("DOMContentLoaded", function() {
                                     // Kiểm tra xem localStorage("user") có tồn tại không
                                     var user = localStorage.getItem('user');
                                     var shoesLink = document.getElementById('Shoes');
+                                    var clothesLink = document.getElementById('Clothes');
+                                    var accessoryLink = document.getElementById('Accessories');
 
                                     if (user) {
-                                        // Nếu có tồn tại, điều hướng đến "/user/shoes"
                                         shoesLink.href = "/user/shoes";
+                                        clothesLink.href= "/user/clothes"
+                                        accessoryLink.href= "/user/accessories"
                                     } else {
-                                        // Nếu không tồn tại, điều hướng đến "/shoes"
                                         shoesLink.href = "/shoes";
+                                        clothesLink.href= "/clothes"
+                                        accessoryLink.href= "/accessories"
                                     }
                                 });
                             </script>
-
-                            <a class="dropdown-item" href="#">Page 2</a>
-                            <a class="dropdown-item" href="#">Page 3</a>
-                            <a class="dropdown-item" href="#">Page 4</a>
                         </div>
                     </li>
                     <li class="nav-item"><a href="#" class="nav-link">Catalog</a></li>
@@ -319,7 +320,7 @@
         </div>
     </div>
     <!-- Script For Banner-->
-    <script th:src="@{/js/home-banner.js}"></script>
+    <script th:src="@{/js/js_home-banner.js}"></script>
 </div>
 <!-- End Slide Banner Section -->
 
@@ -717,10 +718,39 @@
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a href="#">Shoes</a></li>
-                            <li><a href="#">Athletic Wear</a></li>
-                            <li><a href="#">Sports Accessories</a></li>
+                            <li><a id="subShoes" href="#">Shoes</a></li>
+                            <li><a id="subClothes" href="#">Athletic Wear</a></li>
+                            <li><a id="subAccessories" href="#">Sports Accessories</a></li>
                         </ul>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Get the "Shop Now" button
+                                var user = localStorage.getItem('user');
+                                var shoesLink = document.getElementById('subShoes');
+
+                                if (user) {
+                                    shoesLink.href = "/user/shoes";
+                                } else {
+                                    shoesLink.href = "/shoes";
+                                }
+
+                                var accessoryLink = document.getElementById('subAccessories');
+
+                                if (user) {
+                                    accessoryLink.href = "/user/accessories";
+                                } else {
+                                    accessoryLink.href = "/accessories";
+                                }
+
+                                var clothesLink = document.getElementById('subClothes');
+
+                                if (user) {
+                                    clothesLink.href = "/user/clothes";
+                                } else {
+                                    clothesLink.href = "/clothes";
+                                }
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
