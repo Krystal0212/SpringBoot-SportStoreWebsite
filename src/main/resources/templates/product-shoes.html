@@ -81,6 +81,7 @@
                     </div>
 
                     <script>
+
                         document.addEventListener("DOMContentLoaded", function() {
                             const dropdownBox = document.getElementById('dropdownBox');
                             const customerName = document.getElementById('customerName');
@@ -91,11 +92,9 @@
                             if (userJSON) {
                                 const userObject = JSON.parse(userJSON);
 
-                                // Hiển thị dropdownBox và đặt dữ liệu vào customerName
                                 dropdownBox.style.display = 'block';
                                 customerName.textContent = userObject.name;
                             } else {
-                                // Nếu localStorage('user') rỗng, ẩn dropdownBox
                                 dropdownBox.style.display = 'none';
                             }
                         });
