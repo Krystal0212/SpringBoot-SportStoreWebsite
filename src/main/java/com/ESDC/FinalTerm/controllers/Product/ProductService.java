@@ -10,4 +10,6 @@ public interface ProductService {
     public List<Product> getProductByTypeAndFilter(String type, String productName, Double minPrice, Double maxPrice, String sortOrder, List<String> brandList);
 
     public List<String> getCurrentBrands(List<Product> products);
+
+
 }
