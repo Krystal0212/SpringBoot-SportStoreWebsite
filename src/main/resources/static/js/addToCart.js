@@ -38,7 +38,6 @@ window.addToCart = function (itemName, userName, productType) {
 
             //kiem tra xem item đó có trong cart của user này chưa dựa vào 2 cái get key trên
             const userCartRef = ref(dbRef, "CustomerCart/" + userKey + "/" + productType + "/" + itemKey);
-            const product = ref(dbRef, "Product/Shoes");
             // Sử dụng get để kiểm tra xem node có tồn tại hay không
             get(userCartRef)
                 .then((snapshot) => {

@@ -5,6 +5,11 @@
     <title>Title</title>
 
     <meta name="keywords" content="bootstrap, bootstrap4"/>
+    <style>
+        .discount-info {
+            color: red;
+        }
+    </style>
 
     <!-- Bootstrap CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -13,6 +18,10 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- Thêm thư viện Firebase vào file HTML -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js"></script>
 
     <!-- Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -27,6 +36,7 @@
     <link href="/css/style_home_tiny_slider.css" rel="stylesheet">
     <link href="/css/style_general_body_and_footer.css" rel="stylesheet">
 
+    <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
 
 </head>
 <body>
@@ -49,6 +59,57 @@
                 </div>
             </div>
 
+            <script>
+                function updateTotalAmount() {
+                    var totalPrice = parseFloat(document.getElementById("totalPrice").textContent.replace('€', '').trim());
+                    var shippingOption = parseFloat(document.getElementById("shippingOption").value);
+                    var totalAmount = totalPrice + shippingOption;
+
+                    // document.getElementById("totalAmount").textContent = '€ ' + totalAmount + '.00';
+                    checkDiscountCode()
+
+                }
+
+                function updateQuantity(itemName, change, itemPrice) {
+                    var quantityElement = document.getElementById('quantity-' + itemName);
+                    var currentQuantity = parseInt(quantityElement.innerText);
+
+                    // Đảm bảo số lượng không dưới 1
+                    // Cập nhật số lượng hiển thị
+                    quantityElement.innerText = Math.max(1, currentQuantity + change);
+
+                    // Cập nhật số lượng trong Firebase
+                    updateFirebaseQuantity(itemName, Math.max(1, currentQuantity + change), itemPrice).then(() => {
+                        // Xử lý khi cập nhật thành công
+                        //Khi số lượng hàng thay đổi, cập nhật total price
+                        var totalPrice = parseFloat(document.getElementById("totalPrice").textContent.replace('€', '').trim());
+
+                        if(change === 1){
+                            var newTotalPrice = totalPrice + parseFloat(itemPrice);
+                            document.getElementById("totalPrice").textContent = '€ ' + newTotalPrice + '.00'
+                        } else if (currentQuantity > 1 && change === -1) {
+                            var newTotalPrice = totalPrice - parseFloat(itemPrice);
+                            document.getElementById("totalPrice").textContent = '€ ' + newTotalPrice + '.00'
+                        } else {
+                            var newTotalPrice = totalPrice;
+                            document.getElementById("totalPrice").textContent = '€ ' + newTotalPrice + '.00'
+                        }
+
+                        // Cập nhật lại totalAmount
+                        location.reload();
+
+                        // Gọi hàm xử lý backend hoặc làm bất kỳ công việc cần thiết khác tại đây
+                        // Ví dụ: có thể gửi yêu cầu cập nhật số lượng lên server.
+                    }).catch((error) => {
+                        console.log(error.message);
+                        console.log(error.text);
+
+                    });
+
+
+                }
+            </script>
+
             <!-- My item -->
             <div class="row border-top border-bottom" th:each="item : ${customerCart}">
                 <div class="row main align-items-center">
@@ -58,9 +119,11 @@
                         <div class="row" th:text="${item.name}" > Product Name </div>
                     </div>
                     <div class="col">
-                        <a href="#">-</a><a href="#" class="border" th:text="${item.quantity}" >1</a><a href="#">+</a>
+                        <a href="#" th:attr="data-item-name=${item.name}, data-item-price=${item.price} / ${item.quantity}" onclick="updateQuantity(this.getAttribute('data-item-name'), -1, this.getAttribute('data-item-price'))">-</a>
+                        <a href="#" class="border" th:text="${item.quantity}" th:id="'quantity-' + ${item.name}">1</a>
+                        <a href="#" th:attr="data-item-name=${item.name}, data-item-price=${item.price} / ${item.quantity}" onclick="updateQuantity(this.getAttribute('data-item-name'), 1, this.getAttribute('data-item-price'))">+</a>
                     </div>
-                    <div class="col" th:text="'€ ' + ${item.price} + '.00'" >&euro; 44.00</div>
+                    <div class="col"  th:text="'€ ' + ${item.price} / ${item.quantity}  + '.00'" >&euro; 44.00</div>
                     <span class="close" th:attr="data-name=${item.name}" th:utext="${item.deleteIcon}" onclick="deleteItem(this.getAttribute('data-name'))"></span>
 
                     <script>
@@ -121,14 +184,17 @@
                 <select id="shippingOption" onchange="updateTotalAmount()">
                     <option class="text-muted" value="5.00">Standard-Delivery- € 5.00</option>
                     <option class="text-muted" value="15.00">Super-Sonic- € 15.00</option>
-                    <!-- Các tùy chọn khác nếu có -->
+                    <option class="text-muted" value="0.00">Momo- € 0.00</option>
+
                 </select>
-                <p>GIVE CODE</p>
-                <input id="code" placeholder="Enter your code">
+                <p>GIFT CODE</p>
+                <input id="code" placeholder="Enter your code" oninput="checkDiscountCode()">
+                <div id="discountPercentageInfo" class="discount-info"></div>
+                <div id="discountInfo" class="discount-info" > </div>
             </form>
             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                 <div class="col">TOTAL PRICE</div>
-                <div class="col text-right" id="totalAmount" th:text="'€ ' + ${totalAmount + 5} + '0'"> € 0.00</div>
+                <div class="col text-right" id="totalAmount" th:attr="data-totalAmount=${totalAmount}" th:text="'€ ' + ${totalAmount + 5} + '0'"> € 0.00</div>
             </div>
             <button class="btn" id="btnCheckout" th:attr="disabled=${#lists.size(customerCart) == 0} ? 'disabled' : null">CHECKOUT</button>
 
@@ -144,14 +210,27 @@
                 /*]]>*/
             </script>
 
+            <!-- Xu ly gift code -->
             <script>
-                function updateTotalAmount() {
-                    var totalPrice = parseFloat(document.getElementById("totalPrice").textContent.replace('€', '').trim());
-                    var shippingOption = parseFloat(document.getElementById("shippingOption").value);
-                    var totalAmount = totalPrice + shippingOption;
+                var initialTotalAmount = parseFloat(document.getElementById("totalAmount").textContent.replace('€', '').trim()); // Giá trị total ban đầu
+                var currentTotalAmount = initialTotalAmount; // Giá trị total hiện tại
+                function checkDiscountCode() {
+                    var codeInput = document.getElementById('code');
+                    var discountCode = codeInput.value.trim().toUpperCase(); // Chuyển đổi mã code về chữ hoa và loại bỏ khoảng trắng
 
-                    document.getElementById("totalAmount").textContent = '€ ' + totalAmount + '.00';
+                    // Gọi hàm kiểm tra mã giảm giá từ Firebase
+                    checkFirebaseCode(discountCode, currentTotalAmount, initialTotalAmount);
                 }
+            </script>
+
+            <!-- Xu ly checkOut -->
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const checkOutBnt = document.getElementById("btnCheckout");
+                    checkOutBnt.addEventListener("click", function () {
+                        startShoppingProcess();
+                    })
+                });
             </script>
         </div>
     </div>
@@ -162,5 +241,7 @@
 
 <script src="/js/bootstrap.bundle.min.js"></script>
 <script src="/js/jquery.min.js"></script>
+<script rel="stylesheet" type="module" th:src="@{/js/cartQuantity_Price.js}"></script>
+<script rel="stylesheet" type="module" th:src="@{/js/createOrder.js}"></script>
 
 </html>

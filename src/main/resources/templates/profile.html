@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
+    <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+    <base href="/">
+    <!--Style For Custom Elements-->
+    <link rel="stylesheet" type="text/css" href="/css/style_home_banner.css" th:href="@{/css/style_home_banner.css}"/>
+    <link rel="stylesheet" type="text/css" href="/css/style_home_navbar.css" th:href="@{/css/style_home_navbar.css}">
+    <link rel="stylesheet" type="text/css" href="/css/style_home_navbar.css" th:href="@{/css/logoutBtn.css}">
+
+    <link rel="stylesheet" type="text/css" href="/css/style_home_tiny_slider.css">
+    <link rel="stylesheet" type="text/css" href="/css/style_general_body_and_footer.css">
+
+    <!--Style For Fonts And Icons-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@500&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' type='text/css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!--Style And Script For Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/profile.css" th:href="@{/css/profile.css}">
+
+
+    <style>
+        #gender {
+            width: 100%;
+            padding: 10px; /* Điều chỉnh khoảng cách giữa nội dung và viền của ô chọn */
+            box-sizing: border-box; /* Đảm bảo rằng padding và border không làm tăng kích thước thực sự của ô */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #infoText {
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #infoText:hover {
+            background-color: #3498db;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        #infoText2 {
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #infoText2:hover {
+            background-color: #3498db;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .order {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 2px solid #ccc;
+            padding: 10px;
+            margin: 10px auto; /* Thêm auto vào margin để căn giữa */
+            max-width: 300px;
+            box-sizing: border-box;
+        }
+
+
+        .order h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .order p {
+            margin: 8px 0;
+        }
+
+        .order-items h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .order-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .item-price, .item-quantity {
+            font-size: 14px;
+            color: #555;
+        }
+        #orderList {
+            display: flex;
+            flex-wrap: wrap; /* Đảm bảo các item sẽ xuống dòng khi không đủ không gian */
+            justify-content: center; /* Canh giữa theo chiều ngang */
+        }
+
+        .order-item {
+            /* Các thuộc tính khác */
+            width: 300px; /* Hoặc giá trị khác tùy thuộc vào thiết kế của bạn */
+            margin: 10px; /* Khoảng cách giữa các item */
+            text-align: center; /* Canh giữa nội dung trong item */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Tôi là Navbar -->
+
+<div class="navbar_menu">
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                    aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="fa fa-bars"></span> Menu
+            </button>
+            <form action="#" class="searchform order-lg-last">
+                <div class="form-group d-flex">
+                    <input type="text" class="form-control pl-3" placeholder="Search">
+                    <button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span>
+                    </button>
+                </div>
+            </form>
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav mr-auto">
+
+                    <li class="nav-item active" >
+                        <a href="/user/home"  id="Home" class="nav-link">Home</a>
+                    </li>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            // Kiểm tra xem localStorage("user") có tồn tại không
+                            var user = localStorage.getItem('user');
+                            var homeLink = document.getElementById('Home');
+
+                            if (user) {
+                                // Nếu có tồn tại, điều hướng đến "/user/home"
+                                homeLink.href = "/user/home";
+                            } else {
+                                // Nếu không tồn tại, điều hướng đến "/home"
+                                homeLink.href = "/home";
+                            }
+                        });
+                    </script>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">Buy What You Need</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown04">
+                            <a id="Shoes" class="dropdown-item" href="/user/shoes">Trainers</a>
+                            <a id="Clothes" class="dropdown-item" href="#">Clothes</a>
+                            <a id="Accessories" class="dropdown-item" href="#">Accessories</a>
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    // Kiểm tra xem localStorage("user") có tồn tại không
+                                    var user = localStorage.getItem('user');
+                                    var shoesLink = document.getElementById('Shoes');
+                                    var clothesLink = document.getElementById('Clothes');
+                                    var accessoryLink = document.getElementById('Accessories');
+
+                                    if (user) {
+                                        shoesLink.href = "/user/shoes";
+                                        clothesLink.href= "/user/clothes"
+                                        accessoryLink.href= "/user/accessories"
+                                    } else {
+                                        shoesLink.href = "/shoes";
+                                        clothesLink.href= "/clothes"
+                                        accessoryLink.href= "/accessories"
+                                    }
+                                });
+                            </script>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a href="#" class="nav-link">Catalog</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Blog</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col d-flex justify-content-end">
+                <div class="social-media">
+                    <p class="mb-0 d-flex">
+                        <a href="#" class="d-flex align-items-center justify-content-center"><span
+                                class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
+                        <a href="#" class="d-flex align-items-center justify-content-center"><span
+                                class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
+                        <a href="#" class="d-flex align-items-center justify-content-center"><span
+                                class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
+                        <a href="#" class="d-flex align-items-center justify-content-center"><span
+                                class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
+                        <a href="/login" id="loginIcon" style="display: none !important;" th:href="@{/login} "
+                           class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i
+                                class="sr-only">User</i></span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Example split danger button -->
+        <!--        <div class="btn-group" th:if="${user?.name}">-->
+        <!--            <button type="button" class="btn btn-danger"><span class="visually-hidden" th:id="accountShownName" th:text="${user?.name}"></span></button>-->
+        <!--            <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">-->
+        <!--                More-->
+        <!--            </button>-->
+        <!--            <ul class="dropdown-menu">-->
+        <!--                <li><a class="dropdown-item" href="#">Action</a></li>-->
+        <!--                <li><a class="dropdown-item" href="#">Another action</a></li>-->
+        <!--                <li><a class="dropdown-item" href="#">Something else here</a></li>-->
+        <!--                <li><hr class="dropdown-divider"></li>-->
+        <!--                <li><a class="dropdown-item" href="#">Separated link</a></li>-->
+        <!--            </ul>-->
+        <!--        </div>-->
+
+        <!--        <div class="btn-group" th:if="${user?.name}">-->
+        <!--            <button type="button" class="btn btn-danger"><span class="visually-hidden" th:id="accountShownName" th:text="${user?.name}"></span></button>-->
+
+        <!--            <li class="nav-item dropdown">-->
+        <!--                <button class="btn btn-danger dropdown-toggle dropdown-toggle-split" href="#" id="dropdown041" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+        <!--                    More-->
+        <!--                </button>-->
+        <!--                <div class="dropdown-menu" aria-labelledby="dropdown04">-->
+        <!--                    <a class="dropdown-item" href="#">Action</a>-->
+        <!--                    <a class="dropdown-item" href="#">Another action</a>-->
+        <!--                    <a class="dropdown-item" href="#">Something else here</a>-->
+        <!--                    <hr class="dropdown-divider">-->
+        <!--                    <a class="dropdown-item" href="#">Separated link</a>-->
+        <!--                </div>-->
+        <!--            </li>-->
+        <!--        </div>-->
+
+
+        <div class="dropdown"  id="dropdownBox" style="display: none;">
+            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden"  id="customerName"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
+                <li><a class="dropdown-item" href="#">....</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li style="text-align: center">
+                    <a id="logOut" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const dropdownBox = document.getElementById('dropdownBox');
+                const customerName = document.getElementById('customerName');
+                const loginIcon = document.getElementById('loginIcon');
+
+
+                // Kiểm tra xem localStorage('user') có rỗng không
+                const userJSON = localStorage.getItem('user');
+
+                if (userJSON) {
+                    const userObject = JSON.parse(userJSON);
+
+                    // Hiển thị dropdownBox và đặt dữ liệu vào customerName
+                    dropdownBox.style.display = 'block';
+                    customerName.textContent = userObject.name;
+                    loginIcon.style.cssText="display: none !important;";
+                } else {
+                    // Nếu localStorage('user') rỗng, ẩn dropdownBox
+                    dropdownBox.style.display = 'none';
+                    loginIcon.style.cssText="display: block !important;";
+                    loginIcon.style.cssText="align: center !important;";
+                }
+            });
+        </script>
+
+        <!--        <div class="dropdown" th:if="${user} != null" id="dropdownBox">-->
+        <!--            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">-->
+        <!--                <span class="visually-hidden"  id="customerName" th:text="${user?.name}"></span>-->
+        <!--            </button>-->
+        <!--            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">-->
+        <!--                <li><a class="dropdown-item" href="#">....</a></li>-->
+        <!--                <li><a class="dropdown-item" href="#">....</a></li>-->
+        <!--                <li><hr class="dropdown-divider"></li>-->
+        <!--                <li style="text-align: center"><a  href="/user/logout" id="logOut">Logout</a></li>-->
+        <!--            </ul>-->
+        <!--        </div>-->
+
+
+
+        <!--        <div class="dropdown" th:if="${user} == null" style="display:none !important;" >-->
+        <!--            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">-->
+        <!--                <span class="visually-hidden" id="customerName" ></span>-->
+        <!--            </button>-->
+        <!--            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">-->
+        <!--                <li><a class="dropdown-item" href="#">....</a></li>-->
+        <!--                <li><a class="dropdown-item" href="#">....</a></li>-->
+        <!--                <li><hr class="dropdown-divider"></li>-->
+        <!--                <li style="text-align: center"><a>Logout</a></li>-->
+        <!--            </ul>-->
+        <!--        </div>-->
+
+        <!--        <span th:id="accountShownName" th:text="${user?.name}"></span>-->
+        <!--        <div class="account" id="customerName" th:if="${user} == null"></div>-->
+
+        <!--        <button id="logOut" style="display: none" th:if="${user?.name} == null">Logout</button>-->
+
+        <!--        <button id="logOutAlt" style="display: block" th:if="${user?.name} != null">-->
+        <!--            <a th:href="@{/user/logout}">Logout</a>-->
+        <!--        </button>-->
+        <!--        <script th:inline="javascript">-->
+        <!--            var user = /*[[${user}]]*/ null;-->
+
+        <!--            if (user != null) {-->
+        <!--                document.getElementById("logOutAlt").addEventListener("click", function () {-->
+        <!--                    var form = document.createElement("form");-->
+
+        <!--                    form.setAttribute("method", "post");-->
+        <!--                    form.setAttribute("action", "/logout");-->
+
+        <!--                    document.body.appendChild(form);-->
+
+        <!--                    form.submit();-->
+
+        <!--                    // Remove the form from the document after submission-->
+        <!--                    document.body.removeChild(form);-->
+        <!--                });-->
+        <!--                const logoutButton = document.getElementById('logOut');-->
+        <!--                const customerName = document.getElementById('customerName');-->
+
+        <!--                logOutSuccessAlert()-->
+
+        <!--                customerName.style.display = 'none';-->
+        <!--                logoutButton.style.display = 'none';-->
+        <!--            }-->
+        <!--        </script>-->
+    </nav>
+
+    <!-- END nav -->
+    <section>
+        <div class="container">
+            <div class="row justify-content-between"></div>
+        </div>
+
+    </section>
+
+    <!--For nav bar -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/main.js"></script>
+</div>
+
+<!-- cook Navbar -->
+
+<!-- Tôi là hello bar -->
+
+<div id="infoText">
+    Adjust your information and track your orders here
+</div>
+
+<!-- Tôi là userprofile -->
+
+<div class="container" style="margin-top: 30px">
+    <div class="row gutters">
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="account-settings">
+                        <div class="user-profile">
+                            <div class="user-avatar">
+                                <img src="https://images.nightcafe.studio/jobs/GB3JKnvRqRsDppCVbBgg/GB3JKnvRqRsDppCVbBgg.jpg?tr=w-1600,c-at_max" alt="Maxwell Admin">
+                            </div>
+                            <h5 class="user-name" id="fullName"></h5>
+                            <h6 class="user-email" id="eMail"></h6>
+                        </div>
+                        <div class="about">
+                            <h5>About</h5>
+                            <p>Have a nice day, hehe.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="row gutters">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h6 class="mb-2 text-primary">Personal Details</h6>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" class="form-control" id="fullName2" placeholder="Enter full name">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="eMail">Email</label>
+                                <input type="email" class="form-control" id="eMail2" placeholder="Enter email ID">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="number" class="form-control" id="phone" placeholder="Enter phone number">
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                        </div>
+                    </div>
+                    <div class="row gutters">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h6 class="mt-3 mb-2 text-primary">Address</h6>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <input type="name" class="form-control" id="Street" placeholder="Enter address">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row gutters">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="text-right">
+                                <button type="button" name="submit" id="toggleOrderListBtn"  class="btn btn-order" onclick="toggleOrderList()">Show your Order</button>
+                                <button type="button" id="btnUpdate" name="submit" class="btn btn-primary" onclick="updateProfile()">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        showUserProfile();
+    });
+</script>
+<!-- Danh sách đơn hàng sẽ được hiển thị ở đây -->
+<div id="infoText2" style="display: none; margin-top: 30px" >
+    Your orders:
+</div>
+<div id="orderList" style="display: none"></div>
+
+<!-- Start Footer Section -->
+<footer class="footer-section" style="margin-top: 150px">
+    <div class="container relative">
+
+        <div class="sofa-img" style="right: -185px; top:-320px">
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="subscription-form">
+                    <h3 class="d-flex align-items-center">
+                        <span class="me-1">
+                            <img src="/images/envelope-outline.svg" alt="Image" class="img-fluid">
+                        </span>
+                        <span>Subscribe to Newsletter</span>
+                    </h3>
+
+                    <form action="#" class="row g-3">
+                        <div class="col-auto">
+                            <input type="text" class="form-control" placeholder="Enter your name">
+                        </div>
+                        <div class="col-auto">
+                            <input type="email" class="form-control" placeholder="Enter your email">
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary">
+                                <span class="fa fa-paper-plane"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-5 mb-5">
+            <div class="col-lg-4">
+                <div class="mb-4 footer-logo-wrap" style="margin-bottom: 0 !important;">
+                    <a href="#" class="footer-logo">DawaSport<span>.</span></a>
+                </div>
+                <p class="mb-4">Discover a world of sports excellence at DawaSport – your ultimate destination for
+                    premium athletic gear and equipment. Whether you're a seasoned athlete or just starting your fitness
+                    journey, we've got everything you need to conquer your goals!</p>
+
+                <ul class="list-unstyled custom-social">
+                    <li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
+                    <li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="row links-wrap">
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#"></a></li>
+                            <li><a href="#"></a></li>
+                            <li><a href="#"></a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">About us</a></li>
+                            <li><a href="#">Services</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Contact us</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a href="#">Jobs</a></li>
+                            <li><a href="#">Our team</a></li>
+                            <li><a href="#">Leadership</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-3">
+                        <ul class="list-unstyled">
+                            <li><a  href="#">Shoes</a></li>
+                            <li><a  href="#">Athletic Wear</a></li>
+                            <li><a  href="#">Sports Accessories</a></li>
+                        </ul>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Get the "Shop Now" button
+                                var user = localStorage.getItem('user');
+                                var shoesLink = document.getElementById('Shoes');
+
+                                if (user) {
+                                    shoesLink.href = "/user/shoes";
+                                } else {
+                                    shoesLink.href = "/shoes";
+                                }
+
+                                var accessoryLink = document.getElementById('Accessories');
+
+                                if (user) {
+                                    accessoryLink.href = "/user/accessories";
+                                } else {
+                                    accessoryLink.href = "/accessories";
+                                }
+
+                                var clothesLink = document.getElementById('Clothes');
+
+                                if (user) {
+                                    clothesLink.href = "/user/clothes";
+                                } else {
+                                    clothesLink.href = "/clothes";
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="border-top copyright">
+            <div class="row pt-4">
+                <div class="col-lg-6">
+                    <p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                        . All Rights Reserved. &mdash; Designed with love by <a>DawaFit.co</a>
+                        Distributed By <a>DawaSport</a>
+                    </p>
+                </div>
+
+                <div class="col-lg-6 text-center text-lg-end">
+                    <ul class="list-unstyled d-inline-flex ms-auto">
+                        <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+                        <li class="me-4"><a>&nbsp;&nbsp;&nbsp;</a></li>
+                        <li><a href="#">&nbsp;Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer Section -->
+</body>
+
+<script rel="stylesheet" type="module" th:src="@{/js/profile.js}"></script>
+<!-- handle log out -->
+
+<script rel="stylesheet" type="module" th:src="@{/js/js_product-shoes.js}"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+
+
+</html>

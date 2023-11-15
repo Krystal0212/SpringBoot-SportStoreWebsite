@@ -33,6 +33,9 @@ import java.util.concurrent.ExecutionException;
 public class UserController {
     private List<String> brands;
 
+    private List<ProductInCart> productInCarts;
+
+
     @Autowired
 
     private ObjectMapper objectMapper;
@@ -215,12 +218,10 @@ public class UserController {
             try {
                 // Chờ cho CompletableFuture hoàn thành
                 List<ProductInCart> customerCart = customerCartFuture.get();
-
+                productInCarts = customerCart;
                 // Thêm icon xóa cho mỗi sản phẩm
                 for (ProductInCart item : customerCart) {
                     item.setDeleteIcon("&#10005;");
-                    String icon = item.getDeleteIcon();
-                    System.out.println(icon);
                 }
 
                 double totalAmount = customerCart.stream()
@@ -241,5 +242,11 @@ public class UserController {
         return productService.deleteItem(userService.getCurrentUser().getUserID(), item.getName())
                 .thenApply(result -> ResponseEntity.ok("Item deleted successfully"))
                 .exceptionally(ex -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting item: " + ex.getMessage()));
+    }
+
+    @GetMapping("/profile")
+    public String profile(Model model){
+
+        return "profile";
     }
 }

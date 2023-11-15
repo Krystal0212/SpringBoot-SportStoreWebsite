@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Controller
@@ -102,8 +104,16 @@ public class HomeController {
         return "product-accessories"; // Giả sử có một view có tên là "productList" để hiển thị danh sách sản phẩm
     }
     @GetMapping("/staff-main")
-    public String staffProduct() {
-        return "staffmain"; // Return the name of the product.html template
+    public String staffProduct(Model model) {
+        // Xử lý giá trị của tham số (paramName) nếu nó được truyền vào
+        List<Product> suck = Stream.of(
+                        productService.getProductsByType("Shoes"),
+                        productService.getProductsByType("Clothes"),
+                        productService.getProductsByType("Accessory"))
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+        model.addAttribute("product", suck);
+        return "staffmain"; // Trả về tên của template product.html
     }
 
     @GetMapping("/staff-customer")

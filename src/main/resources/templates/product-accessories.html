@@ -68,7 +68,7 @@
                             <span class="visually-hidden"  id="customerName"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                            <li><a class="dropdown-item" href="#">....</a></li>
+                            <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
                             <li><a class="dropdown-item" href="#">....</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li style="text-align: center">
@@ -102,6 +102,19 @@
                     </script>
                 </li>
                 <li><a class="nav-link" href="/user/cart"><img src="/images/cart.svg" alt="cart"></a></li>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        // Kiểm tra xem localStorage("user") có tồn tại không
+                        var user = localStorage.getItem('user');
+                        var cartLink = document.getElementById('cart');
+
+                        if (user) {
+                            cartLink.href = "/user/cart";
+                        } else {
+                            cartLink.href = "/cart";
+                        }
+                    });
+                </script>
             </ul>
         </div>
     </div>
@@ -429,6 +442,11 @@
     </div>
 </footer>
 <!-- End Footer Section -->
+
+<!-- Script For Body And Footer -->
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/js_home_tiny_slider.js"></script>
+<script src="/js/js_home_custom.js"></script>
 
 </body>
 

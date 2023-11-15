@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (user) {
             // If the user is signed in, user will have a value
             // Get the current user
-            const loginIcon = document.getElementById('loginIcon');
+            // const loginIcon = document.getElementById('loginIcon');
 
             //Nut login
             // loginIcon.style.cssText="display:none !important;";
