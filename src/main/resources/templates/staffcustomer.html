@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -8,6 +8,127 @@
     <title>Responsive Admin Dashboard</title>
     <!-- ======= Styles ====== -->
     <link rel="stylesheet" href="assetsforstaff/css/style.css">
+    <script rel="stylesheet" type="module" th:src="@{assetsforstaff/js/profile.js}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+    <style>
+        #gender {
+            width: 100%;
+            padding: 10px; /* Điều chỉnh khoảng cách giữa nội dung và viền của ô chọn /
+            box-sizing: border-box; / Đảm bảo rằng padding và border không làm tăng kích thước thực sự của ô /
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #infoText {
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #infoText:hover {
+            background-color: #3498db;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        #infoText2 {
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #infoText2:hover {
+            background-color: #3498db;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .order {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 2px solid #ccc;
+            padding: 10px;
+            margin: 10px auto; / Thêm auto vào margin để căn giữa */
+            max-width: 300px;
+            box-sizing: border-box;
+        }
+        .order h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .order p {
+            margin: 8px 0;
+        }
+
+        .order-items h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .order-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .item-price, .item-quantity {
+            font-size: 14px;
+            color: #555;
+        }
+        #orderList {
+            display: flex;
+            flex-wrap: wrap; /* Đảm bảo các item sẽ xuống dòng khi không đủ không gian /
+            justify-content: center; / Canh giữa theo chiều ngang /
+        }
+
+        .order-item {
+            / Các thuộc tính khác /
+            width: 300px; / Hoặc giá trị khác tùy thuộc vào thiết kế của bạn /
+            margin: 10px; / Khoảng cách giữa các item /
+            text-align: center; / Canh giữa nội dung trong item */
+        }
+    </style>
 </head>
 
 <body>
@@ -98,32 +219,31 @@
 
         <!-- ================ Product Details List ================= -->
         <div class="details">
-            <div class="Customerlist">
+            <div class="recentOrders" id="recentOrders" >
                     <h2>Customer List</h2>
-                <table>
+                <table id="productTable">
                     <thead>
                     <tr>
-                        <td>Customer ID</td>
-                        <td>Name</td>
-                        <td>Gender</td>
-                        <td>Email</td>
-                        <td>Address</td>
+                        <td>email</td>
+                        <td>name</td>
+                        <td>state</td>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="customerTBody">
+                    <div><tr th:each="item : ${customers}">
+                        <td th:text="${item.email}"></td>
+                        <td th:text="${item.name}"></td>
+                        <td th:text="${item.state}"></td>
+                    </tr>
+                    </div>
                     </tbody>
                 </table>
             </div>
         </div>
+        <div id="orderList" style="display: block;" ></div>
     </div>
 </div>
-            <!-- =========== Scripts =========  -->
-            <script src="assetsforstaff/js/main.js"></script>
 
-            <!-- ====== ionicons ======= -->
-            <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-            <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
 </body>
-
 </html>

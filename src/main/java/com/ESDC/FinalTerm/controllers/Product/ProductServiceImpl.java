@@ -48,6 +48,40 @@ public class ProductServiceImpl implements ProductService {
 
         return future.join();
     }
+    @Override
+    public List<Product> getProductList(String type) {
+        CompletableFuture<List<Product>> future = new CompletableFuture<>();
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference productRef = firebaseDatabase.getReference("Product");
+        List<Product> products = new ArrayList<>();
+
+        productRef.child(type).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                try {
+                    for (DataSnapshot snap : snapshot.getChildren()) {
+                        Product myProduct = snap.getValue(Product.class);
+                            products.add(myProduct);
+                    }
+                    future.complete(products);
+                } catch (Exception e) {
+                    future.completeExceptionally(e);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                future.completeExceptionally(error.toException());
+            }
+        });
+
+        return future.join();
+    }
+
+
+
+
 
     @Override
     public List<Product> getProductByTypeAndFilter(String type, String productName, Double minPrice, Double maxPrice, String sortOrder, List<String> brandList) {

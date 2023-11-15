@@ -5,6 +5,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 public class User {
+
     public User(String email, String gender, String name, String password, String phone_number, String state, String username){
         this.email = email;
         this.gender = gender;
@@ -14,6 +15,17 @@ public class User {
         this.state = state;
         this.username = username;
     }
+    public User(String email, String gender, String name, String password, String phone_number, String state, String username,String address){
+        this.email = email;
+        this.gender = gender;
+        this.name = name;
+        this.password = password;
+        this.phone_number = phone_number;
+        this.state = state;
+        this.username = username;
+        this.address = address;
+    }
+
 
     public void setUser(User user){
         this.userID = user.getUserID();
@@ -24,6 +36,7 @@ public class User {
         this.password = user.getPassword();
         this.name = user.getName();
         this.phone_number = user.getPhone_number();
+        this.address = user.getAddress();
     }
 
     @Getter @Setter
@@ -52,4 +65,7 @@ public class User {
 
     @Getter @Setter
     private boolean isGoogleUser = false;
+
+    @Getter @Setter
+    private String address;
 }

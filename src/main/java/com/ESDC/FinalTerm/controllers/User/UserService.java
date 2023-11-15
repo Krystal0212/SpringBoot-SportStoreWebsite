@@ -1,8 +1,11 @@
 package com.ESDC.FinalTerm.controllers.User;
 
+import com.ESDC.FinalTerm.controllers.Product.Product;
 import com.google.firebase.database.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -116,7 +119,35 @@ public class UserService {
         return user != null && user.getUserID() != null;
     }
 
+    public List<User> getUserList() {
+        CompletableFuture<List<User>> future = new CompletableFuture<>();
 
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference customerRef = firebaseDatabase.getReference("Customer");
+        List<User> users = new ArrayList<>();
+
+        customerRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                try {
+                    for (DataSnapshot snap : snapshot.getChildren()) {
+                        User user1 = snap.getValue(User.class);
+                        users.add(user1);
+                    }
+                    future.complete(users);
+                } catch (Exception e) {
+                    future.completeExceptionally(e);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                future.completeExceptionally(error.toException());
+            }
+        });
+
+        return future.join();
+    }
 
 
 }

@@ -170,9 +170,6 @@
                             }
                         </script>
 
-<!--                        <script rel="stylesheet" type="module" th:src="@{assetsforstaff/js/upload.js}"></script>-->
-
-
                         <input type="submit" value="Add" id="add" onclick="addProduct()" style="margin-top: 10px;">
 
                         <script type="module">
@@ -185,12 +182,6 @@
                     </form>
 
 
-<!--                    <select type="text" id="dType" name="dType" style="margin-bottom: 10px; height: 20px; " onchange="plist()">-->
-<!--                        <option value="Shoes">Shoes</option>-->
-<!--                        <option value="Clothes">Clothes</option>-->
-<!--                        <option value="Accessory">Accessory</option>-->
-<!--                    </select>-->
-
 
 
                     <table id="productTable">
@@ -202,6 +193,7 @@
                             <td>Quantity</td>
                             <td>Description</td>
                             <td>status</td>
+                            <td>img</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -213,6 +205,9 @@
                             <td th:text="${item.quantity}">120</td>
                             <td th:text="${item.description}">Description</td>
                                 <td th:text="${item.status}">status</td>
+                                <td >
+                                    <img th:src="${item.url}" style="width: 20%;left: 20px;">
+                                </td>
                         </tr>
                         </div>
                         </tbody>
@@ -231,9 +226,9 @@
                     <input type="text" name="pDeC" class="form-control" id="pDeC" >
                     <label for="pstatusC">Product Status</label>
                     <input type="text" name="pstatusC" class="form-control" id="pstatusC" >
-
+                    <button type="submit" id="updatebtn" style="margin-top: 10px;">Change</button>
                     </form>
-                <button type="submit" id="updatebtn" style="margin-top: 10px;">Change</button>
+
 
 
                 <script>
@@ -272,8 +267,37 @@
                                 updateItemByName();
                             })
                         });
-
                 </script>
+<!--                <script>-->
+<!--                    function convertImageToURLC() {-->
+<!--                        const inputC = document.getElementById('imageInputC');-->
+<!--                        const outputImageC = document.getElementById('outputImageC');-->
+<!--                        const outputContainerC = document.getElementById('outputContainerC');-->
+<!--                        const imageUrlInputC = document.getElementById('imageUrlC');-->
+
+<!--                        if (input.files && input.files[0]) {-->
+<!--                            const reader = new FileReader();-->
+
+<!--                            reader.onload = function (e) {-->
+<!--                                const dataURL = e.target.result;-->
+<!--                                outputImageC.src = dataURL;-->
+<!--                                outputContainerC.style.display = 'block';-->
+<!--                                imageUrlInputC.value = dataURL;-->
+<!--                            };-->
+
+<!--                            reader.readAsDataURL(inputC.files[0]);-->
+<!--                        } else {-->
+<!--                            alert('Please select an image.');-->
+<!--                        }-->
+<!--                    }-->
+
+<!--                    function copyToClipboardC() {-->
+<!--                        const imageUrlInputC = document.getElementById('imageUrlC');-->
+<!--                        imageUrlInputC.select();-->
+<!--                        document.execCommand('copy');-->
+<!--                        alert('Image URL copied to clipboard!');-->
+<!--                    }-->
+<!--                </script>-->
 
 
             </div>
@@ -288,4 +312,5 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script rel="stylesheet" type="module" th:src="@{assetsforstaff/js/newproduct.js}"></script>
 <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
+<script rel="stylesheet" type="module" th:src="@{assetsforstaff/js/productdata.js}"></script>
 </html>

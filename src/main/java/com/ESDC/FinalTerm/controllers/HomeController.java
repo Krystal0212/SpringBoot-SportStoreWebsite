@@ -3,6 +3,8 @@ package com.ESDC.FinalTerm.controllers;
 
 import com.ESDC.FinalTerm.controllers.Product.Product;
 import com.ESDC.FinalTerm.controllers.Product.ProductService;
+import com.ESDC.FinalTerm.controllers.User.User;
+import com.ESDC.FinalTerm.controllers.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,8 @@ import java.util.stream.Stream;
 public class HomeController {
     @Autowired
     private ProductService productService;
+    @Autowired
+    private UserService userService;
     private List<String> brands;
 
     @RequestMapping("/home")
@@ -108,9 +112,9 @@ public class HomeController {
     public String staffProduct(Model model) {
         // Xử lý giá trị của tham số (paramName) nếu nó được truyền vào
         List<Product> suck = Stream.of(
-                        productService.getProductsByType("Shoes"),
-                        productService.getProductsByType("Clothes"),
-                        productService.getProductsByType("Accessory"))
+                        productService.getProductList("Shoes"),
+                        productService.getProductList("Clothes"),
+                        productService.getProductList("Accessory"))
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
       model.addAttribute("product", suck);
@@ -118,7 +122,9 @@ public class HomeController {
     }
 
     @GetMapping("/staff-customer")
-    public String staffCustomer() {
+    public String staffCustomer(Model model) {
+        List<User> suck = userService.getUserList();
+        model.addAttribute("customers", suck);
         return "staffcustomer"; // Return the name of the product.html template
     }
 }

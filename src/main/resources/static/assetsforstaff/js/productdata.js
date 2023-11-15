@@ -1,39 +1,75 @@
-import * as database from "https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js";
+import { getDatabase, ref, query, orderByChild, equalTo, update, onValue } from 'https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js';
 
-function setData()
-{
-    const dType = document.getElementById('dType').value;
-    if(dType === "Shoes")
-    {
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tham chiếu đến nút chứa dữ liệu trong Firebase Realtime Database
-            var dataRef = firebase.database().ref('Product/Shoes');
 
-            // Đọc dữ liệu từ Firebase và hiển thị trong bảng HTML
-            dataRef.once('value')
-                .then(function(snapshot) {
-                    var tableBody = document.getElementById('table-body');
-                    snapshot.forEach(function(childSnapshot) {
-                        var data = childSnapshot.val();
-                        var row = tableBody.insertRow();
-                        row.insertCell(0).innerText = data.name || '';
-                        row.insertCell(1).innerText = data.brand || '';
-                        row.insertCell(2).innerText = data.price || '';
-                        row.insertCell(3).innerText = data.quantity || '';
-                        row.insertCell(4).innerText = data.description || '';
-                    });
-                })
-                .catch(function(error) {
-                    console.error('Error reading data:', error);
-                });
+window.updateItemByName = function () {
+    const pNameC = document.getElementById('pNameC').value;
+    const pBrandC = document.getElementById('pBrandC').value;
+    const pPriceC = document.getElementById('pPriceC').value;
+    const pQuantityC = document.getElementById('pQuantityC').value;
+    const pDeC = document.getElementById('pDeC').value;
+    const pstatusC = document.getElementById('pstatusC').value;
+    const newData = ({
+        name: String(pNameC),
+        brand: String(pBrandC),
+        price: String(pPriceC),
+        quantity: String(pQuantityC),
+        description: String(pDeC),
+        status: String(pstatusC),
+    });
+    if (!pBrandC || !pPriceC || !pQuantityC || !pDeC || !pstatusC || !pNameC) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Missing Information',
+            text: 'Please fill in all fields before updating.',
         });
     }
-    if(dType === "Clothes")
+    else
     {
-
-    }
-    if(dType === "Accessory")
-    {
-
+        updateItemByName(pNameC, newData);
     }
 }
+
+// Hàm tìm và cập nhật dữ liệu cho item có name là itemName
+function updateItemByName(pNameC, newData) {
+    const dbRef = getDatabase();
+    const productRef1 = ref(dbRef, 'Product/Accessory');
+    const productRef2 = ref(dbRef, 'Product/Clothes');
+    const productRef3 = ref(dbRef, 'Product/Shoes');
+    const productRefMain = ref(dbRef, 'Product');
+
+    // Tìm kiếm itemID dựa trên tên (itemName) trong từng cấp
+    const accessoryQuery = query(productRef1, orderByChild('name'),equalTo(pNameC));
+    const clothesQuery = query(productRef2, orderByChild('name'),equalTo(pNameC));
+    const shoesQuery = query(productRef3, orderByChild('name'),equalTo(pNameC));
+
+    // Lắng nghe sự kiện "value" để tìm kiếm
+    onValue(accessoryQuery, (snapshot) => updateItem(snapshot));
+    onValue(clothesQuery, (snapshot) => updateItem(snapshot));
+    onValue(shoesQuery, (snapshot) => updateItem(snapshot));
+
+    // Hàm cập nhật dữ liệu cho itemID
+    function updateItem(snapshot) {
+        if (snapshot.exists()) {
+            // Lấy key của itemID
+            const itemKey = Object.keys(snapshot.val())[0];
+            const itemTypeKey = snapshot.key;
+
+            // Cập nhật dữ liệu cho itemID
+            const itemRef = ref(dbRef, 'Product/' + itemTypeKey+ '/' + itemKey);
+
+            update(itemRef, newData);
+
+            console.log("Updated data for item ");
+            location.reload();
+        } else {
+            console.log("Item with name not found");
+        }
+    }
+}
+
+
+
+
+
+
+

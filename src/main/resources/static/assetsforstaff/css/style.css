@@ -512,3 +512,70 @@ input[type="submit"] {
 }
 
 
+.order {
+  border: 1px solid #ddd;
+  margin: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.order:hover {
+  background-color: #f9f9f9;
+}
+
+.order h3 {
+  color: #333;
+}
+
+.order p {
+  margin: 5px 0;
+}
+
+.order-items {
+  margin-top: 10px;
+}
+
+.order-item {
+  display: flex;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.order-item img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.item-details {
+  flex-grow: 1;
+}
+
+/* CSS cho nút chuyển đổi trạng thái */
+.toggle-button {
+  cursor: pointer;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+}
+
+.toggle-button:hover {
+  background-color: #0056b3;
+}
+
+/* Thêm margin để ngăn chặn việc nút chuyển đổi bị chạm trực tiếp vào phần tử đơn hàng khi click */
+.toggle-button-container {
+  margin-top: 10px;
+}
+.order-state.pending {
+  color: #FFA500; /* Màu cam */
+}
+
+/* CSS cho trạng thái "approve" */
+.order-state.approved {
+  color: #008000; /* Màu xanh lá cây */
+}
