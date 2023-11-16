@@ -256,18 +256,24 @@
                                 form.elements['pDeC'].value = description;
                                 form.elements['pstatusC'].value = status;
                             }
+                            const name = event.target.parentElement.cells[0].textContent;
+                            const update = document.getElementById('updatebtn');
+                            update.addEventListener("click", function () {
+                                updateItemByName(name);
+                            })
                         });
                     });
                 </script>
-                <script >
+<!--                <script >-->
 
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const update = document.getElementById('updatebtn');
-                            update.addEventListener("click", function () {
-                                updateItemByName();
-                            })
-                        });
-                </script>
+<!--                        document.addEventListener('DOMContentLoaded', function () {-->
+<!--                            const pNameF = document.getElementById('pNameC').value;-->
+<!--                            const update = document.getElementById('updatebtn');-->
+<!--                            update.addEventListener("click", function () {-->
+<!--                                updateItemByName(pNameF);-->
+<!--                            })-->
+<!--                        });-->
+<!--                </script>-->
 <!--                <script>-->
 <!--                    function convertImageToURLC() {-->
 <!--                        const inputC = document.getElementById('imageInputC');-->

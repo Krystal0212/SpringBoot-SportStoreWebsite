@@ -1,7 +1,7 @@
 import { getDatabase, ref, query, orderByChild, equalTo, update, onValue } from 'https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js';
 
 
-window.updateItemByName = function () {
+window.updateItemByName = function (pNameF) {
     const pNameC = document.getElementById('pNameC').value;
     const pBrandC = document.getElementById('pBrandC').value;
     const pPriceC = document.getElementById('pPriceC').value;
@@ -16,6 +16,8 @@ window.updateItemByName = function () {
         description: String(pDeC),
         status: String(pstatusC),
     });
+    console.log("pNameF:", pNameF);
+    console.log("newData:", newData);
     if (!pBrandC || !pPriceC || !pQuantityC || !pDeC || !pstatusC || !pNameC) {
         Swal.fire({
             icon: 'error',
@@ -25,12 +27,12 @@ window.updateItemByName = function () {
     }
     else
     {
-        updateItemByName(pNameC, newData);
+        updateItemByName(pNameF, newData);
     }
 }
 
 // Hàm tìm và cập nhật dữ liệu cho item có name là itemName
-function updateItemByName(pNameC, newData) {
+function updateItemByName(pNameF, newData) {
     const dbRef = getDatabase();
     const productRef1 = ref(dbRef, 'Product/Accessory');
     const productRef2 = ref(dbRef, 'Product/Clothes');
@@ -38,9 +40,9 @@ function updateItemByName(pNameC, newData) {
     const productRefMain = ref(dbRef, 'Product');
 
     // Tìm kiếm itemID dựa trên tên (itemName) trong từng cấp
-    const accessoryQuery = query(productRef1, orderByChild('name'),equalTo(pNameC));
-    const clothesQuery = query(productRef2, orderByChild('name'),equalTo(pNameC));
-    const shoesQuery = query(productRef3, orderByChild('name'),equalTo(pNameC));
+    const accessoryQuery = query(productRef1, orderByChild('name'),equalTo(pNameF));
+    const clothesQuery = query(productRef2, orderByChild('name'),equalTo(pNameF));
+    const shoesQuery = query(productRef3, orderByChild('name'),equalTo(pNameF));
 
     // Lắng nghe sự kiện "value" để tìm kiếm
     onValue(accessoryQuery, (snapshot) => updateItem(snapshot));
