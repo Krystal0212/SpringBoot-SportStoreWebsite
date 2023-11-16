@@ -2,6 +2,7 @@ package com.ESDC.FinalTerm.controllers.Product;
 import com.ESDC.FinalTerm.controllers.Product.Product;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 
 public interface ProductService {
@@ -13,5 +14,7 @@ public interface ProductService {
 
     public List<String> getCurrentBrands(List<Product> products);
 
+    CompletableFuture<List<ProductInCart>> getCustomerCart(String userID);
 
+    CompletableFuture<Void> deleteItem(String userID, String itemName);
 }

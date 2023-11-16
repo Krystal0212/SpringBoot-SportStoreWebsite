@@ -29,16 +29,23 @@
     <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
     <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
 
-    <!--  Xu ly get user tu localStorage ( nếu có )    >-->
+    <!--  Xu ly get user cho usertyping    >-->
     <script th:inline="javascript">
         var myUser = /*[(${myUser})]*/'';
         localStorage.setItem('user', JSON.stringify(myUser));
     </script>
 
+    <script>
+        const userJson = localStorage.getItem("user");
+        if(userJson){
+            document.addEventListener('DOMContentLoaded', function () {
+                readUserID();
+            });
+        }
+    </script>
 
     <!--Script For Firebase-->
     <script type="module" th:src="@{/js/firebase-config.js}"></script>
-    <script type="module" th:src="@{/js/index.js}"></script>
     <script type="module" th:src="@{https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js}"></script>
 
     <!--Style And Script For Bootstrap CSS -->
@@ -178,7 +185,7 @@
                 <span class="visually-hidden"  id="customerName"></span>
             </button>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                <li><a class="dropdown-item" href="#">....</a></li>
+                <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
                 <li><a class="dropdown-item" href="#">....</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li style="text-align: center">
@@ -376,7 +383,7 @@
 
             <div class="col-lg-5">
                 <div class="img-wrap">
-                    <img src="/images/why-choose-us-img.jpg" alt="Image" class="img-fluid">
+                    <img src="/images/sofa.png" alt="Image" class="img-fluid">
                 </div>
             </div>
 
@@ -391,9 +398,9 @@
         <div class="row justify-content-between">
             <div class="col-lg-7 mb-5 mb-lg-0">
                 <div class="imgs-grid">
-                    <div class="grid grid-1"><img src="images/img-grid-1.jpg" alt="DawaFit.co"></div>
-                    <div class="grid grid-2"><img src="images/img-grid-2.jpg" alt="DawaFit.co"></div>
-                    <div class="grid grid-3"><img src="images/img-grid-3.jpg" alt="DawaFit.co"></div>
+                    <div class="grid grid-1"><img src="/images/img-grid-1.jpg" alt="DawaFit.co"></div>
+                    <div class="grid grid-2"><img src="/images/img-grid-3.jpg" alt="DawaFit.co"></div>
+                    <div class="grid grid-3"><img src="/images/img-grid-2.jpg" alt="DawaFit.co"></div>
                 </div>
             </div>
             <div class="col-lg-5 ps-lg-5">
@@ -423,7 +430,7 @@
             <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
                 <div class="product-item-sm d-flex">
                     <div class="thumbnail">
-                        <img src="images/product-1.png" alt="Image" class="img-fluid">
+                        <img src="/images/product-1.png" alt="Image" class="img-fluid">
                     </div>
                     <div class="pt-3">
                         <h3>Nordic Chair</h3>
@@ -436,7 +443,7 @@
             <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
                 <div class="product-item-sm d-flex">
                     <div class="thumbnail">
-                        <img src="images/product-2.png" alt="Image" class="img-fluid">
+                        <img src="/images/product-2.png" alt="Image" class="img-fluid">
                     </div>
                     <div class="pt-3">
                         <h3>Kruzo Aero Chair</h3>
@@ -449,7 +456,7 @@
             <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
                 <div class="product-item-sm d-flex">
                     <div class="thumbnail">
-                        <img src="images/product-3.png" alt="Image" class="img-fluid">
+                        <img src="/images/product-3.png" alt="Image" class="img-fluid">
                     </div>
                     <div class="pt-3">
                         <h3>Ergonomic Chair</h3>
@@ -499,7 +506,7 @@
 
                                         <div class="author-info">
                                             <div class="author-pic">
-                                                <img src="images/person-1.png" alt="Maria Jones" class="img-fluid">
+                                                <img src="/images/person-1.png" alt="Maria Jones" class="img-fluid">
                                             </div>
                                             <h3 class="font-weight-bold">Maria Jones</h3>
                                             <span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
@@ -633,8 +640,8 @@
 <footer class="footer-section">
     <div class="container relative">
 
-        <div class="sofa-img">
-            <img src="/images/sofa.png" alt="Image" class="img-fluid">
+        <div class="sofa-img" style="right: -185px; top:-320px">
+            <img style="width: 780px !important; max-width: 100% !important;" src="/images/shoes_showcase.png" alt="Image" class="img-fluid">
         </div>
 
         <div class="row">

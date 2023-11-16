@@ -23,7 +23,6 @@ window.addToCart = function (itemName, userName, productType) {
                     console.log(userKey);
                 });
             }
-
             if (itemSnapshot.exists()) {
                 itemSnapshot.forEach((childSnapshot) => {
                     itemKey = childSnapshot.key;
@@ -57,7 +56,7 @@ window.addToCart = function (itemName, userName, productType) {
                             brand: itemBrand,
                             name: itemName,
                             url: itemURL,
-                            quantity: 1,
+                            quantity: String(1),
                         }
 
                         const userCartRef = ref(dbRef, "CustomerCart/" + userKey + "/" + productType + "/" + itemKey);

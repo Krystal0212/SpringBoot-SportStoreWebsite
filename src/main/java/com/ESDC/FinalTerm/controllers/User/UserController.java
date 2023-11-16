@@ -2,24 +2,40 @@ package com.ESDC.FinalTerm.controllers.User;
 
 
 import com.ESDC.FinalTerm.controllers.Product.Product;
+import com.ESDC.FinalTerm.controllers.Product.ProductInCart;
 import com.ESDC.FinalTerm.controllers.Product.ProductService;
+import com.ESDC.FinalTerm.controllers.User.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @Controller
 @ControllerAdvice
 @RequestMapping("/user")
 public class UserController {
+    private List<String> brands;
+
+    private List<ProductInCart> productInCarts;
+
+
     @Autowired
 
     private ObjectMapper objectMapper;
@@ -29,7 +45,6 @@ public class UserController {
 
     @Autowired
     private ProductService productService;
-    private List<String> brands;
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
@@ -77,6 +92,7 @@ public class UserController {
 
     @GetMapping("/home")
     public String showHome(Model model) {
+        String userID = userService.getCurrentUser().getUserID();
         return "index";
     }
 
@@ -178,5 +194,59 @@ public class UserController {
         model.addAttribute("products", products);
         model.addAttribute("brands", brands);
         return "product-accessories"; // Giả sử có một view có tên là "productList" để hiển thị danh sách sản phẩm
+    }
+
+    @PostMapping("/saveUserId")
+    public ResponseEntity<Map<String, String>> saveUserId(@RequestBody Map<String, String> request) {
+        String userId = request.get("userId");
+        //lay ID cua user hien tai
+        userService.getCurrentUser().setUserID(userId);
+
+        return ResponseEntity.ok(Collections.emptyMap());
+    }
+
+    @GetMapping("/cart")
+    public String Cart(Model model) {
+        String userID = userService.getCurrentUser().getUserID();
+        if(userID == null){
+            return "waitingLobby";
+        }
+        else{
+            // Gọi hàm từ CartService để lấy thông tin giỏ hàng
+            CompletableFuture<List<ProductInCart>> customerCartFuture = productService.getCustomerCart(userID);
+
+            try {
+                // Chờ cho CompletableFuture hoàn thành
+                List<ProductInCart> customerCart = customerCartFuture.get();
+                productInCarts = customerCart;
+                // Thêm icon xóa cho mỗi sản phẩm
+                for (ProductInCart item : customerCart) {
+                    item.setDeleteIcon("&#10005;");
+                }
+
+                double totalAmount = customerCart.stream()
+                        .mapToDouble(product -> Double.parseDouble(product.getPrice()))
+                        .sum();
+                // Chuyển danh sách sản phẩm vào model để hiển thị trên trang HTML
+                model.addAttribute("totalAmount", totalAmount);
+                model.addAttribute("customerCart", customerCart);
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+            return "cart";
+        }
+    }
+
+    @DeleteMapping("/deleteItem")
+    public CompletableFuture<ResponseEntity<String>> deleteItem(@RequestBody Product item) {
+        return productService.deleteItem(userService.getCurrentUser().getUserID(), item.getName())
+                .thenApply(result -> ResponseEntity.ok("Item deleted successfully"))
+                .exceptionally(ex -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting item: " + ex.getMessage()));
+    }
+
+    @GetMapping("/profile")
+    public String profile(Model model){
+
+        return "profile";
     }
 }

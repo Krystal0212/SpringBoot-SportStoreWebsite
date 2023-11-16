@@ -186,6 +186,15 @@ a {
     .btn.btn-secondary:hover {
       background: #f8b810;
       border-color: #f8b810; }
+.btn.btn-order {
+  color: #2f2f2f;
+  background: #ef0819;
+  border-color: #ef0819; }
+
+.btn.btn-order:hover {
+  background: #b00e2c;
+  border-color: #b00e2c; }
+
   .btn.btn-white-outline {
     background: transparent;
     border-width: 2px;

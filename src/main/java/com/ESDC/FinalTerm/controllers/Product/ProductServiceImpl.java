@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
                 try {
                     for (DataSnapshot snap : snapshot.getChildren()) {
                         Product myProduct = snap.getValue(Product.class);
-                        if(myProduct.getStatus().equals("enable")){
+                        if (myProduct.getStatus().equals("enable")) {
                             products.add(myProduct);
                         }
                     }
@@ -92,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
                 .filter(product -> productName == null || product.getName().toLowerCase().contains(productName.toLowerCase()))
                 .filter(product -> minPrice == null || product.getIntPrice() >= minPrice)
                 .filter(product -> maxPrice == null || product.getIntPrice() <= maxPrice)
-                .filter(product -> brandList==null || brandList.contains(product.getBrand()))
+                .filter(product -> brandList == null || brandList.contains(product.getBrand()))
                 .sorted((p1, p2) -> {
                     if ("asc".equals(sortOrder)) {
                         return Integer.compare(p1.getIntPrice(), p2.getIntPrice());
@@ -106,7 +106,7 @@ public class ProductServiceImpl implements ProductService {
         return filteredProducts;
     }
 
-    public List<String> getCurrentBrands(List<Product> products){
+    public List<String> getCurrentBrands(List<Product> products) {
         Set<String> uniqueBrandsSet = new HashSet<>();
 
         for (Product product : products) {
@@ -118,8 +118,88 @@ public class ProductServiceImpl implements ProductService {
 
         return uniqueBrandsList;
     }
+
+    @Override
+    public CompletableFuture<List<ProductInCart>> getCustomerCart(String userID) {
+        CompletableFuture<List<ProductInCart>> customerCartFuture = new CompletableFuture<>();
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("CustomerCart");
+        databaseRef.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot customerSnapshot) {
+                List<ProductInCart> customerCart = new ArrayList<>();
+                // duyệt 3 loại product
+                for (DataSnapshot productTypeSnapshot : customerSnapshot.getChildren()) {
+                    String productType = productTypeSnapshot.getKey();
+                    // duyệt product của tung loại
+                    for (DataSnapshot productSnapshot : productTypeSnapshot.getChildren()) {
+                        ProductInCart product = productSnapshot.getValue(ProductInCart.class);
+                        customerCart.add(product);
+                    }
+                }
+
+                customerCartFuture.complete(customerCart);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                databaseError.toException().printStackTrace();
+                customerCartFuture.completeExceptionally(databaseError.toException());
+            }
+        });
+
+        return customerCartFuture;
+    }
+
+    @Override
+    public CompletableFuture<Void> deleteItem(String userID, String itemName) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference userRef = firebaseDatabase.getReference("CustomerCart").child(userID);
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // Duyệt qua từng loại item
+                    for (DataSnapshot itemTypeSnapshot : dataSnapshot.getChildren()) {
+                        String itemType = itemTypeSnapshot.getKey();
+
+                        // Duyệt qua từng item trong loại item
+                        for (DataSnapshot itemSnapshot : itemTypeSnapshot.getChildren()) {
+                            String currentItemName = itemSnapshot.child("name").getValue(String.class);
+
+                            // So sánh itemName và xóa nếu khớp
+                            if (currentItemName != null && currentItemName.equals(itemName)) {
+                                // Xóa chỉ item đó, không làm ảnh hưởng đến cha (itemTypeSnapshot)
+                                itemSnapshot.getRef().setValue(null, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(DatabaseError error, DatabaseReference ref) {
+                                        if (error == null) {
+                                            // Xóa thành công item
+                                            future.complete(null);
+                                        } else {
+                                            // Xử lý lỗi nếu có
+                                            future.completeExceptionally(error.toException());
+                                        }
+                                    }
+                                });
+                                return; // Dừng vòng lặp nếu đã xóa item
+                            }
+                        }
+                    }
+                }
+
+                // Item không tồn tại hoặc không tìm thấy
+                future.complete(null);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Xử lý lỗi nếu có
+                future.completeExceptionally(databaseError.toException());
+            }
+        });
+
+        return future;
+    }
 }
-
-
-
-

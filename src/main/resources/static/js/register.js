@@ -28,11 +28,19 @@ const checkEmailAndUsername = function checkEmailAndUsername(email, username) {
                 for(const snap in snapshot.val()){
                     const customerData = snapshot.val()[snap];
                     if (customerData.username === username) {
-                        alert("Tên tài khoản đã được sử dụng");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Attention!',
+                            text: 'Username has been used',
+                        });
                         return false;
                     }
                     else if(customerData.email === email){
-                        alert("Email đã được sử dụng");
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Attention!',
+                            text: 'Email has been used',
+                        });
                         return false;
                     }
                 }
@@ -73,8 +81,12 @@ const checkEmptyFields = function checkEmptyFields(username, password, email, fu
 
   if (emptyFields.length > 0) {
     // Có ít nhất một trường thông tin bị bỏ trống
-    const message = `Vui lòng điền đầy đủ thông tin: ${emptyFields.join(", ")}`;
-    alert(message);
+    const message = `Please fill out these information: ${emptyFields.join(", ")}`;
+      Swal.fire({
+          icon: 'error',
+          title: 'Missing Information',
+          text: message,
+      });
     return true;
   }
   return false;
@@ -141,22 +153,38 @@ const WriteDataToFirebase = function WriteDataToFirebase(username, password, ema
      }
 
      if (!checkUsernameLength(username)) {
-         alert("Tên tài khoản phải có ít nhất 5 kí tự.");
+         Swal.fire({
+             icon: 'error',
+             title: 'Missing Information',
+             text: 'Username must has atleast 5 digits',
+         });
          return;
      }
 
      if (!checkPasswordStrength(password)) {
-         alert("Mật khẩu phải có ít nhất 8 ký tự và chứa ít nhất 1 chữ in hoa.");
+         Swal.fire({
+             icon: 'error',
+             title: 'Missing Information',
+             text: 'Password must has 8 digits and atleast 1 uppcase digits',
+         });
          return;
      }
 
      if (!checkMatchingPasswords(password, passwordConfirm)) {
-         alert("Mật khẩu và xác nhận mật khẩu phải giống nhau.");
+         Swal.fire({
+             icon: 'error',
+             title: 'Missing Information',
+             text: 'Password does not match',
+         });
          return;
      }
 
      if (!checkPhoneNumberLength(phoneNumber)) {
-         alert("Số điện thoại phải có ít nhất 10 số và bé hơn 13 số.");
+         Swal.fire({
+             icon: 'error',
+             title: 'Missing Information',
+             text: 'Phone number must has atleast 10 numbers and less than 13 numbers',
+         });
          return;
      }
 
@@ -165,7 +193,11 @@ const WriteDataToFirebase = function WriteDataToFirebase(username, password, ema
              if (result) {
                  WriteDataToFirebase(username, password, email, fullName, gender, phoneNumber)
                      .then(() => {
-                         alert("Tạo tài khoản thành công, vui lòng đăng nhập để tiếp tục !");
+                         Swal.fire({
+                             icon: 'success',
+                             title: 'Hi there!',
+                             text: 'Register successfully, please sign in to continue!',
+                         });
                          window.location.href = "/login";
                      })
                      .catch((error) => {

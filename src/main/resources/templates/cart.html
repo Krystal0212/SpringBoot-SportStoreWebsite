@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <meta name="keywords" content="bootstrap, bootstrap4"/>
+    <style>
+        .discount-info {
+            color: red;
+        }
+    </style>
+
+    <!-- Bootstrap CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- Thêm thư viện Firebase vào file HTML -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js"></script>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <!-- Swal alert -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/cart.css" th:href="@{/css/cart.css}">
+    <link href="/css/style_home_tiny_slider.css" rel="stylesheet">
+    <link href="/css/style_general_body_and_footer.css" rel="stylesheet">
+
+    <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
+
+</head>
+<body>
+
+<div class="card">
+    <div class="row">
+        <div class="col-md-8 cart">
+            <div class="title">
+                <div class="row">
+                    <div class="col"><h4><b id = "cartName">Shopping Cart</b></h4></div>
+                    <script>
+                        var userJson = localStorage.getItem("user");
+                        var cartName = document.getElementById("cartName");
+                        if(userJson){
+                            const userObject = JSON.parse(userJson);
+                            cartName.textContent = userObject.name + "'s Cart";
+                        }
+                    </script>
+                    <div class="col align-self-center text-right text-muted" th:text="${#lists.size(customerCart)} + ' items'">3 items</div>
+                </div>
+            </div>
+
+            <script>
+                function updateTotalAmount() {
+                    var totalPrice = parseFloat(document.getElementById("totalPrice").textContent.replace('€', '').trim());
+                    var shippingOption = parseFloat(document.getElementById("shippingOption").value);
+                    var totalAmount = totalPrice + shippingOption;
+
+                    // document.getElementById("totalAmount").textContent = '€ ' + totalAmount + '.00';
+                    checkDiscountCode()
+
+                }
+
+                function updateQuantity(itemName, change, itemPrice) {
+                    var quantityElement = document.getElementById('quantity-' + itemName);
+                    var currentQuantity = parseInt(quantityElement.innerText);
+
+                    // Đảm bảo số lượng không dưới 1
+                    // Cập nhật số lượng hiển thị
+                    quantityElement.innerText = Math.max(1, currentQuantity + change);
+
+                    // Cập nhật số lượng trong Firebase
+                    updateFirebaseQuantity(itemName, Math.max(1, currentQuantity + change), itemPrice).then(() => {
+                        // Xử lý khi cập nhật thành công
+                        //Khi số lượng hàng thay đổi, cập nhật total price
+                        var totalPrice = parseFloat(document.getElementById("totalPrice").textContent.replace('€', '').trim());
+
+                        if(change === 1){
+                            var newTotalPrice = totalPrice + parseFloat(itemPrice);
+                            document.getElementById("totalPrice").textContent = '€ ' + newTotalPrice + '.00'
+                        } else if (currentQuantity > 1 && change === -1) {
+                            var newTotalPrice = totalPrice - parseFloat(itemPrice);
+                            document.getElementById("totalPrice").textContent = '€ ' + newTotalPrice + '.00'
+                        } else {
+                            var newTotalPrice = totalPrice;
+                            document.getElementById("totalPrice").textContent = '€ ' + newTotalPrice + '.00'
+                        }
+
+                        // Cập nhật lại totalAmount
+                        location.reload();
+
+                        // Gọi hàm xử lý backend hoặc làm bất kỳ công việc cần thiết khác tại đây
+                        // Ví dụ: có thể gửi yêu cầu cập nhật số lượng lên server.
+                    }).catch((error) => {
+                        console.log(error.message);
+                        console.log(error.text);
+
+                    });
+
+
+                }
+            </script>
+
+            <!-- My item -->
+            <div class="row border-top border-bottom" th:each="item : ${customerCart}">
+                <div class="row main align-items-center">
+                    <div class="col-2"><img class="img-fluid" th:src="${item.url}"></div>
+                    <div class="col">
+                        <div class="row text-muted" th:text="${item.brand}" > Product Brand </div>
+                        <div class="row" th:text="${item.name}" > Product Name </div>
+                    </div>
+                    <div class="col">
+                        <a href="#" th:attr="data-item-name=${item.name}, data-item-price=${item.price} / ${item.quantity}" onclick="updateQuantity(this.getAttribute('data-item-name'), -1, this.getAttribute('data-item-price'))">-</a>
+                        <a href="#" class="border" th:text="${item.quantity}" th:id="'quantity-' + ${item.name}">1</a>
+                        <a href="#" th:attr="data-item-name=${item.name}, data-item-price=${item.price} / ${item.quantity}" onclick="updateQuantity(this.getAttribute('data-item-name'), 1, this.getAttribute('data-item-price'))">+</a>
+                    </div>
+                    <div class="col"  th:text="'€ ' + ${item.price} / ${item.quantity}  + '.00'" >&euro; 44.00</div>
+                    <span class="close" th:attr="data-name=${item.name}" th:utext="${item.deleteIcon}" onclick="deleteItem(this.getAttribute('data-name'))"></span>
+
+                    <script>
+                        function deleteItem(itemName) {
+                            $.ajax({
+                                url: '/user/deleteItem',
+                                type: 'DELETE',
+                                contentType: 'application/json',
+                                data: JSON.stringify({ name: itemName }),
+                                success: function (response) {
+                                    // Nếu xóa thành công, cập nhật giao diện và Firebase
+                                    Swal.fire({
+                                        title: 'Success',
+                                        text: 'Removed ' + itemName + '!',
+                                        icon: 'success',
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Ok'
+                                    }).then((result) => {
+                                        // Nếu người dùng nhấn OK (confirm)
+                                        if (result.isConfirmed) {
+                                            location.reload(); // Reload trang để cập nhật giao diện
+                                        }
+                                    });
+                                },
+                                error: function (error) {
+                                    alert('Error deleting item: ' + error);
+                                }
+                            });
+                        }
+                    </script>
+                </div>
+            </div>
+
+            <div class="back-to-shop" onclick="goBack()"><a>&leftarrow;</a><span class="text-muted">Back to shop</span></div>
+
+            <script>
+                function goBack() {
+                    // Kiểm tra xem có thể quay lại trang trước đó hay không
+                    if (document.referrer) {
+                        window.history.back(); // Quay lại trang trước đó
+                    } else {
+                        window.location.href = "/home"; // Nếu không tồn tại trang trước, quay về trang chủ
+                    }
+                }
+            </script>
+        </div>
+        <!-- Summary -->
+        <div class="col-md-4 summary">
+            <div><h5><b>Summary</b></h5></div>
+            <hr>
+            <div class="row">
+                <div class="col" style="padding-left:0;" id="totalItems" th:text="'ITEMS ' + ${#lists.size(customerCart)}" >ITEMS 0</div>
+                <div class="col text-right" id="totalPrice" th:text="'€ ' + ${totalAmount} + '0'"></div>
+            </div>
+            <form>
+                <p>SHIPPING</p>
+                <select id="shippingOption" onchange="updateTotalAmount()">
+                    <option class="text-muted" value="5.00">Standard-Delivery- € 5.00</option>
+                    <option class="text-muted" value="15.00">Super-Sonic- € 15.00</option>
+                    <option class="text-muted" value="0.00">Momo- € 0.00</option>
+
+                </select>
+                <p>GIFT CODE</p>
+                <input id="code" placeholder="Enter your code" oninput="checkDiscountCode()">
+                <div id="discountPercentageInfo" class="discount-info"></div>
+                <div id="discountInfo" class="discount-info" > </div>
+            </form>
+            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                <div class="col">TOTAL PRICE</div>
+                <div class="col text-right" id="totalAmount" th:attr="data-totalAmount=${totalAmount}" th:text="'€ ' + ${totalAmount + 5} + '0'"> € 0.00</div>
+            </div>
+            <button class="btn" id="btnCheckout" th:attr="disabled=${#lists.size(customerCart) == 0} ? 'disabled' : null">CHECKOUT</button>
+
+            <script th:inline="javascript">
+                /*<![CDATA[*/
+                // Sử dụng JavaScript để kiểm tra và disable button
+                var totalItems = /*[[${#lists.size(customerCart)}]]*/ 0;
+                var btnCheckout = document.getElementById('btnCheckout');
+
+                if (totalItems === 0) {
+                    btnCheckout.disabled = true;
+                }
+                /*]]>*/
+            </script>
+
+            <!-- Xu ly gift code -->
+            <script>
+                var initialTotalAmount = parseFloat(document.getElementById("totalAmount").textContent.replace('€', '').trim()); // Giá trị total ban đầu
+                var currentTotalAmount = initialTotalAmount; // Giá trị total hiện tại
+                function checkDiscountCode() {
+                    var codeInput = document.getElementById('code');
+                    var discountCode = codeInput.value.trim().toUpperCase(); // Chuyển đổi mã code về chữ hoa và loại bỏ khoảng trắng
+
+                    // Gọi hàm kiểm tra mã giảm giá từ Firebase
+                    checkFirebaseCode(discountCode, currentTotalAmount, initialTotalAmount);
+                }
+            </script>
+
+            <!-- Xu ly checkOut -->
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const checkOutBnt = document.getElementById("btnCheckout");
+                    checkOutBnt.addEventListener("click", function () {
+                        startShoppingProcess();
+                    })
+                });
+            </script>
+        </div>
+    </div>
+
+</div>
+
+</body>
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script rel="stylesheet" type="module" th:src="@{/js/cartQuantity_Price.js}"></script>
+<script rel="stylesheet" type="module" th:src="@{/js/createOrder.js}"></script>
+
+</html>

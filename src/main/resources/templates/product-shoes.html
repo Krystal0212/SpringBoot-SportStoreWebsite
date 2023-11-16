@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -11,6 +11,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="/css/style_home_navbar.css" th:href="@{/css/logoutBtn.css}">
+    <link href="/css/style_home_tiny_slider.css" rel="stylesheet">
     <link href="/css/style_general_body_and_footer.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
@@ -24,6 +25,7 @@
 
 <!-- Start Header/Navigation -->
 <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="DawaSport navigation bar">
+
     <div class="container">
         <a class="navbar-brand" id="Logo" href="/">DawaTrainers<span>.</span></a>
 
@@ -68,7 +70,7 @@
                             <span class="visually-hidden"  id="customerName"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                            <li><a class="dropdown-item" href="#">....</a></li>
+                            <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
                             <li><a class="dropdown-item" href="#">....</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li style="text-align: center">
@@ -76,6 +78,7 @@
                                     <i class="fas fa-sign-out-alt"></i> Logout
                                 </a>
                             </li>
+
                         </ul>
                     </div>
 
@@ -90,18 +93,34 @@
                             if (userJSON) {
                                 const userObject = JSON.parse(userJSON);
 
+                                // Hiển thị dropdownBox và đặt dữ liệu vào customerName
                                 dropdownBox.style.display = 'block';
                                 customerName.textContent = userObject.name;
                             } else {
+                                // Nếu localStorage('user') rỗng, ẩn dropdownBox
                                 dropdownBox.style.display = 'none';
                             }
                         });
                     </script>
                 </li>
-                <li><a class="nav-link" href="/user/cart"><img src="/images/cart.svg" alt="cart"></a></li>
+                <li><a class="nav-link" id="cart" href="/"><img src="/images/cart.svg"  calt="cart"></a></li>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        // Kiểm tra xem localStorage("user") có tồn tại không
+                        var user = localStorage.getItem('user');
+                        var cartLink = document.getElementById('cart');
+
+                        if (user) {
+                            cartLink.href = "/user/cart";
+                        } else {
+                            cartLink.href = "/cart";
+                        }
+                    });
+                </script>
             </ul>
         </div>
     </div>
+
 </nav>
 <!-- End Header/Navigation -->
 
@@ -179,7 +198,7 @@
             <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
                 <div class="card">
                     <div class="card-body">
-                        <form method="post" action="/shoes/filter">
+                        <form method="post" id="apply" action="/shoes/filter">
                             <!-- Search by product name -->
                             <div class="mb-3">
                                 <input type="text" class="form-control" id="productName" name="productName" placeholder="Enter product name" th:value="${productName}">
@@ -225,6 +244,22 @@
                             <!-- Apply button -->
                             <button class="btn btn-primary">Apply Filters</button>
                         </form>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                // Kiểm tra xem localStorage("user") có tồn tại không
+                                var user = localStorage.getItem('user');
+                                var applyLink = document.getElementById('apply');
+
+                                if (user) {
+                                    // Nếu có tồn tại, điều hướng đến "/user/home"
+                                    applyLink.action = "/user/shoes/filter";
+                                } else {
+                                    // Nếu không tồn tại, điều hướng đến "/home"
+                                    applyLink.action = "/shoes/filter";
+                                }
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
@@ -429,7 +464,16 @@
 
 </body>
 
-<script rel="stylesheet" type="module" th:src="@{/js/addToCart.js}"></script>
+<!-- Script For Body And Footer -->
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/js_home_tiny_slider.js"></script>
+<script src="/js/js_home_custom.js"></script>
+<!-- handle log out -->
+
 <script rel="stylesheet" type="module" th:src="@{/js/js_product-shoes.js}"></script>
+
+<!-- add gio hang -->
+
+<script rel="stylesheet" type="module" th:src="@{/js/addToCart.js}"></script>
 
 </html>

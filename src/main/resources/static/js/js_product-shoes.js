@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (user) {
             // If the user is signed in, user will have a value
             // Get the current user
-            const loginIcon = document.getElementById('loginIcon');
+            // const loginIcon = document.getElementById('loginIcon');
 
             //Nut login
             // loginIcon.style.cssText="display:none !important;";
@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                     // Chuyển đến trang logout khi người dùng đồng ý
                                     localStorage.removeItem("google checker")
                                     localStorage.removeItem("user")
+                                    localStorage.removeItem("userID")
                                     window.location.href = "/shoes";
                                 }
                             });
@@ -91,6 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         localStorage.removeItem("google checker")
                         localStorage.removeItem("user")
                         window.location.href = "/shoes";
+                        localStorage.removeItem("userID")
                     }
                 });
             });
