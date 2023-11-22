@@ -576,6 +576,6 @@ input[type="submit"] {
 }
 
 /* CSS cho trạng thái "approve" */
-.order-state.approved {
+.order-state.shipping {
   color: #008000; /* Màu xanh lá cây */
 }

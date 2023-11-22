@@ -37,6 +37,7 @@ function displayOrders() {
         orderElement.innerHTML = `
         <h3 class="order-id">Order ID: ${orderID}</h3>
         <p class="order-address" >Your address: ${orderData.address}</p>
+        <p class="order-ship">Shipping opinion: ${orderData.shipmentMethod}</p>
         <p class="order-state ${orderData.state.toLowerCase()}">State: ${orderData.state}</p>
         <p class="order-CustomerId">customerID: ${orderData.customerID}</p>
         <p class="order-total">Price: ${orderData.totalAmount} $</p>
@@ -58,7 +59,7 @@ function displayOrders() {
     }
 
     function toggleOrderState(orderID, currentState) {
-        const newState = currentState === 'pending' ? 'approved' : 'pending';
+        const newState = currentState === 'pending' ? 'shipping' : 'pending';
 
         // Cập nhật trạng thái mới lên Firebase
         const dbRef = getDatabase();

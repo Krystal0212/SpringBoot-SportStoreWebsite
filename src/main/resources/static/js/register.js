@@ -197,8 +197,11 @@ const WriteDataToFirebase = function WriteDataToFirebase(username, password, ema
                              icon: 'success',
                              title: 'Hi there!',
                              text: 'Register successfully, please sign in to continue!',
+                         }).then((result) => {
+                             if (result.isConfirmed) {
+                                 window.location.href = "/login";
+                             }
                          });
-                         window.location.href = "/login";
                      })
                      .catch((error) => {
                          console.error("Error writing user data: ", error);
