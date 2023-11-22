@@ -120,11 +120,4 @@ public class HomeController {
       model.addAttribute("product", suck);
         return "staffmain"; // Trả về tên của template product.html
     }
-
-    @GetMapping("/staff-customer")
-    public String staffCustomer(Model model) {
-        List<User> suck = userService.getUserList();
-        model.addAttribute("customers", suck);
-        return "staffcustomer"; // Return the name of the product.html template
-    }
 }

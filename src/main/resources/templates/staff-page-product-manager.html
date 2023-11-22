@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Admin Dashboard</title>
+    <!-- ======= Styles ====== -->
+    <link rel="stylesheet" href="/assetsforstaff/css/style.css">
+    <script  type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+    <script  type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
+
+</head>
+
+<body>
+<!-- =============== Navigation ================ -->
+<div class="container">
+    <div class="navigation">
+        <ul>
+            <li>
+                <a href="#">
+                        <span class="icon">
+                            <ion-icon name="shirt-outline"></ion-icon>
+                        </span>
+                    <span class="title">Dawa Sport</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/staff-main" th:href="@{/staff-main}">
+                        <span class="icon">
+                            <ion-icon name="bag-remove-outline"></ion-icon>
+                        </span>
+                    <span class="title">Product</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/staff-customer" th:href="@{/staff-customer}">
+                        <span class="icon">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </span>
+                    <span class="title">Customers</span>
+                </a>
+            </li>
+            <li>
+                <a href="/login" th:href="@{/login}">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                    <span class="title">Sign Out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ========================= Main ==================== -->
+    <div class="main">
+        <div class="topbar">
+            <div class="toggle">
+                <ion-icon name="menu-outline"></ion-icon>
+            </div>
+
+        </div>
+        <!-- ======================= Cards ================== -->
+        <div class="cardBox">
+
+            <div class="card">
+                <div>
+                    <div class="numbers">80</div>
+                    <div class="cardName">Order</div>
+                </div>
+
+                <div class="iconBx">
+                    <ion-icon name="cart-outline"></ion-icon>
+                </div>
+            </div>
+
+            <div class="card">
+                <div>
+                    <div class="numbers">$7,842</div>
+                    <div class="cardName">Earning</div>
+                </div>
+
+                <div class="iconBx">
+                    <ion-icon name="cash-outline"></ion-icon>
+                </div>
+            </div>
+            <div class="card">
+                <div>
+                    <div class="numbers">200</div>
+                    <div class="cardName">Customer</div>
+                </div>
+
+                <div class="iconBx">
+                    <ion-icon name="people-outline"></ion-icon>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================ Product Details List ================= -->
+        <div class="details">
+            <div class="recentOrders">
+                <div class="cardHeader">
+                    <h2>Product</h2>
+                </div>
+
+                <form class="form-add">
+                    <label for="pType">Product Type</label>
+                    <select type="text" id="pType" name="pType" style="margin-bottom: 10px;">
+                        <option value="Shoes">Shoes</option>
+                        <option value="Clothes">Clothes</option>
+                        <option value="Accessory">Accessory</option>
+                    </select>
+                    <label for="pName">Product Name</label>
+                    <input type="text" name="pName" class="form-control" id="pName" >
+                    <label for="pBrand">Product Brand</label>
+                    <input type="text" name="pBrand" class="form-control" id="pBrand" >
+                    <label for="pPrice">Product Price</label>
+                    <input type="number" name="pPrice" class="form-control" id="pPrice" >
+                    <label for="pPrice">Product Quantity</label>
+                    <input type="number" name="pQuantity" class="form-control" id="pQuantity" >
+                    <label for="pDe">Product Description</label>
+                    <input type="text" name="pDe" class="form-control" id="pDe" >
+
+                    <div>
+                        <label for="imageInput">Product URL (Click me to pick file)</label>
+                        <input type="file" name="pUrl" class="form-control" id="imageInput" style="display: none;" onchange="convertImageToURL()">
+                        <div id="outputContainer" style="display: none;">
+                            <h3>Converted Image</h3>
+                            <img id="outputImage" alt="Converted Image">
+                            <br>
+                            <label for="imageUrl">Image URL:</label>
+                            <input type="text" id="imageUrl" readonly>
+                            <button onclick="copyToClipboard()">Copy URL</button>
+                        </div>
+                    </div>
+
+                    <script>
+                        function convertImageToURL() {
+                            const input = document.getElementById('imageInput');
+                            const outputImage = document.getElementById('outputImage');
+                            const outputContainer = document.getElementById('outputContainer');
+                            const imageUrlInput = document.getElementById('imageUrl');
+
+                            if (input.files && input.files[0]) {
+                                const reader = new FileReader();
+
+                                reader.onload = function (e) {
+                                    const dataURL = e.target.result;
+                                    outputImage.src = dataURL;
+                                    outputContainer.style.display = 'block';
+                                    imageUrlInput.value = dataURL;
+                                };
+
+                                reader.readAsDataURL(input.files[0]);
+                            } else {
+                                alert('Please select an image.');
+                            }
+                        }
+
+                        function copyToClipboard() {
+                            const imageUrlInput = document.getElementById('imageUrl');
+                            imageUrlInput.select();
+                            document.execCommand('copy');
+                            alert('Image URL copied to clipboard!');
+                        }
+                    </script>
+
+                    <input type="submit" value="Add" id="add" onclick="addProduct()" style="margin-top: 10px;">
+
+                    <script type="module">
+                        document.querySelector('#add').addEventListener('click', function(event) {
+                            event.preventDefault(); // Prevent form submission
+                            ClickAdd();
+                        });
+
+                    </script>
+                </form>
+
+
+
+
+                <table id="productTable">
+                    <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>Brand</td>
+                        <td>Price</td>
+                        <td>Quantity</td>
+                        <td>Description</td>
+                        <td>status</td>
+                        <td>img</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <div >
+                        <tr th:each="item : ${product}">
+                            <td th:text="${item.name}">Thuong Dinh</td>
+                            <td th:text="${item.brand}">VietNam</td>
+                            <td th:text="${item.price}">10</td>
+                            <td th:text="${item.quantity}">120</td>
+                            <td th:text="${item.description}">Description</td>
+                            <td th:text="${item.status}">status</td>
+                            <td >
+                                <img th:src="${item.url}" style="width: 20%;left: 20px;">
+                            </td>
+                        </tr>
+                    </div>
+                    </tbody>
+                </table>
+            </div>
+            <form class="form-change">
+                <label for="pNameC">Product Name</label>
+                <input type="text" name="pNameC" class="form-control" id="pNameC" >
+                <label for="pBrandC">Product Brand</label>
+                <input type="text" name="pBrandC" class="form-control" id="pBrandC" >
+                <label for="pPriceC">Product Price</label>
+                <input type="number" name="pPriceC" class="form-control" id="pPriceC" >
+                <label for="pQuantityC">Product Quantity</label>
+                <input type="number" name="pQuantityC" class="form-control" id="pQuantityC" >
+                <label for="pDeC">Product Description</label>
+                <input type="text" name="pDeC" class="form-control" id="pDeC" >
+                <label for="pstatusC">Product Status</label>
+                <input type="text" name="pstatusC" class="form-control" id="pstatusC" >
+                <button type="submit" id="updatebtn" style="margin-top: 10px;">Change</button>
+            </form>
+
+
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const productTable = document.getElementById('productTable');
+                    const form = document.querySelector('.form-change');
+
+                    // Lắng nghe sự kiện click trên bảng sản phẩm
+                    productTable.addEventListener('click', function (event) {
+                        // Kiểm tra xem phần tử được click có phải là một hàng không
+                        if (event.target.tagName === 'TD') {
+                            // Lấy giá trị từ các ô trong hàng được click
+                            const name = event.target.parentElement.cells[0].textContent;
+                            const brand = event.target.parentElement.cells[1].textContent;
+                            const price = event.target.parentElement.cells[2].textContent;
+                            const quantity = event.target.parentElement.cells[3].textContent;
+                            const description = event.target.parentElement.cells[4].textContent;
+                            const status = event.target.parentElement.cells[5].textContent;
+
+                            // Đặt giá trị vào các trường trong form
+                            form.elements['pNameC'].value = name;
+                            form.elements['pBrandC'].value = brand;
+                            form.elements['pPriceC'].value = price;
+                            form.elements['pQuantityC'].value = quantity;
+                            form.elements['pDeC'].value = description;
+                            form.elements['pstatusC'].value = status;
+                        }
+                        const name = event.target.parentElement.cells[0].textContent;
+                        const update = document.getElementById('updatebtn');
+                        update.addEventListener("click", function () {
+                            updateItemByName(name);
+                        })
+                    });
+                });
+            </script>
+            <!--                <script >-->
+
+            <!--                        document.addEventListener('DOMContentLoaded', function () {-->
+            <!--                            const pNameF = document.getElementById('pNameC').value;-->
+            <!--                            const update = document.getElementById('updatebtn');-->
+            <!--                            update.addEventListener("click", function () {-->
+            <!--                                updateItemByName(pNameF);-->
+            <!--                            })-->
+            <!--                        });-->
+            <!--                </script>-->
+            <!--                <script>-->
+            <!--                    function convertImageToURLC() {-->
+            <!--                        const inputC = document.getElementById('imageInputC');-->
+            <!--                        const outputImageC = document.getElementById('outputImageC');-->
+            <!--                        const outputContainerC = document.getElementById('outputContainerC');-->
+            <!--                        const imageUrlInputC = document.getElementById('imageUrlC');-->
+
+            <!--                        if (input.files && input.files[0]) {-->
+            <!--                            const reader = new FileReader();-->
+
+            <!--                            reader.onload = function (e) {-->
+            <!--                                const dataURL = e.target.result;-->
+            <!--                                outputImageC.src = dataURL;-->
+            <!--                                outputContainerC.style.display = 'block';-->
+            <!--                                imageUrlInputC.value = dataURL;-->
+            <!--                            };-->
+
+            <!--                            reader.readAsDataURL(inputC.files[0]);-->
+            <!--                        } else {-->
+            <!--                            alert('Please select an image.');-->
+            <!--                        }-->
+            <!--                    }-->
+
+            <!--                    function copyToClipboardC() {-->
+            <!--                        const imageUrlInputC = document.getElementById('imageUrlC');-->
+            <!--                        imageUrlInputC.select();-->
+            <!--                        document.execCommand('copy');-->
+            <!--                        alert('Image URL copied to clipboard!');-->
+            <!--                    }-->
+            <!--                </script>-->
+
+
+        </div>
+    </div>
+</div>
+<!-- =========== Scripts =========  -->
+
+<!-- ====== ionicons ======= -->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script rel="stylesheet" type="module" th:src="@{/assetsforstaff/js/newproduct.js}"></script>
+<script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
+<script rel="stylesheet" type="module" th:src="@{/assetsforstaff/js/productdata.js}"></script>
+</html>

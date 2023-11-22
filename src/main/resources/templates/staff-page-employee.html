@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Admin Dashboard</title>
+    <!-- ======= Styles ====== -->
+    <link rel="stylesheet" th:href="@{/assetsforstaff/css/style.css}">
+    <script rel="stylesheet" type="module" th:src="@{/assetsforstaff/js/profile.js}"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+    <style>
+        #gender {
+            width: 100%;
+            padding: 10px; /* Điều chỉnh khoảng cách giữa nội dung và viền của ô chọn /
+            box-sizing: border-box; / Đảm bảo rằng padding và border không làm tăng kích thước thực sự của ô /
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #infoText {
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #infoText:hover {
+            background-color: #3498db;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        #infoText2 {
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #infoText2:hover {
+            background-color: #3498db;
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .order {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 2px solid #ccc;
+            padding: 10px;
+            margin: 10px auto; / Thêm auto vào margin để căn giữa */
+            max-width: 300px;
+            box-sizing: border-box;
+        }
+        .order h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .order p {
+            margin: 8px 0;
+        }
+
+        .order-items h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .order-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .item-price, .item-quantity {
+            font-size: 14px;
+            color: #555;
+        }
+        #orderList {
+            display: flex;
+            flex-wrap: wrap; /* Đảm bảo các item sẽ xuống dòng khi không đủ không gian /
+            justify-content: center; / Canh giữa theo chiều ngang /
+        }
+
+        .order-item {
+            / Các thuộc tính khác /
+            width: 300px; / Hoặc giá trị khác tùy thuộc vào thiết kế của bạn /
+            margin: 10px; / Khoảng cách giữa các item /
+            text-align: center; / Canh giữa nội dung trong item */
+        }
+    </style>
+</head>
+
+<body>
+<!-- =============== Navigation ================ -->
+<div class="container">
+    <div class="navigation">
+        <ul>
+            <li>
+                <a href="#">
+                        <span class="icon">
+                            <ion-icon name="shirt-outline"></ion-icon>
+                        </span>
+                    <span class="title">Dawa Sport</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="#">
+                        <span class="icon">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </span>
+                    <span class="title">Customers</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/staff/login}">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                    <span class="title">Sign Out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ========================= Main ==================== -->
+    <div class="main">
+        <div class="topbar">
+            <div class="toggle">
+                <ion-icon name="menu-outline"></ion-icon>
+            </div>
+
+        </div>
+        <!-- ======================= Cards ================== -->
+        <div class="cardBox">
+
+            <div class="card">
+                <div>
+                    <div class="numbers">80</div>
+                    <div class="cardName">Order</div>
+                </div>
+
+                <div class="iconBx">
+                    <ion-icon name="cart-outline"></ion-icon>
+                </div>
+            </div>
+
+            <div class="card">
+                <div>
+                    <div class="numbers">$7,842</div>
+                    <div class="cardName">Earning</div>
+                </div>
+
+                <div class="iconBx">
+                    <ion-icon name="cash-outline"></ion-icon>
+                </div>
+            </div>
+            <div class="card">
+                <div>
+                    <div class="numbers">200</div>
+                    <div class="cardName">Customer</div>
+                </div>
+
+                <div class="iconBx">
+                    <ion-icon name="people-outline"></ion-icon>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================ Product Details List ================= -->
+        <div id="orderList" style="display: block;" ></div>
+    </div>
+</div>
+
+
+</body>
+</html>

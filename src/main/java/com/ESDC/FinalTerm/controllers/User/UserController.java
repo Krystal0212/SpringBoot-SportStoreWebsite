@@ -37,7 +37,6 @@ public class UserController {
 
 
     @Autowired
-
     private ObjectMapper objectMapper;
 
     @Autowired
@@ -60,6 +59,11 @@ public class UserController {
             if (loggedInUser != null) {
                 //đưa user đó vào localStorage
                 String myUser = objectMapper.writeValueAsString(loggedInUser);
+
+                if(loggedInUser.getState().equals("disable")){
+                    model.addAttribute("error", "You can not access your account right now");
+                    return "login";
+                }
 
                 model.addAttribute("myUser", myUser);
                 model.addAttribute("user", loggedInUser);
@@ -249,4 +253,19 @@ public class UserController {
 
         return "profile";
     }
+
+    @PostMapping("/updateState")
+    @ResponseBody
+    public CompletableFuture<ResponseEntity<String>> updateState(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        String newState = request.get("newState");
+
+        CompletableFuture<User> cfUser = userService.updateUserState(email, newState);
+
+    return cfUser.thenApply(updatedUser -> ResponseEntity.ok("User state updated successfully")).exceptionally(ex -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user state: " + ex.getMessage()));
+
+
+    }
+
+
 }

@@ -5,7 +5,9 @@ import com.google.firebase.database.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -147,6 +149,43 @@ public class UserService {
         });
 
         return future.join();
+    }
+
+    public CompletableFuture<User> updateUserState(String email, String newState) {
+        initialize();
+        Query userQuery = usersRef.orderByChild("email").equalTo(email);
+
+        CompletableFuture<User> future = new CompletableFuture<>();
+
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    String userId = userSnapshot.getKey();
+                    Map<String, Object> updates = new HashMap<>();
+                    updates.put("state", newState);
+
+                    usersRef.child(userId).updateChildren(updates, (databaseError, databaseReference) -> {
+                        if (databaseError == null) {
+                            // Update successful
+                            User updatedUser = userSnapshot.getValue(User.class);
+                            updatedUser.setState(newState);
+                            future.complete(updatedUser);
+                        } else {
+                            // Update failed
+                            future.completeExceptionally(databaseError.toException());
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                future.completeExceptionally(databaseError.toException());
+            }
+        });
+
+        return future;
     }
 
 
