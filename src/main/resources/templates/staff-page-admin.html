@@ -8,123 +8,168 @@
     <title>Responsive Admin Dashboard</title>
     <!-- ======= Styles ====== -->
     <link rel="stylesheet" href="/assetsforstaff/css/style.css">
-    <script  type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
-    <script  type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.all.min.js"></script>
+
+    <!-- Include xlsx library -->
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+
 
 </head>
 
 <body>
-<!-- =============== Navigation ================ -->
-<div class="container">
-    <div class="navigation">
-        <ul>
-            <li>
-                <a href="#">
-                        <span class="icon">
-                            <ion-icon name="shirt-outline"></ion-icon>
-                        </span>
-                    <span class="title">Dawa Sport</span>
-                </a>
-            </li>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                            <span class="icon">
+                                <ion-icon name="shirt-outline"></ion-icon>
+                            </span>
+                        <span class="title">Dawa Sport</span>
+                    </a>
+                </li>
 
-            <li>
-                <a href="/staff-customer" th:href="@{/staff-customer}">
-                        <span class="icon">
-                            <ion-icon name="people-outline"></ion-icon>
-                        </span>
-                    <span class="title">Backup Data</span>
-                </a>
-            </li>
-            <li>
-                <a href="/login" th:href="@{/staff/login}">
-                        <span class="icon">
-                            <ion-icon name="log-out-outline"></ion-icon>
-                        </span>
-                    <span class="title">Sign Out</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-
-    <!-- ========================= Main ==================== -->
-    <div class="main">
-        <div class="topbar">
-            <div class="toggle">
-                <ion-icon name="menu-outline"></ion-icon>
-            </div>
-
-        </div>
-        <!-- ======================= Cards ================== -->
-        <div class="cardBox">
-
-            <div class="card">
-                <div>
-                    <div class="numbers">80</div>
-                    <div class="cardName">Order</div>
-                </div>
-
-                <div class="iconBx">
-                    <ion-icon name="cart-outline"></ion-icon>
-                </div>
-            </div>
-
-            <div class="card">
-                <div>
-                    <div class="numbers">$7,842</div>
-                    <div class="cardName">Earning</div>
-                </div>
-
-                <div class="iconBx">
-                    <ion-icon name="cash-outline"></ion-icon>
-                </div>
-            </div>
-            <div class="card">
-                <div>
-                    <div class="numbers">200</div>
-                    <div class="cardName">Customer</div>
-                </div>
-
-                <div class="iconBx">
-                    <ion-icon name="people-outline"></ion-icon>
-                </div>
-            </div>
+                <li>
+                    <a href="#">
+                            <span class="icon">
+                                <ion-icon name="people-outline"></ion-icon>
+                            </span>
+                        <span class="title">Backup Data</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/staff/login}">
+                            <span class="icon">
+                                <ion-icon name="log-out-outline"></ion-icon>
+                            </span>
+                        <span class="title">Sign Out</span>
+                    </a>
+                </li>
+            </ul>
         </div>
 
-        <!-- ================ Back up button ================= -->
-        <button onclick="fetchAndDisplayData()">Fetch Data from Firebase</button>
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+            </div>
+
+            <!-- ================ Back up button ================= -->
+            <div style="margin-left: 25%;" >
+                <label for="backupType">Choose Data Type:</label>
+                <select id="backupType">
+                    <option value="user">User</option>
+<!--                    <option value="product">Product</option>-->
+                    <option value="staff">Staff</option>
+                </select>
+                <button class="btn btn-primary btn-lg" onclick="backupData()">Select Data</button>
+                <button id="exportButton" class="btn btn-primary btn-lg" style="display: none;" onclick="exportData()">Export Data to Excel</button>
+
+
+            </div>
+
+            <div style="margin-left: 5%; margin-bottom: 10%" id="backupResultContainer">
+                <!-- Display backup data here -->
+            </div>
+        </div>
     </div>
-</div>
-<!-- =========== Scripts =========  -->
 
-<!-- ====== ionicons ======= -->
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <!-- ... Inside the script tag ... -->
+    <script>
+        // JavaScript function to trigger the backup via AJAX
+        function backupData() {
+            var selectedType = $("#backupType").val();
+            $.ajax({
+                type: "POST",
+                url: "/staff/backup/" + selectedType,
+                success: function (response) {
+                    // Parse the JSON response
+                    var jsonData = JSON.parse(response);
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                    // Create a table and append it to the container
+                    var table = '<table border="1"><tr>';
 
-<!-- Your custom script for fetching and displaying data -->
-<script>
-    function fetchAndDisplayData() {
-        // Use jQuery or native JavaScript to make an AJAX request to your Spring Boot endpoint
-        $.ajax({
-            url: "/api/fetch-data", // Replace with your actual Spring Boot endpoint
-            type: "GET",
-            success: function (data) {
-                // Handle the received data and display it on the page
-                console.log(data);
-                // Update the code below based on your data structure
-                // Example: Display data in an alert
-                alert(JSON.stringify(data));
-            },
-            error: function (error) {
-                console.error(error);
-            }
-        });
-    }
-</script>
+                    // Add table headers based on the keys in the first object
+                    for (var key in jsonData[0]) {
+                        if (selectedType === "user" && (key === "password" || key === "googleUser")) {
+                            // Skip displaying password and googleUser columns for the "user" type
+                            continue;
+                        }
+                        table += '<th>' + key + '</th>';
+                    }
+                    table += '</tr>';
+
+                    // Add rows and cells to the table
+                    for (var i = 0; i < jsonData.length; i++) {
+                        table += '<tr>';
+                        for (var key in jsonData[i]) {
+                            if (selectedType === "user" && (key === "password" || key === "googleUser")) {
+                                // Skip displaying password and googleUser columns for the "user" type
+                                continue;
+                            }
+                            table += '<td>' + jsonData[i][key] + '</td>';
+                        }
+                        table += '</tr>';
+                    }
+
+                    table += '</table>';
+
+                    // Display the table in the container
+                    $("#backupResultContainer").html(table);
+
+                    // Show the export button
+                    $("#exportButton").show();
+                },
+                error: function (error) {
+                    // Handle error
+                    $("#backupResultContainer").html("<p>Error during backup: " + error.responseText + "</p>");
+                }
+            });
+        }
+
+        // JavaScript function to export data to Excel
+        function exportData() {
+            var selectedType = $("#backupType").val();
+            $.ajax({
+                type: "POST",
+                url: "/staff/backup/" + selectedType,
+                success: function (response) {
+                    // Parse the JSON response
+                    var jsonData = JSON.parse(response);
+
+                    // Remove the "googleUser" column from each object in the array
+                    jsonData.forEach(function (item) {
+                        delete item.googleUser;
+                    });
+
+                    // Convert JSON data to Excel workbook
+                    var ws = XLSX.utils.json_to_sheet(jsonData);
+                    var wb = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+                    // Save the workbook as an Excel file
+                    XLSX.writeFile(wb, selectedType + '_backup.xlsx');
+                },
+                error: function (error) {
+                    // Handle error
+                    alert("Error during export: " + error.responseText);
+                }
+            });
+        }
+    </script>
+
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script rel="stylesheet" type="module" th:src="@{/js/firebase-config.js}"></script>

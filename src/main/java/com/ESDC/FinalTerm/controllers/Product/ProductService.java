@@ -17,4 +17,6 @@ public interface ProductService {
     CompletableFuture<List<ProductInCart>> getCustomerCart(String userID);
 
     CompletableFuture<Void> deleteItem(String userID, String itemName);
+
+    List<?> getProductList();
 }

@@ -4,6 +4,8 @@ import com.ESDC.FinalTerm.controllers.Staff.Staff;
 import com.google.firebase.database.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -61,5 +63,36 @@ public class StaffService {
         });
         saveStaff(future.get());
         return future.get();
+    }
+
+    public List<Staff> getStaffList() {
+        CompletableFuture<List<Staff>> future = new CompletableFuture<>();
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference staffRef = firebaseDatabase.getReference("Staff");
+        List<Staff> staffs = new ArrayList<>();
+
+        staffRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                try {
+                    for (DataSnapshot snap : snapshot.getChildren()) {
+                        Staff staff1 = snap.getValue(Staff.class);
+                        staff1.setStaffID(snap.getKey());
+                        staffs.add(staff1);
+                    }
+                    future.complete(staffs);
+                } catch (Exception e) {
+                    future.completeExceptionally(e);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                future.completeExceptionally(error.toException());
+            }
+        });
+
+        return future.join();
     }
 }

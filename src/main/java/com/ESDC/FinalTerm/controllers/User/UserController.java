@@ -263,8 +263,6 @@ public class UserController {
         CompletableFuture<User> cfUser = userService.updateUserState(email, newState);
 
     return cfUser.thenApply(updatedUser -> ResponseEntity.ok("User state updated successfully")).exceptionally(ex -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating user state: " + ex.getMessage()));
-
-
     }
 
 

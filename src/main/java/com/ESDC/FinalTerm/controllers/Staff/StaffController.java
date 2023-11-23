@@ -1,17 +1,17 @@
 package com.ESDC.FinalTerm.controllers.Staff;
 
+import com.ESDC.FinalTerm.controllers.Product.Product;
+import com.ESDC.FinalTerm.controllers.Product.ProductService;
 import com.ESDC.FinalTerm.controllers.User.User;
 import com.ESDC.FinalTerm.controllers.User.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -28,6 +28,9 @@ public class StaffController {
 
     @Autowired
     private StaffService staffService;
+
+    @Autowired
+    private ProductService productService;
     @RequestMapping("/login")
     public String loginPage() {
         return "staff-login";}
@@ -54,6 +57,11 @@ public class StaffController {
     public String loginCheck(@ModelAttribute Staff staff, Model model) {
         try {
             Staff loggedInStaff = staffService.loginStaffByTyping(staff.getUsername(), staff.getPassword());
+
+            if(userService.isUserLoggedIn()){
+                    model.addAttribute("error", "You are not allow to log in");
+                    return "staff-login";
+            }
 
             if (loggedInStaff != null) {
                 //đưa user đó vào localStorage
@@ -85,6 +93,30 @@ public class StaffController {
             return "staff-login";
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @PostMapping("/backup/{listName}")
+    public ResponseEntity<String> backupData(@PathVariable String listName) {
+        try {
+            List<?> backupData = null;
+            // Call a method in FirebaseService to get data from the specified list
+            if(listName.equals("user")) {
+                backupData = userService.getUserList();
+            } else if (listName.equals("staff")) {
+                backupData = staffService.getStaffList();
+            }else if (listName.equals("product")) {
+                backupData = productService.getProductList();
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonData = objectMapper.writeValueAsString(backupData);
+
+            // You can modify the response based on your requirements
+            return ResponseEntity.ok(jsonData);
+        } catch (Exception e) {
+            // Handle exceptions and return an appropriate response
+            return ResponseEntity.status(500).body("Error during data backup");
         }
     }
 }

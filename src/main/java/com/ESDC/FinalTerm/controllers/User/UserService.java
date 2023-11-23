@@ -134,6 +134,7 @@ public class UserService {
                 try {
                     for (DataSnapshot snap : snapshot.getChildren()) {
                         User user1 = snap.getValue(User.class);
+                        user1.setUserID(snap.getKey());
                         users.add(user1);
                     }
                     future.complete(users);
