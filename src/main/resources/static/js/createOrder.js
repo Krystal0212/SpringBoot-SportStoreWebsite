@@ -88,7 +88,7 @@ function createOrder() {
                 var selectElement = document.getElementById("shippingOption");
                 var selectedOption = selectElement.options[selectElement.selectedIndex];
 
-                var paymentMethod = selectedOption.text;
+                var shipmentMethod = selectedOption.text;
 
                 // Kiểm tra và lấy địa chỉ từ nhánh Customer
                 getAddressForUserID(userID).then((address) => {
@@ -98,7 +98,8 @@ function createOrder() {
                         address: address, // Sử dụng địa chỉ từ nhánh Customer
                         state: "pending", // Mặc định là chưa duyệt
                         totalAmount: totalAmount,
-                        paymentMethod: paymentMethod,
+                        shipmentMethod: shipmentMethod,
+                        paymentMethod: "by Cash",
                         purchaseDate: new Date().toLocaleString(),
                         items: {} // Danh sách sản phẩm trong đơn hàng
                     };

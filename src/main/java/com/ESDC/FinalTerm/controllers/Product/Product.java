@@ -3,20 +3,20 @@ package com.ESDC.FinalTerm.controllers.Product;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
 public class Product {
-    @Getter @Setter
+    @Setter
     private String brand;
-    @Getter @Setter
     private String name;
     @Setter
     private String price;
     @Setter
     private String quantity;
-    @Getter @Setter
+    @Setter
     private String description;
-    @Getter @Setter
+    @Setter
     private String url;
-    @Getter @Setter
+    @Setter
     private String status;
 
     public Product(String brand, String name, String price, String quantity, String status, String url, String description) {
@@ -40,24 +40,12 @@ public class Product {
     public Product() {
     }
 
-    public String getPrice() {
-        return price;
-    }
-
-    public String getQuantity() {
-        return quantity;
-    }
-
     public int getIntPrice() {
         return Integer.parseInt(price);
     }
 
     public int getIntQuantity() {
         return Integer.parseInt(quantity);
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setName(String name) {

@@ -1,27 +1,20 @@
-import { getDatabase, ref, onValue, get, update } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js";
+import { getDatabase, ref, onValue, get, update, remove } from "https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js";
 
 
 let orderListVisible = false;
 
 function displayOrders() {
-    // Lấy userID từ local storage hoặc nơi bạn lưu trữ thông tin người dùng
     const userID = localStorage.getItem("userID");
-
-    // Khởi tạo Firebase
     const dbRef = getDatabase();
     const ordersRef = ref(dbRef, 'Orders');
 
-    // Lắng nghe sự kiện "value" để đồng bộ dữ liệu khi có thay đổi
     onValue(ordersRef, (snapshot) => {
-        // Làm sạch danh sách đơn đặt hàng trước khi cập nhật
         const ordersContainer = document.getElementById('orderList');
         ordersContainer.innerHTML = '';
 
-        // Lặp qua các đơn đặt hàng và hiển thị trên trang
         snapshot.forEach((orderSnapshot) => {
             const orderData = orderSnapshot.val();
 
-            // Kiểm tra xem đơn hàng có thuộc về userID không
             if (orderData.customerID === userID) {
                 const orderElement = createOrderElement(orderSnapshot.key, orderData);
                 ordersContainer.appendChild(orderElement);
@@ -29,17 +22,19 @@ function displayOrders() {
         });
     });
 
-    // Hàm tạo phần tử đơn đặt hàng từ dữ liệu
     function createOrderElement(orderID, orderData) {
         const orderElement = document.createElement('div');
-        orderElement.style.cssText = "width: 50vw !important;"
+        orderElement.style.cssText = "width: 70vw !important;"
         orderElement.classList.add('order');
 
-        // Thêm thông tin đơn đặt hàng vào phần tử
+        const isPending = orderData.state === "pending";
+
+
         orderElement.innerHTML = `
         <h3 class="order-id">Order ID: ${orderID}</h3>
         <p class="order-address">Your address: ${orderData.address}</p>
-        <p class="order-state">State: ${orderData.state}</p>
+        <p class="order-ship">Shipping opinion: ${orderData.shipmentMethod}</p>
+        <p class="order-state ${orderData.state.toLowerCase()}">State: ${orderData.state}</p>
         <p class="order-total">Price: ${orderData.totalAmount} $</p>
         <p class="order-purchase">Date: ${orderData.purchaseDate}</p>
         <div class="order-items">
@@ -48,13 +43,48 @@ function displayOrders() {
                 ${createItemsList(orderData.items)}
             </ul>
         </div>
-        <!-- Thêm các trường thông tin khác tùy ý -->
+        ${isPending ? `<button class="btn btn-order" id="cancelBtn_${orderID}"> Cancel </button>` : ''}
     `;
+        const cancelBtn = orderElement.querySelector(`#cancelBtn_${orderID}`);
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => showCancelConfirmation(orderID));
+        }
 
         return orderElement;
     }
 
-// Hàm tạo danh sách các item từ dữ liệu
+    function cancelOrder(orderID) {
+        return new Promise((resolve, reject) => {
+            const dbRef = getDatabase();
+            const ordersRef = ref(dbRef, 'Orders' + '/' + orderID);
+            remove(ordersRef)
+                .then(() => {
+                    displayOrders();
+                    resolve(); // Kết thúc thành công
+                })
+                .catch((error) => {
+                    console.error('Error', error);
+                    reject(error); // Kết thúc với lỗi
+                })
+        });
+    }
+
+    function showCancelConfirmation(orderID) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you really want to cancel this order?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, cancel it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                cancelOrder(orderID);
+            }
+        });
+    }
+
     function createItemsList(items) {
         let itemsListHTML = '';
         for (const itemID in items) {
@@ -74,10 +104,14 @@ function displayOrders() {
     }
 }
 
+
+
 // Gọi hàm khi trang web tải xong
 window.onload = function () {
     displayOrders();
 };
+
+
 
 window.toggleOrderList = function () {
     const orderList = document.getElementById('orderList');
@@ -129,13 +163,11 @@ window.showUserProfile = function () {
     }
 }
 
-// Hàm trả về promise lấy địa chỉ từ nhánh Customer
 function getAddressFromCustomer(customerRef) {
     return new Promise((resolve, reject) => {
         onValue(customerRef, (snapshot) => {
             const customerData = snapshot.val();
             if (customerData) {
-                // Trả về địa chỉ từ nhánh Customer
                 resolve([customerData.address, customerData.phone_number]);
             } else {
                 reject("Customer data not found");
@@ -144,17 +176,14 @@ function getAddressFromCustomer(customerRef) {
     });
 }
 
-// Hàm cập nhật thông tin người dùng
 window.updateProfile = function () {
     const fullName = document.getElementById("fullName2").value;
     const email = document.getElementById("eMail2").value;
     const phone = document.getElementById("phone").value;
     const address = document.getElementById("Street").value;
 
-    // Lấy userID từ local storage hoặc nơi bạn lưu trữ thông tin người dùng
     const userID = localStorage.getItem("userID");
 
-    // Kiểm tra xem có dữ liệu cần cập nhật hay không
     if (!userID || !fullName || !email || !phone || !address) {
         Swal.fire({
             icon: 'error',
