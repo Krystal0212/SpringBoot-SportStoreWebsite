@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @ControllerAdvice
@@ -59,7 +61,7 @@ public class StaffController {
             Staff loggedInStaff = staffService.loginStaffByTyping(staff.getUsername(), staff.getPassword());
 
             if(userService.isUserLoggedIn()){
-                    model.addAttribute("error", "You are not allow to log in");
+                    model.addAttribute("error", "You are not allowed to log in");
                     return "staff-login";
             }
 
@@ -79,6 +81,13 @@ public class StaffController {
                     return "staff-page-sales-manager";
                 }
                 else if(loggedInStaff.getRole().equals("productmanager")){
+                    List<Product> suck = Stream.of(
+                                    productService.getProductList("Shoes"),
+                                    productService.getProductList("Clothes"),
+                                    productService.getProductList("Accessory"))
+                            .flatMap(List::stream)
+                            .collect(Collectors.toList());
+                    model.addAttribute("product", suck);
                     return "staff-page-product-manager";
                 }
                 else {
