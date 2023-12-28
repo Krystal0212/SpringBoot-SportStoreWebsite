@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Responsive Admin Dashboard</title>
     <!-- ======= Styles ====== -->
-    <link rel="stylesheet" href="assetsforstaff/css/style.css">
+    <link rel="stylesheet" href="/assetsforstaff/css/style.css">
     <script  type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js"></script>
     <script  type="module" src="https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
@@ -108,7 +108,7 @@
                         <h2>Product</h2>
                     </div>
 
-                    <form class="form-add">
+                    <form class="form-add" style="max-width: 100% !important;">
                         <label for="pType">Product Type</label>
                         <select type="text" id="pType" name="pType" style="margin-bottom: 10px;">
                             <option value="Shoes">Shoes</option>
@@ -117,17 +117,20 @@
                         </select>
                         <label for="pName">Product Name</label>
                         <input type="text" name="pName" class="form-control" id="pName" >
-                        <label for="pBrand">Product Brand</label>
+                        <label for="pBrand">Brand</label>
                         <input type="text" name="pBrand" class="form-control" id="pBrand" >
-                        <label for="pPrice">Product Price</label>
+                        <label for="pPrice">Unit Price</label>
                         <input type="number" name="pPrice" class="form-control" id="pPrice" >
-                        <label for="pPrice">Product Quantity</label>
+                        <label for="pPrice">Quantity</label>
                         <input type="number" name="pQuantity" class="form-control" id="pQuantity" >
                         <label for="pDe">Product Description</label>
                         <input type="text" name="pDe" class="form-control" id="pDe" >
 
                         <div>
-                            <label for="imageInput">Product URL (Click me to pick file)</label>
+                            <label for="imageInput"
+                                   style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: white; text-align: center; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; border: none; text-decoration: none; font-size: 16px; font-weight: normal;">
+                                <i class="fa fa-camera"></i> Upload Image
+                            </label>
                             <input type="file" name="pUrl" class="form-control" id="imageInput" style="display: none;" onchange="convertImageToURL()">
                             <div id="outputContainer" style="display: none;">
                                 <h3>Converted Image</h3>
@@ -147,16 +150,61 @@
                                 const imageUrlInput = document.getElementById('imageUrl');
 
                                 if (input.files && input.files[0]) {
-                                    const reader = new FileReader();
+                                    const file = input.files[0];
 
-                                    reader.onload = function (e) {
-                                        const dataURL = e.target.result;
-                                        outputImage.src = dataURL;
-                                        outputContainer.style.display = 'block';
-                                        imageUrlInput.value = dataURL;
-                                    };
+                                    // Check if the file size is greater than 200KB
+                                    if (file.size > 200 * 1024) {
+                                        const reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            const img = new Image();
+                                            img.onload = function () {
+                                                // Create a canvas and context
+                                                const canvas = document.createElement('canvas');
+                                                const ctx = canvas.getContext('2d');
 
-                                    reader.readAsDataURL(input.files[0]);
+                                                // Set canvas dimensions
+                                                const maxWidth = 800; // You can adjust this value
+                                                const maxHeight = 800; // You can adjust this value
+                                                let width = img.width;
+                                                let height = img.height;
+
+                                                // Calculate the width and height, maintaining aspect ratio
+                                                if (width > height) {
+                                                    if (width > maxWidth) {
+                                                        height *= maxWidth / width;
+                                                        width = maxWidth;
+                                                    }
+                                                } else {
+                                                    if (height > maxHeight) {
+                                                        width *= maxHeight / height;
+                                                        height = maxHeight;
+                                                    }
+                                                }
+                                                canvas.width = width;
+                                                canvas.height = height;
+
+                                                // Draw the image on the canvas
+                                                ctx.drawImage(img, 0, 0, width, height);
+
+                                                // Convert the canvas to a data URL
+                                                const resizedDataURL = canvas.toDataURL('image/jpeg', 0.7); // Adjust the quality (0.7) as needed
+                                                outputImage.src = resizedDataURL;
+                                                outputContainer.style.display = 'block';
+                                                imageUrlInput.value = resizedDataURL;
+                                            };
+                                            img.src = e.target.result;
+                                        };
+                                        reader.readAsDataURL(file);
+                                    } else {
+                                        // If the file size is within the limit, process normally
+                                        const reader = new FileReader();
+                                        reader.onload = function (e) {
+                                            outputImage.src = e.target.result;
+                                            outputContainer.style.display = 'block';
+                                            imageUrlInput.value = e.target.result;
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
                                 } else {
                                     alert('Please select an image.');
                                 }
@@ -172,28 +220,23 @@
 
                         <input type="submit" value="Add" id="add" onclick="addProduct()" style="margin-top: 10px;">
 
-                        <script type="module">
-    document.querySelector('#add').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent form submission
-        ClickAdd();
-    });
-
-</script>
+                    <script type="module">
+                        document.querySelector('#add').addEventListener('click', function(event) {
+                            event.preventDefault(); // Prevent form submission
+                            ClickAdd();
+                        });
+                    </script>
                     </form>
-
-
-
-
                     <table id="productTable">
                         <thead>
                         <tr>
                             <td>Name</td>
                             <td>Brand</td>
-                            <td>Price</td>
+                            <td>Unit Price</td>
                             <td>Quantity</td>
                             <td>Description</td>
-                            <td>status</td>
-                            <td>img</td>
+                            <td>Status</td>
+                            <td>Product</td>
                         </tr>
                         </thead>
                         <tbody>
@@ -228,8 +271,6 @@
                     <input type="text" name="pstatusC" class="form-control" id="pstatusC" >
                     <button type="submit" id="updatebtn" style="margin-top: 10px;">Change</button>
                     </form>
-
-
 
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {

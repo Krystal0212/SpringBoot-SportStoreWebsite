@@ -60,10 +60,10 @@ public class StaffController {
         try {
             Staff loggedInStaff = staffService.loginStaffByTyping(staff.getUsername(), staff.getPassword());
 
-            if(userService.isUserLoggedIn()){
-                    model.addAttribute("error", "You are not allowed to log in");
-                    return "staff-login";
-            }
+//            if(userService.isUserLoggedIn()){
+//                    model.addAttribute("error", "You are not allowed to log in");
+//                    return "staff-login";
+//            }
 
             if (loggedInStaff != null) {
                 //đưa user đó vào localStorage

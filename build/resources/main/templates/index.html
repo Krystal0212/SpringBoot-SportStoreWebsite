@@ -65,13 +65,13 @@
                     aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="fa fa-bars"></span> Menu
             </button>
-            <form action="#" class="searchform order-lg-last">
-                <div class="form-group d-flex">
-                    <input type="text" class="form-control pl-3" placeholder="Search">
-                    <button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span>
-                    </button>
-                </div>
-            </form>
+<!--            <form action="#" class="searchform order-lg-last">-->
+<!--                <div class="form-group d-flex">-->
+<!--                    <input type="text" class="form-control pl-3" placeholder="Search">-->
+<!--                    <button type="submit" placeholder="" class="form-control search"><span class="fa fa-search"></span>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </form>-->
             <div class="collapse navbar-collapse" id="ftco-nav">
                 <ul class="navbar-nav mr-auto">
 
@@ -131,14 +131,15 @@
             <div class="col d-flex justify-content-end">
                 <div class="social-media">
                     <p class="mb-0 d-flex">
-                        <a href="#" class="d-flex align-items-center justify-content-center"><span
+                        <!--<a href="#" class="d-flex align-items-center justify-content-center"><span
                                 class="fa fa-facebook"><i class="sr-only">Facebook</i></span></a>
                         <a href="#" class="d-flex align-items-center justify-content-center"><span
                                 class="fa fa-twitter"><i class="sr-only">Twitter</i></span></a>
                         <a href="#" class="d-flex align-items-center justify-content-center"><span
-                                class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>
-                        <a href="#" class="d-flex align-items-center justify-content-center"><span
-                                class="fa fa-dribbble"><i class="sr-only">Dribbble</i></span></a>
+                                class="fa fa-instagram"><i class="sr-only">Instagram</i></span></a>-->
+<!--                    <a href="#" class="d-flex align-items-center justify-content-center"><span-->
+<!--                                class="fa fa-users">&nbspFor Staff</span></a>-->
+
                         <a href="/login" id="loginIcon" style="display: none !important;" th:href="@{/login} "
                            class="d-flex align-items-center justify-content-center"><span class="fa fa-user"><i
                                 class="sr-only">User</i></span></a>
@@ -146,39 +147,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Example split danger button -->
-<!--        <div class="btn-group" th:if="${user?.name}">-->
-<!--            <button type="button" class="btn btn-danger"><span class="visually-hidden" th:id="accountShownName" th:text="${user?.name}"></span></button>-->
-<!--            <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                More-->
-<!--            </button>-->
-<!--            <ul class="dropdown-menu">-->
-<!--                <li><a class="dropdown-item" href="#">Action</a></li>-->
-<!--                <li><a class="dropdown-item" href="#">Another action</a></li>-->
-<!--                <li><a class="dropdown-item" href="#">Something else here</a></li>-->
-<!--                <li><hr class="dropdown-divider"></li>-->
-<!--                <li><a class="dropdown-item" href="#">Separated link</a></li>-->
-<!--            </ul>-->
-<!--        </div>-->
-
-<!--        <div class="btn-group" th:if="${user?.name}">-->
-<!--            <button type="button" class="btn btn-danger"><span class="visually-hidden" th:id="accountShownName" th:text="${user?.name}"></span></button>-->
-
-<!--            <li class="nav-item dropdown">-->
-<!--                <button class="btn btn-danger dropdown-toggle dropdown-toggle-split" href="#" id="dropdown041" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                    More-->
-<!--                </button>-->
-<!--                <div class="dropdown-menu" aria-labelledby="dropdown04">-->
-<!--                    <a class="dropdown-item" href="#">Action</a>-->
-<!--                    <a class="dropdown-item" href="#">Another action</a>-->
-<!--                    <a class="dropdown-item" href="#">Something else here</a>-->
-<!--                    <hr class="dropdown-divider">-->
-<!--                    <a class="dropdown-item" href="#">Separated link</a>-->
-<!--                </div>-->
-<!--            </li>-->
-<!--        </div>-->
-
 
         <div class="dropdown"  id="dropdownBox" style="display: none;">
             <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -210,79 +178,16 @@
                 if (userJSON) {
                     const userObject = JSON.parse(userJSON);
 
-                    // Hiển thị dropdownBox và đặt dữ liệu vào customerName
                     dropdownBox.style.display = 'block';
                     customerName.textContent = userObject.name;
                     loginIcon.style.cssText="display: none !important;";
                 } else {
-                    // Nếu localStorage('user') rỗng, ẩn dropdownBox
                     dropdownBox.style.display = 'none';
                     loginIcon.style.cssText="display: block !important;";
                     loginIcon.style.cssText="align: center !important;";
                 }
             });
         </script>
-
-<!--        <div class="dropdown" th:if="${user} != null" id="dropdownBox">-->
-<!--            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                <span class="visually-hidden"  id="customerName" th:text="${user?.name}"></span>-->
-<!--            </button>-->
-<!--            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">-->
-<!--                <li><a class="dropdown-item" href="#">....</a></li>-->
-<!--                <li><a class="dropdown-item" href="#">....</a></li>-->
-<!--                <li><hr class="dropdown-divider"></li>-->
-<!--                <li style="text-align: center"><a  href="/user/logout" id="logOut">Logout</a></li>-->
-<!--            </ul>-->
-<!--        </div>-->
-
-
-
-        <!--        <div class="dropdown" th:if="${user} == null" style="display:none !important;" >-->
-<!--            <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                <span class="visually-hidden" id="customerName" ></span>-->
-<!--            </button>-->
-<!--            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">-->
-<!--                <li><a class="dropdown-item" href="#">....</a></li>-->
-<!--                <li><a class="dropdown-item" href="#">....</a></li>-->
-<!--                <li><hr class="dropdown-divider"></li>-->
-<!--                <li style="text-align: center"><a>Logout</a></li>-->
-<!--            </ul>-->
-<!--        </div>-->
-
-<!--        <span th:id="accountShownName" th:text="${user?.name}"></span>-->
-<!--        <div class="account" id="customerName" th:if="${user} == null"></div>-->
-
-<!--        <button id="logOut" style="display: none" th:if="${user?.name} == null">Logout</button>-->
-
-<!--        <button id="logOutAlt" style="display: block" th:if="${user?.name} != null">-->
-<!--            <a th:href="@{/user/logout}">Logout</a>-->
-<!--        </button>-->
-<!--        <script th:inline="javascript">-->
-<!--            var user = /*[[${user}]]*/ null;-->
-
-<!--            if (user != null) {-->
-<!--                document.getElementById("logOutAlt").addEventListener("click", function () {-->
-<!--                    var form = document.createElement("form");-->
-
-<!--                    form.setAttribute("method", "post");-->
-<!--                    form.setAttribute("action", "/logout");-->
-
-<!--                    document.body.appendChild(form);-->
-
-<!--                    form.submit();-->
-
-<!--                    // Remove the form from the document after submission-->
-<!--                    document.body.removeChild(form);-->
-<!--                });-->
-<!--                const logoutButton = document.getElementById('logOut');-->
-<!--                const customerName = document.getElementById('customerName');-->
-
-<!--                logOutSuccessAlert()-->
-
-<!--                customerName.style.display = 'none';-->
-<!--                logoutButton.style.display = 'none';-->
-<!--            }-->
-<!--        </script>-->
     </nav>
 
     <!-- END nav -->
@@ -299,7 +204,6 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/main.js"></script>
 </div>
-
 <!-- End Navigation Bar Section -->
 
 <!-- Start Slide Banner Section -->

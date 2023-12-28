@@ -27,6 +27,25 @@ body {
   width: 100%;
 }
 
+label .button-like {
+  display: inline-block !important;
+  padding: 10px 15px !important;
+  background-color: #007bff !important;
+  color: white !important;
+  text-align: center !important;
+  border-radius: 5px !important;
+  cursor: pointer !important;
+  transition: background-color 0.3s ease !important;
+  border: none !important;
+  text-decoration: none !important;
+  font-size: 16px !important;
+  font-weight: normal !important;
+}
+
+label .button-like:hover {
+  background-color: #0056b3;
+}
+
 /* =============== Navigation ================ */
 .navigation {
   position: fixed;

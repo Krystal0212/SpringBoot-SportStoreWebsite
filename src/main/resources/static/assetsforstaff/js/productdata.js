@@ -8,12 +8,16 @@ window.updateItemByName = function (pNameF) {
     const pQuantityC = document.getElementById('pQuantityC').value;
     const pDeC = document.getElementById('pDeC').value;
     const pstatusC = document.getElementById('pstatusC').value;
+    const pSizeC = document.getElementById('pSizeC').value;
+    const pColorC = document.getElementById('pColorC').value;
     const newData = ({
         name: String(pNameC),
         brand: String(pBrandC),
         price: String(pPriceC),
         quantity: String(pQuantityC),
         description: String(pDeC),
+        size:String(pSizeC),
+        color:String(pColorC),
         status: String(pstatusC),
     });
     console.log("pNameF:", pNameF);

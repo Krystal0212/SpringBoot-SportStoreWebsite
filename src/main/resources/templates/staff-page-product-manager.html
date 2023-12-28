@@ -113,13 +113,20 @@
                     <input type="text" name="pBrand" class="form-control" id="pBrand" >
                     <label for="pPrice">Product Price</label>
                     <input type="number" name="pPrice" class="form-control" id="pPrice" >
-                    <label for="pPrice">Product Quantity</label>
+                    <label for="pQuantity">Product Quantity</label>
                     <input type="number" name="pQuantity" class="form-control" id="pQuantity" >
+                    <label for="pSize">Product Size</label>
+                    <input type="number" name="pSize" class="form-control" id="pSize" >
+                    <label for="pColor">Product Quantity</label>
+                    <input type="number" name="pColor" class="form-control" id="pColor" >
                     <label for="pDe">Product Description</label>
                     <input type="text" name="pDe" class="form-control" id="pDe" >
 
                     <div>
-                        <label for="imageInput">Product URL (Click me to pick file)</label>
+                        <label for="imageInput"
+                               style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: white; text-align: center; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; border: none; text-decoration: none; font-size: 16px; font-weight: normal;">
+                            <i class="fa fa-camera"></i> Upload Image
+                        </label>
                         <input type="file" name="pUrl" class="form-control" id="imageInput" style="display: none;" onchange="convertImageToURL()">
                         <div id="outputContainer" style="display: none;">
                             <h3>Converted Image</h3>
@@ -139,16 +146,61 @@
                             const imageUrlInput = document.getElementById('imageUrl');
 
                             if (input.files && input.files[0]) {
-                                const reader = new FileReader();
+                                const file = input.files[0];
 
-                                reader.onload = function (e) {
-                                    const dataURL = e.target.result;
-                                    outputImage.src = dataURL;
-                                    outputContainer.style.display = 'block';
-                                    imageUrlInput.value = dataURL;
-                                };
+                                // Check if the file size is greater than 200KB
+                                if (file.size > 200 * 1024) {
+                                    const reader = new FileReader();
+                                    reader.onload = function (e) {
+                                        const img = new Image();
+                                        img.onload = function () {
+                                            // Create a canvas and context
+                                            const canvas = document.createElement('canvas');
+                                            const ctx = canvas.getContext('2d');
 
-                                reader.readAsDataURL(input.files[0]);
+                                            // Set canvas dimensions
+                                            const maxWidth = 800; // You can adjust this value
+                                            const maxHeight = 800; // You can adjust this value
+                                            let width = img.width;
+                                            let height = img.height;
+
+                                            // Calculate the width and height, maintaining aspect ratio
+                                            if (width > height) {
+                                                if (width > maxWidth) {
+                                                    height *= maxWidth / width;
+                                                    width = maxWidth;
+                                                }
+                                            } else {
+                                                if (height > maxHeight) {
+                                                    width *= maxHeight / height;
+                                                    height = maxHeight;
+                                                }
+                                            }
+                                            canvas.width = width;
+                                            canvas.height = height;
+
+                                            // Draw the image on the canvas
+                                            ctx.drawImage(img, 0, 0, width, height);
+
+                                            // Convert the canvas to a data URL
+                                            const resizedDataURL = canvas.toDataURL('image/jpeg', 0.7); // Adjust the quality (0.7) as needed
+                                            outputImage.src = resizedDataURL;
+                                            outputContainer.style.display = 'block';
+                                            imageUrlInput.value = resizedDataURL;
+                                        };
+                                        img.src = e.target.result;
+                                    };
+                                    reader.readAsDataURL(file);
+                                } else {
+                                    // If the file size is within the limit, process normally
+                                    const reader = new FileReader();
+                                    reader.onload = function (e) {
+                                        outputImage.src = e.target.result;
+                                        outputContainer.style.display = 'block';
+                                        imageUrlInput.value = e.target.result;
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
                             } else {
                                 alert('Please select an image.');
                             }
@@ -159,6 +211,44 @@
                             imageUrlInput.select();
                             document.execCommand('copy');
                             alert('Image URL copied to clipboard!');
+                        }
+                    </script>
+
+                    <script>
+                        function addAttribute() {
+                            let attributeName = prompt("Please enter the attribute name (Color or Size):");
+
+                            if (attributeName !== "Color" && attributeName !== "Size") {
+                                alert("Invalid attribute name. Please choose 'Color' or 'Size'.");
+                                return;
+                            }
+
+                            if (document.getElementById('p' + attributeName)) {
+                                alert(attributeName + " attribute already exists.");
+                                return;
+                            }
+
+                            let attributeContainer = document.getElementById('attribute-container');
+                            let newAttribute = document.createElement('div');
+                            newAttribute.innerHTML = `
+            <label for="p${attributeName}">${attributeName}</label>
+            <input type="text" name="p${attributeName}" class="form-control" id="p${attributeName}">
+        `;
+                            attributeContainer.appendChild(newAttribute);
+
+                            checkAndToggleIconVisibility();
+                        }
+
+                        function checkAndToggleIconVisibility() {
+                            let colorExists = !!document.getElementById('pColor');
+                            let sizeExists = !!document.getElementById('pSize');
+                            let icon = document.querySelector('.add-attribute-icon');
+
+                            if (colorExists && sizeExists) {
+                                icon.style.display = 'none';
+                            } else {
+                                icon.style.display = 'inline';
+                            }
                         }
                     </script>
 
@@ -184,8 +274,10 @@
                         <td>Price</td>
                         <td>Quantity</td>
                         <td>Description</td>
-                        <td>status</td>
-                        <td>img</td>
+                        <td>Status</td>
+                        <td>Size</td>
+                        <td>Color</td>
+                        <td>Image</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -197,6 +289,8 @@
                             <td th:text="${item.quantity}">120</td>
                             <td th:text="${item.description}">Description</td>
                             <td th:text="${item.status}">status</td>
+                            <td th:text="${item.size}">Size</td>
+                            <td th:text="${item.color}">color</td>
                             <td >
                                 <img th:src="${item.url}" style="width: 20%;left: 20px;">
                             </td>
@@ -218,6 +312,10 @@
                 <input type="text" name="pDeC" class="form-control" id="pDeC" >
                 <label for="pstatusC">Product Status</label>
                 <input type="text" name="pstatusC" class="form-control" id="pstatusC" >
+                <label for="pSize">Product Size</label>
+                <input type="text" name="pSize" class="form-control" id="pSizeC" >
+                <label for="pColor">Product Color</label>
+                <input type="text" name="pColor" class="form-control" id="pColorC" >
                 <button type="submit" id="updatebtn" style="margin-top: 10px;">Change</button>
             </form>
 
@@ -239,6 +337,8 @@
                             const quantity = event.target.parentElement.cells[3].textContent;
                             const description = event.target.parentElement.cells[4].textContent;
                             const status = event.target.parentElement.cells[5].textContent;
+                            const size = event.target.parentElement.cells[6].textContent;
+                            const color = event.target.parentElement.cells[7].textContent;
 
                             // Đặt giá trị vào các trường trong form
                             form.elements['pNameC'].value = name;
@@ -247,6 +347,8 @@
                             form.elements['pQuantityC'].value = quantity;
                             form.elements['pDeC'].value = description;
                             form.elements['pstatusC'].value = status;
+                            form.elements['pSizeC'].value = size;
+                            form.elements['pColorC'].value = color;
                         }
                         const name = event.target.parentElement.cells[0].textContent;
                         const update = document.getElementById('updatebtn');

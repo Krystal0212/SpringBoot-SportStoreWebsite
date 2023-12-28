@@ -15,21 +15,22 @@ window.ClickAdd = function ClickAdd(){
     const pPrice = document.getElementById('pPrice').value;
     const pQuantity = document.getElementById('pQuantity').value;
     const pDe = document.getElementById('pDe').value;
+    const pSize = document.getElementById('pSize').value;
+    const pColor = document.getElementById('pColor').value;
     const imageUrl = document.getElementById('imageUrl').value;
     const status = "enable";
-    if (checkEmptyFields(pName, pBrand, pType, pPrice, pQuantity,pDe,imageUrl)) {
+    if (checkEmptyFields(pName, pBrand, pType, pPrice, pQuantity,pDe, pSize, pColor,imageUrl)) {
         return;
     }
-    WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,imageUrl,status)
+    WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe, pSize, pColor,imageUrl,status)
         .then(() => {
             AddSuccessAlert();
-
         })
 };
 
 
 
-const WriteDataToFirebase = function WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe,imageUrl,status){
+const WriteDataToFirebase = function WriteDataToFirebase(pName, pBrand, pType, pPrice, pQuantity,pDe, pSize, pColor,imageUrl,status){
 
     if(pType === "Shoes")
     {
@@ -58,6 +59,8 @@ const WriteDataToFirebase = function WriteDataToFirebase(pName, pBrand, pType, p
                     price: String(pPrice),
                     quantity: String(pQuantity),
                     description: String(pDe),
+                    size:String(pSize),
+                    color:String(pColor),
                     url: String(imageUrl),
                     status: String(status),
                 };
@@ -94,6 +97,8 @@ const WriteDataToFirebase = function WriteDataToFirebase(pName, pBrand, pType, p
                     price: String(pPrice),
                     quantity: String(pQuantity),
                     description: String(pDe),
+                    size:String(pSize),
+                    color:String(pColor),
                     url: String(imageUrl),
                     status: String(status),
                 };
@@ -130,6 +135,8 @@ const WriteDataToFirebase = function WriteDataToFirebase(pName, pBrand, pType, p
                     price: String(pPrice),
                     quantity: String(pQuantity),
                     description: String(pDe),
+                    size:String(pSize),
+                    color:String(pColor),
                     url: String(imageUrl),
                     status: String(status),
                 };
@@ -145,7 +152,7 @@ function isNumeric(input) {
     // Kiểm tra xem chuỗi chỉ chứa chữ số hay không
     return /^\d+$/.test(input);
 }
-const checkEmptyFields = function checkEmptyFields(pName, pBrand, pType, pPrice, pQuantity,pDe,imageUrl) {
+const checkEmptyFields = function checkEmptyFields(pName, pBrand, pType, pPrice, pQuantity,pDe, pSize, pColor,imageUrl) {
     const emptyFields = [];
 
     if (!pName) {
@@ -165,6 +172,12 @@ const checkEmptyFields = function checkEmptyFields(pName, pBrand, pType, pPrice,
     }
     if (!pDe) {
         emptyFields.push("Product Description");
+    }
+    if (!pSize) {
+        emptyFields.push("Product Size");
+    }
+    if (!pColor) {
+        emptyFields.push("Product Color");
     }
     if (!imageUrl) {
         emptyFields.push("Product Img");
